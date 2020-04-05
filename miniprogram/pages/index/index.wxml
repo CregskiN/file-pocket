@@ -1,0 +1,24 @@
+<!-- index.wxml -->
+<view class="container">
+
+	<view class='header'>
+		<c-search/>
+	</view>
+
+	<view class="body">
+		<view class="body_items">
+			<c-item class="body_item" wx:for="{{items}}" wx:key="id" id="{{item.id}}" icon="{{item.iconUrl}}" name="{{item.name}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" bind:more="onMore"/>
+		</view>
+	</view>
+
+	<view class="body_creator" bind:tap="onCreate" hidden="{{!isLogin}}">
+		<text class="creator_icon iconfont icon-bingtu"/> 创建项目
+	</view>
+
+	<view class="body_creator_logging" hidden="{{isLogin}}">
+		<button class="body_creator_btn" open-type="getUserInfo" bindgetuserinfo="getAuthorization">
+			<text class="creator_icon iconfont icon-bingtu"/> 登陆
+		</button>
+	</view>
+</view>
+

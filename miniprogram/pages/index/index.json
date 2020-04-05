@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "c-search":"../../component/index/search/search",
+    "c-item":"../../component/index/item/item"
+  },
+  "navigationBarTitleText": "项目收藏夹",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

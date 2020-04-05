@@ -1,0 +1,24 @@
+<!-- component/item/item.wxml -->
+<view class="item_container">
+
+    <view class="item_left">
+        <image class="item_icon_avatar" src="{{icon}}" mode="aspectFit" />
+    </view>
+
+    <view class="item_middle">
+        <view class="item_name">{{name}}</view>
+        <view class="item_counts">
+            <view class="item_count_doc">
+                <text class="item_icon_doc iconfont icon-wendang" /> {{docCount}}
+            </view>
+            <view class="item_count_img">
+                <text class="item_icon_img iconfont icon-tupian" /> {{imgCount}}
+            </view>
+        </view>
+    </view>
+
+    <!-- 这个模块使用了relative+absolute定位 -->
+    <view class="item-right">
+        <text class="item_icon_more iconfont icon-gengduo" bind:tap="onMore"/>
+    </view>
+</view>

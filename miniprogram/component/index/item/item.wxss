@@ -1,0 +1,78 @@
+/* component/item/item.wxss */
+.item_container {
+  width: 95%;
+  height: 150rpx;
+  margin: 0 0 15rpx 0;
+  padding: 0 10rpx;
+  border-radius: 10rpx;
+  font-size: 30rpx;
+  box-shadow: #e2e1e4 0 0 10rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.item_left {
+    width: 25%;
+    overflow: hidden;
+}
+
+.item_icon_avatar {
+    display: block;
+    width: 100rpx;
+    height: 100rpx;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+}
+
+.item_middle {
+    width: 70%;
+    height: 100%;
+    padding: 15rpx 0 8rpx 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.item_name {
+    width: 80%;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+}
+
+.item_counts {
+    padding: 0 0 5rpx 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.item_count_doc {
+    margin: 0 10rpx 0 0;
+}
+
+.item_count_img {
+    margin: 0 0 0 10rpx;
+}
+
+.item-right {
+    width: 5%;
+    height: 100%;
+    position: relative;
+}
+
+.item_icon_more {
+    display: inline-block;
+    margin: 0 5rpx 8rpx 0;
+    font-size: 40rpx;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+} 

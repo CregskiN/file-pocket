@@ -1,0 +1,19 @@
+/* component/found/img-upload/img-upload.wxss */
+
+.img-upload_container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-upload_avatar {
+    display: block;
+    width: 150rpx;
+    height: 150rpx;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    box-shadow: #f2f2f2 0 0 15rpx;
+}

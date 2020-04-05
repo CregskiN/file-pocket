@@ -1,0 +1,114 @@
+/* miniprogram/pages/found.wxss */
+
+.found_container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.found_top {
+    width: 100%;
+    margin: 0 auto;
+    height: 200rpx;
+}
+
+.found_input_wrapper {
+    width: 100%;
+}
+
+.found_bindGroupChat {
+    width: 80%;
+    height: 130rpx;
+    margin: 10rpx auto 0 auto;
+    padding: 0 10rpx;
+    /* background-color: #eee; */
+    border-radius: 10rpx;
+    box-shadow: #f2f2f2 0 0 10rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.found_bindGroupChat_left {
+    width: 70%;
+    height: 100%;
+    position: relative;
+}
+
+.bind_title {
+    position: absolute;
+    top: 12rpx;
+    left: 0;
+    font-size: 30rpx;
+}
+
+.bind_description {
+    position: absolute;
+    bottom: 15rpx;
+    left: 0;
+    font-size: 22rpx;
+}
+
+.found_bindGroupChat_right {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.bind_btn {
+    width: 80% !important;
+    padding: 5rpx !important;
+    margin: 0 auto !important;
+    background-color: #76d572 !important;
+    font-size: 30rpx !important;
+    font-weight: 400 !important;
+    color: #fff !important;
+}
+
+.bind_btn_active {
+    width: 80% !important;
+    padding: 5rpx !important;
+    margin: 0 auto !important;
+    background-color: #eee !important; 
+    font-size: 30rpx !important;
+    font-weight: 400 !important;
+    color: black !important;
+}
+
+.found_buttons {
+    width: 100%;
+    padding: 20rpx 0;
+    position: absolute;
+    bottom: 100rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.found_back {
+    width: 130rpx;
+    padding: 10rpx 60rpx;
+    margin: 0 50rpx 0 0;
+    text-align: center;
+    font-size: 34rpx;
+    color: red;
+    background-color: #fff;
+    border-radius: 7rpx;
+    box-shadow: #eee 1rpx 1rpx 10rpx;
+}
+
+.found_complete {
+    width: 130rpx;
+    padding: 10rpx 60rpx;
+    text-align: center;
+    font-size: 34rpx;
+    color: #fff;
+    background-color: #13227a;
+    border-radius: 7rpx;
+    box-shadow: #eee 1rpx 1rpx 10rpx;
+}

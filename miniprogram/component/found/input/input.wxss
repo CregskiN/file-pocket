@@ -1,0 +1,28 @@
+/* component/found/input/input.wxss */
+
+.input_container {
+    width: 100%;
+    height: 125rpx;
+}
+
+.input_theme {
+    width: 80%;
+    margin: 5rpx auto 10rpx auto;
+}
+
+.input {
+    width: 80%;
+    height: 60rpx;
+    padding: 0 10rpx;
+    margin: 0 auto;
+    font-size: 30rpx;
+    background-color: #e2e1e4;
+    border-radius: 10rpx;
+}
+
+.input_container_line {
+    width: 90%;
+    height: 1rpx;
+    margin: 15rpx auto;
+    background-color: #eee;
+}

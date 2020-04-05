@@ -1,0 +1,20 @@
+<!-- component/search/search.wxml -->
+<view class="search_container">
+    <view class="search_header">
+        <view class="search_left">
+            <text class="search_icon_searcher iconfont icon-iconfont_fangdajing" />
+            <input class="search_input" bind:tap="onInput" type="text" placeholder="搜索项目、文档..." />
+        </view>
+        <view class="search_cancel" bind:tap="onCalcel">取消</view>
+    </view>
+    <!-- 考虑扩充，这里用了三层wrapper -->
+    <view class="search_body" wx:if="{{inputing}}">
+        <c-mask class="search_mask" bind:tap="onCalcel"/>
+        <view class="search_record_items">
+            <view class="search_record_item" wx:for="{{searchRecords}}" wx:key="id">
+                <text class="search_icon_shutdown iconfont icon-cuowu" />
+                <view class="search_record_item_text"><text>{{item.content}}</text></view>
+            </view>
+        </view>
+    </view>
+</view>

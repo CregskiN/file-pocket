@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "c-input":"../../component/found/input/input",
+    "c-imgUpload":"../../component/found/img-upload/img-upload"
+  },
+  "navigationBarTitleText": "创建项目"
+}
