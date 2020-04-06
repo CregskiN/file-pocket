@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "c-imgUpload":"../../component/found/img-upload/img-upload",
+    "c-fileItem":"../../component/detail/file-item/file-item"
+  },
+  "navigationBarTitleText": "项目详情"
 }

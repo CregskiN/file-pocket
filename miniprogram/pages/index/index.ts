@@ -17,7 +17,7 @@ Page({
 	 */
 	data: {
 		items: [{
-			id: 0,
+			gid: 0,
 			iconUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
 			name: '官方项目群项目群项目群项目群项目群项目群项目群项目群项目群项目群',
 			count: {
@@ -25,7 +25,7 @@ Page({
 				img: 20
 			}
 		}, {
-			id: 1,
+			gid: 1,
 			iconUrl: 'https://s1.ax1x.com/2020/04/02/GYkk11.jpg',
 			name: '用户群1',
 			count: {
@@ -33,7 +33,7 @@ Page({
 				img: 20
 			}
 		}, {
-			id: 2,
+			gid: 2,
 			iconUrl: 'https://s1.ax1x.com/2020/04/02/GYkCtJ.jpg',
 			name: '用户群2',
 			count: {
@@ -41,7 +41,7 @@ Page({
 				img: 20
 			}
 		}, {
-			id: 3,
+			gid: 3,
 			iconUrl: 'https://s1.ax1x.com/2020/04/02/GYkPh9.jpg',
 			name: '用户群2',
 			count: {
@@ -49,7 +49,7 @@ Page({
 				img: 20
 			}
 		}, {
-			id: 4,
+			gid: 4,
 			iconUrl: 'https://s1.ax1x.com/2020/04/02/GYkPh9.jpg',
 			name: '用户群2',
 			count: {
@@ -57,7 +57,7 @@ Page({
 				img: 20
 			}
 		}, {
-			id: 5,
+			gid: 5,
 			iconUrl: 'https://s1.ax1x.com/2020/04/02/GYkPh9.jpg',
 			name: '用户群2',
 			count: {
@@ -65,7 +65,7 @@ Page({
 				img: 20
 			}
 		}, {
-			id: 6,
+			gid: 6,
 			iconUrl: 'https://s1.ax1x.com/2020/04/02/GYkPh9.jpg',
 			name: '用户群2',
 			count: {
@@ -73,7 +73,7 @@ Page({
 				img: 20
 			}
 		}, {
-			id: 7,
+			gid: 7,
 			iconUrl: 'https://s1.ax1x.com/2020/04/02/GYkPh9.jpg',
 			name: '用户群2',
 			count: {
@@ -81,7 +81,7 @@ Page({
 				img: 20
 			}
 		}, {
-			id: 8,
+			gid: 8,
 			iconUrl: 'https://s1.ax1x.com/2020/04/02/GYkPh9.jpg',
 			name: '用户群2',
 			count: {
@@ -89,7 +89,7 @@ Page({
 				img: 20
 			}
 		}, {
-			id: 9,
+			gid: 9,
 			iconUrl: 'https://s1.ax1x.com/2020/04/02/GYkPh9.jpg',
 			name: '用户群2',
 			count: {

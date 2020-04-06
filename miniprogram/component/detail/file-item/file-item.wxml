@@ -1,0 +1,18 @@
+<!-- component/detail/file-item/file-item.wxml -->
+<view class="file-item_container">
+    <view class="file-item_left">
+        <view class="file-item_iconWrapper">
+            <view class="file-icon file-icon" data-type="{{file.catagory}}" />
+        </view>
+    </view>
+
+    <view class="file-item_middle">
+        <view class="file-item_fileName">{{file.name}}</view>
+        <view class="file-item_submitter">上传者：{{file.submitter}}</view>
+        <view class="file-item_time">{{file.time}}</view>
+    </view>
+
+    <view class="file-item_right">
+        <icon class="file-item_more iconfont icon-gengduo" bind:tap="onMore" />
+    </view>
+</view>

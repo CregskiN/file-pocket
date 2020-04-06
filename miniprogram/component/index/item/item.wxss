@@ -6,7 +6,7 @@
   padding: 0 10rpx;
   border-radius: 10rpx;
   font-size: 30rpx;
-  box-shadow: #e2e1e4 0 0 10rpx;
+  box-shadow: #eee 0 0 10rpx;
   display: flex;
   flex-direction: row;
   align-items: center;

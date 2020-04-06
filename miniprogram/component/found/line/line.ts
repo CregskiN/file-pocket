@@ -1,18 +1,17 @@
-// component/found/img-upload/img-upload.ts
+// component/found/line/line.js
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
-    avatarUrl:String,
-    content: String,
+
   },
 
   /**
    * 组件的初始数据
    */
   data: {
-    
+
   },
 
   /**

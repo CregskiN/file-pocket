@@ -1,6 +1,12 @@
 
-interface GetUserInfoResult extends WechatMiniprogram.UserInfo {
-
+interface GetUserInfoResult  {
+        avatarUrl?: string;
+        city?: string;
+        country?: string;
+        gender?: 0 | 1 | 2;
+        language?: 'en' | 'zh_CN' | 'zh_TW';
+        nickName?: string;
+        province?: string;
 }
 
 class User {
@@ -23,7 +29,7 @@ class User {
     /**
      * 提取缓存中的userInfo(不包括open_id)
      */
-    static getUserInfo(): GetUserInfoResult | null {
+    static getUserInfo(): GetUserInfoResult {
         try {
             let userInfo = wx.getStorageSync('userInfo');
             if (userInfo !== '') {
@@ -34,7 +40,7 @@ class User {
             return userInfo.userInfo;
         } catch (err) {
             console.log(err);
-            return null;
+            return {};
         }
     }
 

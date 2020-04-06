@@ -1,4 +1,6 @@
 <!-- component/found/img-upload/img-upload.wxml -->
 <view class="img-upload_container">
     <image class="img-upload_avatar" src="{{avatarUrl}}" mode="aspectFit" />
+    <view class="img-upload_content" wx:if="{{content}}">{{content}}</view>
+    <c-line wx:if="{{content}}" />
 </view>

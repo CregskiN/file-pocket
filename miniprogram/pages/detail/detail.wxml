@@ -1,5 +1,22 @@
-<!--miniprogram/pages/detail/detail.wxml-->
+<!-- miniprogram/pages/detail/detail.wxml -->
 <view class="detail_container">
-    <view >这里是项目组详情页，施工中🔧。将展示你的shareTicket</view>
-    <view>{{shareTicket}}</view>
+    <view class="detail_head">
+        <c-imgUpload content="{{groupCreator.nickName + '的项目组'}}" avatarUrl="{{groupCreator.avatarUrl}}" />
+    </view>
+
+    <view class="detail_body">
+        <c-fileItem wx:for="{{files}}" wx:key="id" file="{{item}}" bind:delete="onDelete"/>
+    </view>
+
+    <view class="detail_console">
+        <button class="detail_console_btn" bind:tap="onUpload">上传</button>
+        <!-- <web-view class="detail_web-view">
+            <input class="detail_console_webViewBtn" type="file">上传本地文件</input>
+        </web-view> -->
+        <button class="detail_console_btn">管理</button>
+        <button class="detail_console_btn">多选</button>
+        <button class="detail_console_btn">分享</button>
+
+    </view>
+
 </view>

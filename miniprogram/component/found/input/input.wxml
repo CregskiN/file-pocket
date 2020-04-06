@@ -2,5 +2,5 @@
 <view class="input_container">
     <view class="input_theme">{{theme}}</view>
     <input class="input" type="text" value="{{nickName + '的项目组'}}" bind:input="onChange" bind:blur="onFinish" placeholder="请输入项目名称..."/>
-    <view class="input_container_line"></view>
+    <c-line />
 </view>

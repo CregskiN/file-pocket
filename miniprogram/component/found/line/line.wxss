@@ -1,0 +1,7 @@
+/* component/found/line/line.wxss */
+.temp_line {
+    width: 90%;
+    height: 1rpx;
+    margin: 15rpx auto;
+    background-color: #eee;
+}

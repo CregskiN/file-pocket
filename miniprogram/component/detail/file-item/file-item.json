@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "c-imgUpload":"../../found/img-upload/img-upload"
+  }
+}

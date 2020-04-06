@@ -9,10 +9,9 @@
 		<view class="body_items">
 			<c-item
 			 class="body_item"
-			 bind:detail="toDetail"
 			 wx:for="{{items}}"
 			 wx:key="id"
-			 id="{{item.id}}"
+			 gid="{{item.gid}}"
 			 icon="{{item.iconUrl}}"
 			 name="{{item.name}}"
 			 docCount="{{item.count.doc}}"
@@ -22,11 +21,18 @@
 		</view>
 	</view>
 
-	<c-floatBtn floatBtnIconClass="{{floatBtnIconClass}}" floatBtnContent="{{floatBtnContent}}" isLogin="{{isLogin}}" buttonTop="{{buttonTop}}" buttonLeft="{{buttonLeft}}" windowHeight="{{windowHeight}}" windowWidth="{{windowWidth}}" startPoint="{{startPoint}}"
-		bind:getAuthorization="onGetAuthorization"
-		bind:create="onCreate"
+	<c-floatBtn
+	 floatBtnIconClass="{{floatBtnIconClass}}"
+	 floatBtnContent="{{floatBtnContent}}"
+	 isLogin="{{isLogin}}"
+	 buttonTop="{{buttonTop}}"
+	 buttonLeft="{{buttonLeft}}"
+	 windowHeight="{{windowHeight}}"
+	 windowWidth="{{windowWidth}}"
+	 startPoint="{{startPoint}}"
+	 bind:getAuthorization="onGetAuthorization"
+	 bind:create="onCreate"
 	/>
-
 
 </view>
 

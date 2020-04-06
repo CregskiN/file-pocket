@@ -4,7 +4,7 @@ Component({
 	 * 组件的属性列表
 	 */
 	properties: {
-		id: Number,
+		gid: Number,
 		icon: String,
 		name: String,
 		docCount: Number,
@@ -26,8 +26,14 @@ Component({
 	methods: {
 		onMore() {
 			this.triggerEvent('more', {
-				id: this.properties.id
+				id: this.properties.gid
 			})
 		},
+
+		toDetail(){
+			wx.navigateTo({
+				url: `/pages/detail/detail?${this.properties.gid}`
+			})
+		}
 	}
 })

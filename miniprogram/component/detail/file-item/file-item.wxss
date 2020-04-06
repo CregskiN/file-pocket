@@ -1,0 +1,91 @@
+/* component/detail/file-item/file-item.wxss */
+.file-item_container {
+    width: 94%;
+    height: 150rpx;
+    margin: 15rpx auto 0 auto;
+    border-radius: 15rpx;
+    /* background-color: #eee; */
+    box-shadow: #eee 0 0 10rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.file-item_left {
+    width: 22%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-item_iconWrapper {
+    border-radius: 10rpx;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-item_middle {
+    width: 73%;
+    height: 100%;
+    padding: 10rpx;
+    box-sizing: border-box;
+    /* background-color: red; */
+    /* display: flex; */
+    /* flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start; */
+}
+
+.file-item_fileName {
+    width: 90%;
+    padding: 0 0 30rpx 0;
+    font-size: 30rpx;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+}
+
+
+.file-item_submitter {
+    width: 90%;
+    font-size: 20rpx;
+    color: #bcc3ce;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+}
+
+.file-item_time {
+    width: 90%;
+    font-size: 20rpx;
+    color: #bcc3ce;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+}
+
+
+.file-item_right {
+    width: 10%;
+    height: 50%;
+    position: relative;
+}
+
+.file-item_more {
+    font-size: 40rpx;
+    position: absolute;
+    right: 5rpx;
+    bottom: 5rpx;
+}
