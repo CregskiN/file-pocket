@@ -1,17 +1,16 @@
 import User from '../../models/User';
+import { getWindowInfo } from '../../utils/util';
 
-const userInstance = User.getInstance();
+const floatBtnIconParams = [{
+	floatBtnIconClass: 'iconfont icon-bingtu',
+	floatBtnContent: '授权'
+}, {
+	floatBtnIconClass: 'iconfont icon-bingtu',
+	floatBtnContent: '创建'
+}]
+
 
 Page({
-
-
-	/**
-	 * 
-	
-	https://imgchr.com/i/GYkFpR
-	
-	
-	 */
 
 	/**
 	 * 页面的初始数据
@@ -99,6 +98,13 @@ Page({
 			}
 		}],
 		isLogin: false,
+		buttonTop: 10000,
+		buttonLeft: 10000,
+		windowHeight: 0,
+		windowWidth: 0,
+		startPoint: null,
+		floatBtnIconClass: '',
+		floatBtnContent: ''
 	},
 
 	/**
@@ -150,34 +156,95 @@ Page({
 		})
 	},
 
+	/**
+	 * 创建项目点击事件
+	 * @param e 
+	 */
 	onCreate(e: any) {
 		wx.navigateTo({
 			url: '/pages/found/found'
 		})
 	},
-	getAuthorization(e:any){
-		this.setData({
-			isLogin: true
-		})
-		const detail: WechatMiniprogram.GetUserInfoSuccessCallbackResult = e.detail;
-		userInstance.setUserInfo(detail.userInfo);
+
+	/**
+	 * 获取授权点击事件
+	 * @param e 
+	 */
+	onGetAuthorization(e: any) {
+		try {
+			const detail: WechatMiniprogram.GetUserInfoSuccessCallbackResult = e.detail;
+			User.setUserInfo(detail.userInfo);
+			this.setData({
+				isLogin: true,
+				...floatBtnIconParams[1],
+			})
+		} catch (err) {
+			console.log(err);
+			wx.showToast({
+				title: '授权失败'
+			})
+		}
+
 	},
+
+	/**
+	 * 项目详情点击事件
+	 */
+	toDetail() {
+		wx.navigateTo({
+			url: '/pages/detail/detail?gid=1'
+		})
+	},
+
+
+
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad() {
-		// wx.getSetting({
-		// 	success: (res) => {
-		// 		const authSetting
-		// 	}
-		// })
+		wx.getSetting({
+			success: (res) => {
+				if (res.authSetting["scope.userInfo"]) {
+					this.setData({
+						isLogin: true,
+						...floatBtnIconParams[1],
+					})
+				} else {
+					this.setData({
+						isLogin: false,
+						...floatBtnIconParams[0]
+					})
+				}
+			}
+		});
+
+		getWindowInfo((res: WechatMiniprogram.GetSystemInfoSuccessCallbackResult) => {
+			this.setData({
+				windowHeight: res.windowHeight,
+				windowWidth: res.windowWidth
+			})
+		});
+		
 	},
 
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
 	onReady() {
+		this._adjustFloatButtonLocation();
+	},
 
+	_adjustFloatButtonLocation() {
+		if (this.data.buttonLeft >= this.data.windowWidth) {
+			this.setData({
+				buttonLeft: this.data.windowWidth - 110
+			});
+		}
+		if (this.data.buttonTop >= this.data.windowHeight) {
+			this.setData({
+				buttonTop: this.data.windowHeight - 120
+			});
+		}
 	},
 
 	/**

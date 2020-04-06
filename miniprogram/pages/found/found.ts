@@ -1,5 +1,4 @@
 import User from '../../models/User';
-const userInstance = User.getInstance();
 
 Page({
 
@@ -34,16 +33,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad() {
-    const userInfo = userInstance.getUserInfo();
+    const userInfo = User.getUserInfo();
     this.setData({
       creatorAvatarUrl: userInfo!.avatarUrl,
       creatorNickName: userInfo!.nickName
     })
     wx.showShareMenu({
-      withShareTicket: true,
-      success: (res) => {
-        console.log(res);
-      }
+      withShareTicket: true
     })
   },
 
@@ -96,7 +92,7 @@ Page({
     console.log(opts)
     return {
       title: '加入我的项目组吧！',
-      path: '/pages/detail',
+      path: '/pages/detail/detail',
       imageUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg'
     }
   }

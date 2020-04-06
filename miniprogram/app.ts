@@ -1,3 +1,5 @@
+import config from './config/config';
+
 interface AppOptionCustom {
 	globalData: {
 		userInfo?: WechatMiniprogram.UserInfo,
@@ -5,7 +7,7 @@ interface AppOptionCustom {
 		shareTicket: string,
 	}
 	userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback,
-	getShareTicket(cg?:Function):string;
+	getShareTicket(cg?: Function): string;
 }
 
 // app.ts
@@ -50,14 +52,47 @@ App<AppOptionCustom>({
 		// })
 	},
 	onShow(options) {
-		console.log(options)
-		if(options.scene === 1044 && options.shareTicket){
+		console.log('App.onShow 获取', options);
+		
+		if (options.scene === 1044 && options.shareTicket) {
 			this.globalData.shareTicket = options.shareTicket;
-			console.log(this.globalData)
 		}
 	},
 
-	getShareTicket(){
+	getShareTicket(cb) {
+		// console.log('globalData is',this.globalData);
+		// wx.getShareInfo({
+		// 	shareTicket: this.globalData.shareTicket,
+		// 	success: (getShareInfoRes) => {
+		// 		console.log('wx.getShareInfo rereive',getShareInfoRes);
+				
+		// 		const js_encryptedData = getShareInfoRes.encryptedData;
+		// 		const js_iv = getShareInfoRes.iv;
+				wx.login({
+					success: (loginRes) => {
+						const js_code = loginRes.code
+						// console.log(getShareInfoRes, loginRes);
+
+						wx.request({
+							url: `http://${config.server.host}:${config.server.port}/api/login`,
+							method: 'POST',
+							data: {
+								code: js_code,
+								// appId: config.app.appId,
+								// encryptedData: js_encryptedData,
+								// iv: js_iv
+							},
+							success: (res) => {
+								console.log(res);
+							},
+							fail: function (err) {
+								console.log('getShareTiket---err' + JSON.stringify(err))
+							}
+						})
+					}
+				})
+		// 	}
+		// })
 		return this.globalData.shareTicket;
 	}
 })

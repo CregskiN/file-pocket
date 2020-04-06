@@ -18,6 +18,21 @@ const formatNumber = (n: number) => {
 	return s[1] ? s : '0' + s
 }
 
+/**
+ * 获取
+ * @param cb 
+ */
+export function getWindowInfo(cb:Function){
+	wx.getSystemInfo({
+		success: (res) => {
+			console.log(res);
+			// 屏幕宽度、高度
+			console.log('height=' + res.windowHeight);
+			console.log('width=' + res.windowWidth);
+			cb(res);
+		}
+	})
+}
 
 
 

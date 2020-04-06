@@ -91,6 +91,13 @@
 					"pathName": "pages/index/index",
 					"query": "",
 					"scene": 1042
+				},
+				{
+					"id": 4,
+					"name": "单聊进入详情页",
+					"pathName": "pages/detail/detail",
+					"query": "",
+					"scene": 1007
 				}
 			]
 		}

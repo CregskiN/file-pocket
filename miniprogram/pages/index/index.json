@@ -1,9 +1,9 @@
 {
   "usingComponents": {
     "c-search":"../../component/index/search/search",
-    "c-item":"../../component/index/item/item"
+    "c-item":"../../component/index/item/item",
+    "c-floatBtn":"../../component/index/floatBtn/floatBtn"
   },
   "navigationBarTitleText": "项目收藏夹",
-  "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark"
 }
