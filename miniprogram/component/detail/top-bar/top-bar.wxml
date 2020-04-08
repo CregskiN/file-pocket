@@ -1,0 +1,6 @@
+<!--component/detail/top-line/top-line.wxml-->
+<view class="top-bar_container" hidden="{{hidden}}">
+    <view class="top-bar_left" bind:tap="outEdit">取消</view>
+    <view class="top-bar_middle">已选中{{selectCount}}个文件</view>
+    <view class="top-bar_right" bind:tap="onSelectAll">全选</view>
+</view>

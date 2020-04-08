@@ -1,22 +1,18 @@
 <!-- miniprogram/pages/detail/detail.wxml -->
 <view class="detail_container">
-    <view class="detail_head">
+    <view class="detail_head" hidden="{{editting}}">
         <c-imgUpload content="{{groupCreator.nickName + '的项目组'}}" avatarUrl="{{groupCreator.avatarUrl}}" />
     </view>
 
+    <c-topBar hidden="{{!editting}}" selectCount="{{selectCount}}" 
+        bind:outEdit="outEdit" bind:selectAll="onSelectAll" />
+
     <view class="detail_body">
-        <c-fileItem wx:for="{{files}}" wx:key="id" file="{{item}}" bind:delete="onDelete"/>
+        <c-fileItem wx:for="{{files}}" wx:key="id" 
+            file="{{item}}" editting="{{editting}}" isChecked="{{item.isChecked}}"
+            bind:delete="onDelete" bind:select="onSelect"/>
     </view>
 
-    <view class="detail_console">
-        <button class="detail_console_btn" bind:tap="onUpload">上传</button>
-        <!-- <web-view class="detail_web-view">
-            <input class="detail_console_webViewBtn" type="file">上传本地文件</input>
-        </web-view> -->
-        <button class="detail_console_btn">管理</button>
-        <button class="detail_console_btn">多选</button>
-        <button class="detail_console_btn">分享</button>
-
-    </view>
-
+    <c-console editting="{{editting}}" selectCount="{{selectCount}}" 
+        bind:edit="inEdit" bind:delete="onDeleteSelectList" bind:invite="onInvite" bind:share="onShareSelectList"/>
 </view>

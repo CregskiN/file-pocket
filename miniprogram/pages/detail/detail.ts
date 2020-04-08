@@ -1,5 +1,13 @@
 import User from '../../models/User';
-const app = getApp();
+
+interface SelectListType {
+  fid?: number
+  name?: string,
+  catagory?: number,
+  submitter?: string,
+  time?: string,
+  isChecked?: boolean;
+}
 
 enum fileCatagory {
   'doc' = 0,
@@ -24,54 +32,67 @@ Page({
       catagory: 0,
       submitter: '蓝精灵',
       time: '2020-04-01 13:10',
+      isChecked: false,
       fid: 0
     }, {
       name: '浏览器战争史',
       catagory: 1,
       submitter: '蓝精灵',
       time: '2020-04-01 13:10',
+      isChecked: false,
       fid: 1
     }, {
       name: '收购阿里巴巴的一千种方法',
       catagory: 2,
       submitter: '蓝精灵',
       time: '2020-04-01 13:10',
+      isChecked: false,
       fid: 2
     }, {
       name: '小姐姐联系方式大全',
       catagory: 3,
       submitter: '蓝精灵',
       time: '2020-04-01 13:10',
+      isChecked: false,
       fid: 3
     }, {
       name: '蓝精灵全集',
       catagory: 4,
       submitter: '蓝精灵',
       time: '2020-04-01 13:10',
+      isChecked: false,
       fid: 4
     }, {
       name: '产品方法论',
       catagory: 5,
       submitter: '蓝精灵',
       time: '2020-04-01 13:10',
+      isChecked: false,
       fid: 5
     }, {
       name: '产品方法论',
       catagory: 6,
       submitter: '蓝精灵',
       time: '2020-04-01 13:10',
+      isChecked: false,
       fid: 6
     }, {
       name: '产品方法论',
       catagory: 7,
       submitter: '蓝精灵',
       time: '2020-04-01 13:10',
+      isChecked: false,
       fid: 7
     }],
+    isLogin: true,
+    editting: false,
+    selectCount: 0,
+    selectList: [] as SelectListType[],
+    gid: -1,
   },
 
   /**
-   * 删除文件
+   * 删除文件事件
    */
   onDelete(e: any) {
     console.log(e.detail);
@@ -80,46 +101,119 @@ Page({
     })
   },
 
+  /**
+   * 进入编辑模式事件
+   */
+  inEdit() {
+    this.setData({
+      editting: true,
+      selectList: [],
+      selectCount: 0,
+    })
+  },
 
   /**
-   * 上传
+   * 退出编辑模式事件
    */
-  onUpload() {
-    wx.showActionSheet({
-      itemList: ['群聊文件', '本地文件'],
-      success: (res) => {
-        switch (res.tapIndex) {
-          case 0: {
-            wx.chooseMessageFile({
-              count: 100,
-              type: 'file',
-              success: (res) => {
-                const names = [];
-                for(let file of res.tempFiles){
-                  names.push(file.name);
-                }
-                wx.showModal({
-                  title: '提示',
-                  content: `您将添加文件${JSON.stringify(names)}`,
-                  success: () => {
-                    wx.showToast({
-                      title: '添加成功'
-                    })
-                  }
-                })
-              }
-            })
-            break;
-          }
-          case 1: {
-            wx.showModal({
-              title: '提示',
-              content: '抱歉，微信暂不支持此功能'
-            })
-            break;
-          }
+  outEdit() {
+    const files = this.data.files;
+    for(let file of files){
+      file.isChecked = false;
+    }
+    this.setData({
+      files,
+      editting: false,
+      selectList: [],
+      selectCount: 0,
+    })
+  },
+
+  /**
+   * 选择全部事件
+   */
+  onSelectAll() {
+    const files = this.data.files;
+    let selectList = this.data.selectList;
+    let selectCount = this.data.selectCount;
+    if (selectCount !== files.length) {
+      for (let file of files) {
+        file.isChecked = true;
+        selectList.push(file);
+      }
+      selectCount = files.length;
+      this.setData({
+        files,
+        selectList,
+        selectCount,
+      })
+    } else {
+      for (let file of files) {
+        file.isChecked = false;
+      }
+      selectList = [];
+      selectCount = 0;
+      this.setData({
+        files,
+        selectList,
+        selectCount,
+      })
+    }
+
+
+  },
+
+  /**
+   * 删除已选
+   */
+  onDeleteSelectList(e: any) {
+    console.log('触发 - 删除已选 列表为：', this.data.selectList);
+  },
+
+  /**
+   * 分享已选文件
+   */
+  onShareSelectList() {
+    wx.showToast({
+      title: '分享文件功能暂未开放',
+      icon: 'none'
+    })
+  },
+
+  /**
+   * 邀请加项目组
+   */
+  onInvite() {
+    wx.showToast({
+      title: '选择群聊',
+      icon: 'none'
+    })
+  },
+
+  /**
+   * 编辑模式下 选择事件
+   */
+  onSelect(e: any) {
+    const fid = e.detail.fid;
+    const files = this.data.files;
+    const selectList = this.data.selectList;
+    let selectCount = this.data.selectCount;
+    for (let file of files) {
+      if (file.fid === fid) {
+        if (file.isChecked === true) {
+          file.isChecked = false;
+          selectCount = selectCount - 1;
+          selectList.splice(selectList.findIndex(sFile => (sFile as any).fid === fid), 1)
+        } else {
+          file.isChecked = true;
+          selectCount = selectCount + 1;
+          selectList.push(file);
         }
       }
+    }
+    this.setData({
+      files,
+      selectList,
+      selectCount,
     })
   },
 
@@ -127,7 +221,9 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad() {
+  onLoad(options) {
+    console.log(options);
+    wx.hideShareMenu();
     const userInfo = User.getUserInfo();
     const oFiles = this.data.files;
     for (let file of oFiles) {
@@ -135,7 +231,8 @@ Page({
     }
     this.setData({
       groupCreator: userInfo,
-      files: oFiles
+      files: oFiles,
+      gid: parseInt(options.gid as string)
     })
 
   },

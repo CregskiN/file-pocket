@@ -89,3 +89,24 @@
     right: 5rpx;
     bottom: 5rpx;
 }
+
+.file-item_right_editting {
+    width: 10%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .file-item_right_checkboxGroup {
+    width: 25rpx;
+    height: 25rpx;
+    display: block !important;
+}
+.file-item_right_checkbox {
+    width: 25rpx;
+    height: 25rpx;
+    display: block !important;
+
+} */

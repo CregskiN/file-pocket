@@ -12,7 +12,13 @@
         <view class="file-item_time">{{file.time}}</view>
     </view>
 
-    <view class="file-item_right">
+    <view class="file-item_right" hidden="{{editting}}">
         <icon class="file-item_more iconfont icon-gengduo" bind:tap="onMore" />
+    </view>
+    
+    <view class="file-item_right_editting" hidden="{{!editting}}">
+        <checkbox-group class="file-item_right_checkboxGroup" bind:change="onSelect">
+            <checkbox class="file-item_right_checkbox" checked="{{isChecked}}"/>
+        </checkbox-group>
     </view>
 </view>

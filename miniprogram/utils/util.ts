@@ -25,10 +25,10 @@ const formatNumber = (n: number) => {
 export function getWindowInfo(cb:Function){
 	wx.getSystemInfo({
 		success: (res) => {
-			console.log(res);
-			// 屏幕宽度、高度
-			console.log('height=' + res.windowHeight);
-			console.log('width=' + res.windowWidth);
+			// console.log(res);
+			// // 屏幕宽度、高度
+			// console.log('height=' + res.windowHeight);
+			// console.log('width=' + res.windowWidth);
 			cb(res);
 		}
 	})

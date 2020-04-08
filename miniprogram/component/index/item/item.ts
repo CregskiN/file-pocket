@@ -32,7 +32,7 @@ Component({
 
 		toDetail(){
 			wx.navigateTo({
-				url: `/pages/detail/detail?${this.properties.gid}`
+				url: `/pages/detail/detail?gid=${this.properties.gid}`
 			})
 		}
 	}

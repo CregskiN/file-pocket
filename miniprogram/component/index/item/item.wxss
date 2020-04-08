@@ -1,15 +1,16 @@
 /* component/item/item.wxss */
+
 .item_container {
-  width: 95%;
-  height: 150rpx;
-  margin: 0 0 15rpx 0;
-  padding: 0 10rpx;
-  border-radius: 10rpx;
-  font-size: 30rpx;
-  box-shadow: #eee 0 0 10rpx;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    width: 95%;
+    height: 150rpx;
+    margin: 0 0 15rpx 0;
+    padding: 0 10rpx;
+    border-radius: 10rpx;
+    font-size: 30rpx;
+    box-shadow: #eee 0 0 10rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .item_left {
@@ -75,4 +76,4 @@
     position: absolute;
     right: 0;
     bottom: 0;
-} 
+}

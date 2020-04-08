@@ -1,0 +1,13 @@
+<!-- component/detail/console/console.wxml -->
+<view class="detail_console" hidden="{{editting}}">
+	<button class="detail_console_btn" bind:tap="onUpload">上传</button>
+	<button class="detail_console_btn" bind:tap="toMember">成员</button>
+	<button class="detail_console_btn" bind:tap="inEdit">选择</button>
+	<button class="detail_console_btn" bind:tap="onInvite">邀请</button>
+</view>
+
+<view class="detail_console" hidden="{{!editting}}">
+	<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onShare">分享</button>
+	<button class="{{selectCount ? classes.btns.complete.active: classes.btns.complete.normal}}" bind:tap="onDelete">删除{{selectCount === 0 ? '' : '(' + selectCount+')'}}</button>
+</view>
+

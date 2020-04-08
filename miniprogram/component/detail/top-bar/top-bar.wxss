@@ -1,0 +1,26 @@
+/* component/detail/top-line/top-line.wxss */
+.top-bar_container {
+    width: 100%;
+    padding: 10rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.top-bar_left {
+    width: 25%;
+    text-align: center;
+    color: #2775b6;
+}
+
+.top-bar_middle {
+    width: 50%;
+    text-align: center;
+}
+
+.top-bar_right {
+    width: 25%;
+    text-align: center;
+    color: #2775b6;
+}

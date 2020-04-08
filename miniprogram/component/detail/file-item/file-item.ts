@@ -5,6 +5,9 @@ Component({
    */
   properties: {
     file: Object,
+    editting: Boolean,
+    checked: Boolean,
+    isChecked: Boolean,
   },
   options: {
     addGlobalClass: true
@@ -53,6 +56,13 @@ Component({
 
         },
       })
+    },
+
+    onSelect(e: any) {
+      this.triggerEvent('select', {
+        fid: this.data.file.fid
+      })
+
     }
   }
 })

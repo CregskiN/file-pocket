@@ -187,15 +187,6 @@ Page({
 
 	},
 
-	/**
-	 * 项目详情点击事件
-	 */
-	toDetail() {
-		wx.navigateTo({
-			url: '/pages/detail/detail?gid=1'
-		})
-	},
-
 
 
 	/**
