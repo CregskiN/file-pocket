@@ -106,6 +106,12 @@
 					"pathName": "pages/detail/detail",
 					"query": "",
 					"scene": 1001
+				},
+				{
+					"id": -1,
+					"name": "成员页",
+					"pathName": "pages/member/member",
+					"scene": null
 				}
 			]
 		}

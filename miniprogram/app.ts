@@ -60,14 +60,15 @@ App<AppOptionCustom>({
 	},
 
 	getShareTicket(cb) {
-		// console.log('globalData is',this.globalData);
-		// wx.getShareInfo({
-		// 	shareTicket: this.globalData.shareTicket,
-		// 	success: (getShareInfoRes) => {
-		// 		console.log('wx.getShareInfo rereive',getShareInfoRes);
+		console.log('globalData is',this.globalData);
+		wx.getShareInfo({
+			shareTicket: this.globalData.shareTicket,
+
+			success: (getShareInfoRes) => {
+				console.log('wx.getShareInfo rereive',getShareInfoRes);
 				
-		// 		const js_encryptedData = getShareInfoRes.encryptedData;
-		// 		const js_iv = getShareInfoRes.iv;
+				const js_encryptedData = getShareInfoRes.encryptedData;
+				const js_iv = getShareInfoRes.iv;
 				wx.login({
 					success: (loginRes) => {
 						const js_code = loginRes.code
@@ -77,10 +78,11 @@ App<AppOptionCustom>({
 							url: `http://${config.server.host}:${config.server.port}/api/login`,
 							method: 'POST',
 							data: {
-								code: js_code,
-								// appId: config.app.appId,
-								// encryptedData: js_encryptedData,
-								// iv: js_iv
+								code: js_code, // 换取openid
+								
+								session_key: '123',
+								encryptedData: js_encryptedData, // 
+								iv: js_iv
 							},
 							success: (res) => {
 								console.log(res);
@@ -91,8 +93,8 @@ App<AppOptionCustom>({
 						})
 					}
 				})
-		// 	}
-		// })
+			}
+		})
 		return this.globalData.shareTicket;
 	}
 })

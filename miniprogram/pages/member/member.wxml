@@ -1,2 +1,16 @@
-<!--miniprogram/pages/member/member.wxml-->
-<text>miniprogram/pages/member/member.wxml</text>
+<!-- miniprogram/pages/member/member.wxml -->
+<view class="member_container">
+    <view class="member_body">
+        <view class="member_body_manager">
+            <c-memberItem />
+        </view>
+
+        <view class="member_body_member">
+            <c-memberItem />
+        </view>
+    </view>
+
+    <view class="member_invitation">
+        <button class="member_invitation_btn">一键邀请更多好友</button>
+    </view>
+</view>
