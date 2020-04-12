@@ -8,8 +8,9 @@
 
     position: relative;
 
-    height: 100vh;
     width: 100vw;
+
+    padding: 0 0 10vh 0;
 
     background-color: #f2f2f2;
 }
@@ -25,7 +26,7 @@
     justify-content: center;
     align-items: center;
 
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
@@ -41,7 +42,8 @@
     justify-content: center !important;
 
     /* width: 20% !important; */
-    height: 50% !important;
+    width: 60% !important;
+    height: 70% !important;
     padding: 0 !important;
     margin: 0 !important;
     box-shadow: #eee 0 0 10rpx;

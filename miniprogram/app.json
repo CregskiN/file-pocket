@@ -4,7 +4,10 @@
     "pages/my/my",
     "pages/found/found",
     "pages/detail/detail",
-    "pages/member/member"
+    "pages/member/member",
+    "pages/browsing-history/index",
+    "pages/files-show/index",
+    "pages/feedback/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

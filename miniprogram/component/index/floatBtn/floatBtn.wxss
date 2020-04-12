@@ -1,16 +1,24 @@
 /* component/index/floatBtn/floatBtn.wxss */
 
 .float_btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     z-index: 102 !important;
-    width: 60px !important;
-    /* height: 34px !important; */
-    padding: 7px 10px !important;
-    margin: 0 auto !important;
-    /* box-sizing: border-box; */
-    box-sizing: content-box !important;
-    background-color: #13227a !important;
-    font-size: 18px !important;
-    line-height: 20px !important;
-    font-weight: 400 !important;
+
+    width: 50px;
+    height: 50px;
+    /* padding: 5px !important; */
+    margin: 0 !important;
+    border-radius: 50% !important;
+
     color: #fff !important;
+    background-color: #13227a !important;
+}
+
+.float_btn > text {
+    font-size: 40px;
+    font-weight: 500 !important;
 }

@@ -17,6 +17,7 @@
     "strict": true,
     "removeComments": true,
     "pretty": true,
+    "esModuleInterop": true,
     "strictPropertyInitialization": true,
     "lib": ["es2015"],
     "typeRoots": [

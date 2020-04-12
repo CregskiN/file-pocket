@@ -1,13 +1,13 @@
 /* component/item/item.wxss */
 
 .item_container {
-    width: 95%;
+    width: 93%;
     height: 150rpx;
     margin: 0 0 15rpx 0;
     padding: 0 10rpx;
     border-radius: 10rpx;
-    font-size: 30rpx;
-    box-shadow: #eee 0 0 10rpx;
+    box-shadow: #fff 0 0 10rpx;
+    background-color: #fff;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -40,6 +40,7 @@
 
 .item_name {
     width: 80%;
+    font-size: 30rpx;
     overflow: hidden;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -49,6 +50,12 @@
 
 .item_counts {
     padding: 0 0 5rpx 0;
+
+    font-size: 25rpx;
+    color: #47484c;
+
+    opacity: 0.8;
+
     display: flex;
     flex-direction: row;
     justify-content: flex-start;

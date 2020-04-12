@@ -1,0 +1,47 @@
+/* component/my/my-item/my-item.wxss */
+.my-item_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: 95vw;
+    height: 60rpx;
+    padding: 10rpx;
+    margin: 10rpx auto 0 auto;
+    border-radius: 10rpx;
+
+    background-color: #fff;
+    box-shadow: #fff 0 0 10rpx;
+}
+
+.my-item_title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: 670rpx;
+
+    font-size: 35rpx;
+}
+
+.font {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 40rpx;
+    height: 40rpx;
+}
+
+.back {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 40rpx;
+    height: 40rpx;
+}

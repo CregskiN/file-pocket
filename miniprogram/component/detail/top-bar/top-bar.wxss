@@ -1,7 +1,7 @@
 /* component/detail/top-line/top-line.wxss */
 .top-bar_container {
     width: 100%;
-    padding: 10rpx;
+    padding: 15rpx 10rpx;
     display: flex;
     flex-direction: row;
     justify-content: space-around;

@@ -8,7 +8,6 @@ Component({
     buttonTop: Number,
     buttonLeft: Number,
     floatBtnIconClass: String,
-    floatBtnContent: String,
     startPoint: Object,
     windowHeight: Number,
     windowWidth: Number,
@@ -27,7 +26,7 @@ Component({
    */
   methods: {
     buttonStart(e: any) {
-      console.log(e.touches);
+      // console.log(e.touches);
 
       this.setData({
         startPoint: e.touches[0]
@@ -64,7 +63,7 @@ Component({
     },
 
     buttonEnd(e: any) {
-      console.log(this.data);
+      // console.log(this.data);
       
     },
 

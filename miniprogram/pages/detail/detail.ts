@@ -1,24 +1,5 @@
 import User from '../../models/User';
-
-interface SelectListType {
-  fid?: number
-  name?: string,
-  catagory?: number,
-  submitter?: string,
-  time?: string,
-  isChecked?: boolean;
-}
-
-enum fileCatagory {
-  'doc' = 0,
-  'docx' = 1,
-  'xls' = 2,
-  'xlsx' = 3,
-  'ppt' = 4,
-  'pptx' = 5,
-  'zip' = 6,
-  'pdf' = 7,
-}
+import { fileCatagory, FileType } from '../../utils/typing'
 
 Page({
 
@@ -87,8 +68,9 @@ Page({
     isLogin: true,
     editting: false,
     selectCount: 0,
-    selectList: [] as SelectListType[],
+    selectList: [] as FileType[],
     gid: -1,
+    openGid: '123'
   },
 
   /**
@@ -105,6 +87,7 @@ Page({
    * 进入编辑模式事件
    */
   inEdit() {
+    wx.setNavigationBarTitle({ title: '文件多选' });
     this.setData({
       editting: true,
       selectList: [],
@@ -117,9 +100,10 @@ Page({
    */
   outEdit() {
     const files = this.data.files;
-    for(let file of files){
+    for (let file of files) {
       file.isChecked = false;
     }
+    wx.setNavigationBarTitle({ title: '文件详情' });
     this.setData({
       files,
       editting: false,
@@ -166,6 +150,12 @@ Page({
    * 删除已选
    */
   onDeleteSelectList(e: any) {
+    if (this.data.selectCount === 0) {
+      wx.showToast({
+        title: '请选择要删除的文件'
+      })
+      return;
+    }
     console.log('触发 - 删除已选 列表为：', this.data.selectList);
   },
 

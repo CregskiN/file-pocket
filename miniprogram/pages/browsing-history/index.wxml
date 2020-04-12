@@ -1,0 +1,6 @@
+<!--miniprogram/pages/browsing-history/index.wxml-->
+<!-- miniprogram/pages/files-show/index.wxml -->
+<view class="browsing-history">
+    <c-fileItem wx:for="{{files}}" wx:key="id" file="{{item}}" 
+     bind:delete="onDelete" bind:select="onSelect" />
+</view>

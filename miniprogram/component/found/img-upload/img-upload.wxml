@@ -1,6 +1,9 @@
 <!-- component/found/img-upload/img-upload.wxml -->
 <view class="img-upload_container">
     <image class="img-upload_avatar" src="{{avatarUrl}}" mode="aspectFit" />
-    <view class="img-upload_content" wx:if="{{content}}">{{content}}</view>
-    <c-line wx:if="{{content}}" />
+    <view class="img-upload_content" wx:if="{{content}}">
+        <view class="team_name">{{content}}</view>
+        <view class="team_groupName">绑定群聊：小程序终结者</view>
+    </view>
+    
 </view>

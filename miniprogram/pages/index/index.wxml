@@ -23,7 +23,6 @@
 
 	<c-floatBtn
 	 floatBtnIconClass="{{floatBtnIconClass}}"
-	 floatBtnContent="{{floatBtnContent}}"
 	 isLogin="{{isLogin}}"
 	 buttonTop="{{buttonTop}}"
 	 buttonLeft="{{buttonLeft}}"

@@ -17,9 +17,11 @@ Page({
       isSelected: !this.data.isSelected
     })
   },
+  
   onBack() {
     wx.navigateBack()
   },
+
   onComplete() {
     wx.showToast({
       title: '创建成功',

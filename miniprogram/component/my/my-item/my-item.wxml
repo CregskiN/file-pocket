@@ -1,0 +1,6 @@
+<!--component/my/my-item/my-item.wxml-->
+<view class="my-item_container" >
+    <view class="{{item.fontIconClass}} font"></view>
+    <view class="my-item_title" bind:tap="toPage">{{item.title}}</view>
+    <view class="{{item.backIconClass}} back" bind:tap="toPage"></view>
+</view>

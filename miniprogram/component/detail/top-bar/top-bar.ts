@@ -7,7 +7,9 @@ Component({
     hidden: Boolean,
     selectCount: Number,
   },
-
+  options: {
+    addGlobalClass: true
+  },
   /**
    * 组件的初始数据
    */

@@ -1,4 +1,10 @@
-<!--miniprogram/pages/my/my.wxml-->
+<!-- miniprogram/pages/my/my.wxml -->
 <view class="my_container">
-    
+
+    <c-header bgUrl="{{bgUrl}}" user="{{user}}" bind:changeBg="onChangeBg"/>
+
+    <view class="my_body">
+        <c-myItem wx:for="{{items}}" wx:key="id" item="{{item}}" uid="{{uid}}" />
+    </view>
+
 </view>

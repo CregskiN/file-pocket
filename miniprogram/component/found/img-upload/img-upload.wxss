@@ -28,3 +28,18 @@
     display: -webkit-box;
 }
 
+/*  */
+.team_name {
+    font-size: 37rpx;
+
+}
+
+/*  */
+.team_groupName {
+    font-size: 25rpx;
+    color: #47484c;
+
+    opacity: 0.8;
+}
+
+

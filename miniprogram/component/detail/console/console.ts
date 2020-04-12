@@ -6,8 +6,11 @@ Component({
   properties: {
     editting: Boolean,
     selectCount: Number,
+    tid: Number,
   },
-
+  options: {
+    addGlobalClass: true
+  },
   /**
    * 组件的初始数据
    */
@@ -79,7 +82,7 @@ Component({
      */
     toMember() {
       wx.navigateTo({
-        url: '/pages/member/member?gid=1'
+        url: '/pages/member/member?tid=1'
       })
     },
 
@@ -94,7 +97,9 @@ Component({
      * 邀请
      */
     onInvite() {
-      this.triggerEvent('invite')
+      this.triggerEvent('invite', {
+        tid: this.data.tid
+      })
     },
 
     /**

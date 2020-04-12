@@ -1,13 +1,8 @@
 import User from '../../models/User';
 import { getWindowInfo } from '../../utils/util';
 
-const floatBtnIconParams = [{
-	floatBtnIconClass: 'iconfont icon-bingtu',
-	floatBtnContent: '授权'
-}, {
-	floatBtnIconClass: 'iconfont icon-bingtu',
-	floatBtnContent: '创建'
-}]
+
+const floatBtnIconClass = 'iconfont icon-bingtu';
 
 
 Page({
@@ -97,14 +92,13 @@ Page({
 				img: 20
 			}
 		}],
-		isLogin: false,
+		isLogin: true,
 		buttonTop: 10000,
 		buttonLeft: 10000,
 		windowHeight: 0,
 		windowWidth: 0,
 		startPoint: null,
 		floatBtnIconClass: '',
-		floatBtnContent: ''
 	},
 
 	/**
@@ -176,7 +170,7 @@ Page({
 			User.setUserInfo(detail.userInfo);
 			this.setData({
 				isLogin: true,
-				...floatBtnIconParams[1],
+				floatBtnIconClass,
 			})
 		} catch (err) {
 			console.log(err);
@@ -193,19 +187,13 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad() {
+		// console.log('class is ',floatBtnIconClass)
 		wx.getSetting({
 			success: (res) => {
-				if (res.authSetting["scope.userInfo"]) {
-					this.setData({
-						isLogin: true,
-						...floatBtnIconParams[1],
-					})
-				} else {
-					this.setData({
-						isLogin: false,
-						...floatBtnIconParams[0]
-					})
-				}
+				this.setData({
+					// isLogin: true,
+					floatBtnIconClass
+				})
 			}
 		});
 
@@ -215,7 +203,7 @@ Page({
 				windowWidth: res.windowWidth
 			})
 		});
-		
+
 	},
 
 	/**
@@ -228,12 +216,12 @@ Page({
 	_adjustFloatButtonLocation() {
 		if (this.data.buttonLeft >= this.data.windowWidth) {
 			this.setData({
-				buttonLeft: this.data.windowWidth - 110
+				buttonLeft: this.data.windowWidth - 80
 			});
 		}
 		if (this.data.buttonTop >= this.data.windowHeight) {
 			this.setData({
-				buttonTop: this.data.windowHeight - 120
+				buttonTop: this.data.windowHeight - 100
 			});
 		}
 	},

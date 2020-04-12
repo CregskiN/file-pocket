@@ -6,8 +6,11 @@ Component({
   properties: {
     avatarUrl:String,
     content: String,
+    openGid: String,
   },
-
+  options: {
+    addGlobalClass: true
+  },
   /**
    * 组件的初始数据
    */

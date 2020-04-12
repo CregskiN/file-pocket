@@ -1,0 +1,6 @@
+/* miniprogram/pages/browsing-history/index.wxss */
+
+.browsing-history {
+    width: 100vw;
+    height: 100vh;
+}

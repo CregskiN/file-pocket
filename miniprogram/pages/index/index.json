@@ -4,6 +4,6 @@
     "c-item":"../../component/index/item/item",
     "c-floatBtn":"../../component/index/floatBtn/floatBtn"
   },
-  "navigationBarTitleText": "项目收藏夹",
+  "navigationBarTitleText": "文件口袋",
   "backgroundTextStyle": "dark"
 }

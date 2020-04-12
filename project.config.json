@@ -111,6 +111,28 @@
 					"id": -1,
 					"name": "成员页",
 					"pathName": "pages/member/member",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 7,
+					"name": "个人页",
+					"pathName": "pages/my/my",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的文件-文件展示页",
+					"pathName": "pages/files-show/index",
+					"query": "uid=1",
+					"scene": null
+				},
+				{
+					"id": 9,
+					"name": "我的页面 - 反馈页面",
+					"pathName": "pages/feedback/index",
+					"query": "",
 					"scene": null
 				}
 			]

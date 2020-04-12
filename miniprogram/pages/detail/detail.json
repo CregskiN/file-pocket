@@ -5,5 +5,5 @@
     "c-console":"../../component/detail/console/console",
     "c-topBar":"../../component/detail/top-bar/top-bar"
   },
-  "navigationBarTitleText": "项目详情"
+  "navigationBarTitleText": "口袋详情"
 }

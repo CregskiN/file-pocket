@@ -3,9 +3,11 @@
     width: 94%;
     height: 150rpx;
     margin: 15rpx auto 0 auto;
+
     border-radius: 15rpx;
-    /* background-color: #eee; */
+    background-color: #fff;
     box-shadow: #eee 0 0 10rpx;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;

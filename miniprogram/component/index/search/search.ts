@@ -14,6 +14,7 @@ Component({
    */
   data: {
     inputing: false,
+    searching: false,
     searchRecords: [{
       id: 0,
       content: '如何当上美国总统？如何当上美国总统？如何当上美国总统？如何当上美国总统？如何当上美国总统？如何当上美国总统？如何当上美国总统？如何当上美国总统？',
@@ -33,11 +34,26 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    onCalcel(){
-      this.setData({inputing: false})
+    onCancel() {
+      this.setData({
+        inputing: false,
+        searching: false
+      })
     },
-    onInput(){
-      this.setData({inputing: true})
-    }
+
+    onFocus() {
+      this.setData({
+        inputing: true,
+        searching: false
+      })
+    },
+
+    onInput() {
+      this.setData({
+        inputing: true,
+        searching: true
+      })
+    },
+
   }
 })

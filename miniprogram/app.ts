@@ -96,5 +96,8 @@ App<AppOptionCustom>({
 			}
 		})
 		return this.globalData.shareTicket;
-	}
+	},
+	/**
+	 * 此处写授权跳转功能
+	 *  */ 
 })

@@ -3,16 +3,23 @@
 .detail_container {
     width: 100vw;
     height: 100vh;
-    /* background-color: red; */
+
 }
 
 .detail_head {
+
     height: 15%;
+    box-shadow: #fff 0 10rpx;
+
+    background-color: #fff;
 }
 
 
 .detail_body {
     width: 100%;
     margin-bottom: 11vh;
+    padding: 10rpx 0 0 0;
+
+    background-color: #f2f2f2;
 }
 
