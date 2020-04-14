@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "c-window":"../float-window/float-window"
+  }
+}

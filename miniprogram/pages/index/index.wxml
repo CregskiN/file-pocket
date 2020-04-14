@@ -1,4 +1,7 @@
 <!-- index.wxml -->
+<c-authorize wx:if="{{!isAuthorize}}"/>
+
+
 <view class="container">
 
 	<view class='header'>

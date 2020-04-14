@@ -1,0 +1,9 @@
+<!-- component/common/float-window/float-window.wxml -->
+<view class="float-window_container">
+    <view class="float-window_title">{{title}}</view>
+    <view class="float-window_body">{{content}}</view>
+    <view class="float-window_choices">
+        <button class="float-window_btn_cancel">取消</button>
+        <button class="float-window_btn_complete">确定</button>
+    </view>
+</view>

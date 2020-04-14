@@ -1,72 +1,124 @@
 import config from './config/config';
+import { CustomUserInfo, Openid_SessionKeyType, GlobalDataType } from './utils/typing';
+import User from './models/User';
+
 
 interface AppOptionCustom {
-	globalData: {
-		userInfo?: WechatMiniprogram.UserInfo,
-		openGid?: string,
-		shareTicket: string,
-	}
-	userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback,
-	getShareTicket(cg?: Function): string;
+	globalData: GlobalDataType;
+	login: () => any;
+	getAuthorize: () => any;
+	init: () => Promise<any>;
+	setGlobalData: (e: any) => void;
+	getShareTicket: (cb?: Function) => any;
 }
+
 
 // app.ts
 App<AppOptionCustom>({
 	globalData: {
 		openGid: '',
 		shareTicket: '',
+		userInfo: {},
+		openid_sessionKey: {},
+		isLogin: false,
+		isAuthorized: false,
 	},
-	onLaunch(e) {
 
-		// // 展示本地存储能力
-		// const logs = wx.getStorageSync('logs') || []
-		// logs.unshift(Date.now())
-		// wx.setStorageSync('logs', logs)
+	onLaunch(options) {
 
-		// // 登录
-		// wx.login({
-		// 	success: res => {
-		// 		console.log(res.code)
-		// 		// 发送 res.code 到后台换取 openId, sessionKey, unionId
-		// 	},
-		// })
-		// // 获取用户信息
-		// wx.getSetting({
-		// 	success: res => {
-		// 		if (res.authSetting['scope.userInfo']) {
-		// 			// 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-		// 			wx.getUserInfo({
-		// 				success: res => {
-		// 					// 可以将 res 发送给后台解码出 unionId
-		// 					this.globalData.userInfo = res.userInfo
 
-		// 					// 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-		// 					// 所以此处加入 callback 以防止这种情况
-		// 					if (this.userInfoReadyCallback) {
-		// 						this.userInfoReadyCallback(res)
-		// 					}
-		// 				},
-		// 			})
-		// 		}
-		// 	},
-		// })
 	},
+
 	onShow(options) {
 		console.log('App.onShow 获取', options);
-		
+		console.log('App.onShow 获取 globalData', this.globalData);
+
 		if (options.scene === 1044 && options.shareTicket) {
 			this.globalData.shareTicket = options.shareTicket;
 		}
 	},
 
+	/**
+	 * 提供给Page设置globalData之用
+	 * @param e 
+	 */
+	setGlobalData(e) {
+		return;
+	},
+
+	/**
+	 * 页面初始化
+	 */
+	init() {
+		return new Promise((resolve, reject) => {
+			User.login().then(OPENID_SESSIONKEY => {
+				this.globalData = {
+					...this.globalData,
+					openid_sessionKey: OPENID_SESSIONKEY,
+					isLogin: true
+				};
+
+				User.getAuthorize().then(userInfo => {
+					if (userInfo) {
+						console.log('App.onLaunch 初始化完成');
+						this.globalData = {
+							...this.globalData,
+							userInfo,
+							isAuthorized: true,
+						}
+					} else {
+						// 无法获取userInfo，需跳转授权
+						this.globalData = {
+							...this.globalData,
+							userInfo: {},
+							isAuthorized: false,
+						}
+					}
+					resolve(this.globalData); // 最终出口！
+				}).catch(err => {
+					console.log('授权调用失败', err);
+					this.globalData = {
+						...this.globalData,
+						isAuthorized: false,
+					}
+					reject(err);
+				})
+			}).catch(err => {
+				console.log('login失败', err);
+				this.globalData = {
+					...this.globalData,
+					userInfo: {},
+					isLogin: false,
+				}
+				reject(err);
+			})
+		})
+	},
+
+	/**
+	 * 登陆逻辑
+	 */
+	login() {
+
+
+	},
+
+	/**
+	 * 获取授权
+	 */
+	getAuthorize() {
+
+	},
+
+
 	getShareTicket(cb) {
-		console.log('globalData is',this.globalData);
+		console.log('globalData is', this.globalData);
 		wx.getShareInfo({
-			shareTicket: this.globalData.shareTicket,
+			shareTicket: this.globalData.shareTicket as string,
 
 			success: (getShareInfoRes) => {
-				console.log('wx.getShareInfo rereive',getShareInfoRes);
-				
+				console.log('wx.getShareInfo rereive', getShareInfoRes);
+
 				const js_encryptedData = getShareInfoRes.encryptedData;
 				const js_iv = getShareInfoRes.iv;
 				wx.login({
@@ -79,7 +131,7 @@ App<AppOptionCustom>({
 							method: 'POST',
 							data: {
 								code: js_code, // 换取openid
-								
+
 								session_key: '123',
 								encryptedData: js_encryptedData, // 
 								iv: js_iv
@@ -99,5 +151,5 @@ App<AppOptionCustom>({
 	},
 	/**
 	 * 此处写授权跳转功能
-	 *  */ 
+	 *  */
 })

@@ -1,0 +1,8 @@
+<!-- component/common/authorize/authorize.wxml -->
+<view class="authorize_container">
+
+    <view class="C_window_wrapper">
+        <c-window />
+    </view>
+    
+</view>

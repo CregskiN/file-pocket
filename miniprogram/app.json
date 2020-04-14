@@ -7,7 +7,8 @@
     "pages/member/member",
     "pages/browsing-history/index",
     "pages/files-show/index",
-    "pages/feedback/index"
+    "pages/feedback/index",
+    "pages/authorize/authorize"
   ],
   "window": {
     "backgroundTextStyle": "light",

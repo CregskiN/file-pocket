@@ -38,9 +38,10 @@
     align-items: flex-start;
 }
 
+/* 项目模块 项目名 */
 .item_name {
     width: 80%;
-    font-size: 30rpx;
+    font-size: 33rpx;
     overflow: hidden;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;

@@ -1,12 +1,18 @@
 <!-- component/search/search.wxml -->
 <view class="search_container">
 
-    <view class="search_header">
-        <view class="search_left">
+    <view class="'search_header'">
+        <view class="{{inputing ? 'search_inutWrapper_active' : 'search_inputWrapper'}}">
             <text class="search_icon_searcher iconfont icon-iconfont_fangdajing" />
-            <input class="search_input" bind:focus="onFocus" bindinput="onInput" type="text" placeholder="搜索项目、文档..." />
+            <input class="{{inputing ? 'search_input_active' : 'search_input'}}" type="text" value="{{inputValue}}" placeholder="搜索项目、文档..." 
+                bind:confirm="onSearch" bind:focus="onFocus" bindinput="onInput" 
+            />
         </view>
-        <view class="search_cancel" bind:tap="onCalcel">取消</view>
+
+        <view class="{{inputing ? 'search_btns_active' : 'search_btns'}}">
+            <view class="{{inputing ? 'search_complete_active' : 'search_complete'}}" hidden="{{!inputing}}">完成</view>
+            <view class="{{inputValue ? 'search_cancel_active' : 'search_cancel'}}" bind:tap="onCancel">取消</view>
+        </view>
     </view>
     
     <!-- 考虑扩充，这里用了三层wrapper -->

@@ -1,37 +1,44 @@
-export const formatTime = (date: Date) => {
-	const year = date.getFullYear()
-	const month = date.getMonth() + 1
-	const day = date.getDate()
-	const hour = date.getHours()
-	const minute = date.getMinutes()
-	const second = date.getSeconds()
-
-	return (
-		[year, month, day].map(formatNumber).join('/') +
-		' ' +
-		[hour, minute, second].map(formatNumber).join(':')
-	)
-}
-
-const formatNumber = (n: number) => {
-	const s = n.toString()
-	return s[1] ? s : '0' + s
-}
-
 /**
  * 获取
- * @param cb 
  */
-export function getWindowInfo(cb:Function){
-	wx.getSystemInfo({
-		success: (res) => {
-			// console.log(res);
-			// // 屏幕宽度、高度
-			// console.log('height=' + res.windowHeight);
-			// console.log('width=' + res.windowWidth);
-			cb(res);
-		}
+export function getWindowInfo() {
+	return new Promise<WechatMiniprogram.GetSystemInfoSuccessCallbackResult>((resolve, reject) => {
+		wx.getSystemInfo({
+			success: (res) => {
+				resolve(res)
+			},
+			fail: (err) => {
+				reject(err)
+			}
+		})
 	})
+
+}
+
+
+/**
+ * wx.getSetting的Promise封装
+ */
+export function getSetting() {
+	return new Promise<WechatMiniprogram.GetSettingSuccessCallbackResult>((resolve, reject) => {
+		wx.getSetting({
+			success: (res) => {
+				resolve(res);
+			},
+			fail: (err) => {
+				reject(err);
+			}
+		})
+	})
+}
+
+
+/**
+ * 检查response中是否有报错相关
+ * @param res 
+ */
+export function checkRes(res: any) {
+
 }
 
 

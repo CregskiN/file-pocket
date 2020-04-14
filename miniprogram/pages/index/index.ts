@@ -1,6 +1,8 @@
 import User from '../../models/User';
 import { getWindowInfo } from '../../utils/util';
+import { GlobalDataType } from '../../utils/typing';
 
+const app = getApp();
 
 const floatBtnIconClass = 'iconfont icon-bingtu';
 
@@ -92,7 +94,7 @@ Page({
 				img: 20
 			}
 		}],
-		isLogin: true,
+		isLogin: false,
 		buttonTop: 10000,
 		buttonLeft: 10000,
 		windowHeight: 0,
@@ -187,22 +189,23 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad() {
-		// console.log('class is ',floatBtnIconClass)
-		wx.getSetting({
-			success: (res) => {
-				this.setData({
-					// isLogin: true,
-					floatBtnIconClass
-				})
-			}
-		});
-
-		getWindowInfo((res: WechatMiniprogram.GetSystemInfoSuccessCallbackResult) => {
+		const init: Promise<GlobalDataType> = app.init();
+		init.then(globalData => {
+			console.log('Index.onload - globalData is', globalData);
 			this.setData({
-				windowHeight: res.windowHeight,
-				windowWidth: res.windowWidth
+				isLogin: globalData.isLogin,
+				floatBtnIconClass
 			})
-		});
+
+			getWindowInfo().then(res => {
+				this.setData({
+					windowHeight: res.windowHeight,
+					windowWidth: res.windowWidth
+				})
+			})
+		}).catch(err => { // 报错逻辑的最后一道防线
+			console.log('页面初始化错误',err);
+		})
 
 	},
 

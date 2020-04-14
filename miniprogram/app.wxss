@@ -195,7 +195,7 @@ table {
   font-family: 'iconfont';
   /* project id 1730085 */
   src: url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.eot');
-  src: url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.woff2') format('woff2'), url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.woff') format('woff'), url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.ttf') format('truetype'), url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.woff') format('woff'), url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.ttf') format('truetype'), url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.svg#iconfont') format('svg');
 }
 
 .iconfont {

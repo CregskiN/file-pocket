@@ -1,3 +1,7 @@
+
+/**
+ * 文件类型
+ */
 export interface FileType {
     fid?: number
     name?: string,
@@ -7,7 +11,40 @@ export interface FileType {
     isChecked?: boolean;
 }
 
+/**
+ * 自定义用户信息userInfo类型
+ */
+export interface CustomUserInfo {
+    avatarUrl?: string;
+    city?: string;
+    country?: string;
+    gender?: 0 | 1 | 2;
+    language?: 'en' | 'zh_CN' | 'zh_TW';
+    nickName?: string;
+    province?: string;
+}
 
+/**
+ * openid + sessionKey
+ */
+export type Openid_SessionKeyType = Response.LoginRes;
+
+
+/**
+ *  GlobalDataType
+ */
+export interface GlobalDataType {
+    openGid?: string;
+    shareTicket?: string;
+    userInfo?: CustomUserInfo;
+    openid_sessionKey?: Openid_SessionKeyType;
+    isLogin?: boolean;
+    isAuthorized?: boolean;
+}
+
+/**
+ * desprated
+ */
 export enum fileCatagory {
     'doc' = 0,
     'docx' = 1,
