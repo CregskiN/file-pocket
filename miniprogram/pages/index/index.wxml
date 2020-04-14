@@ -1,5 +1,5 @@
 <!-- index.wxml -->
-<c-authorize wx:if="{{!isAuthorize}}"/>
+<c-authorize isAuthorized="{{isAuthorized}}" bind:authorize="onAuthorize"/>
 
 
 <view class="container">
@@ -32,7 +32,6 @@
 	 windowHeight="{{windowHeight}}"
 	 windowWidth="{{windowWidth}}"
 	 startPoint="{{startPoint}}"
-	 bind:getAuthorization="onGetAuthorization"
 	 bind:create="onCreate"
 	/>
 

@@ -1,1 +1,51 @@
 /* component/common/authorize/authorize.wxss */
+.authorize_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    z-index: 199;
+    overflow: hidden;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(0,0,0, 0.5);
+}
+
+.float-window_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    width: 560rpx;
+    height: 360rpx;
+    margin: 0 0 50rpx 0;
+
+    border-radius: 10rpx;
+
+    background-color: #fff;
+}
+
+.float-window_title {
+
+}
+
+.float-window_body {
+
+}
+
+.float-window_choices {
+
+}
+
+.float-window_btn_cancel {
+
+}
+
+.float-window_btn_complete {
+
+}

@@ -67,12 +67,6 @@ Component({
       
     },
 
-    onGetUserInfo(e: any) {
-      this.triggerEvent('getAuthorization', {
-        ...e.detail
-      })
-    },
-
     onCreate() {
       this.triggerEvent('create', {})
     }

@@ -1,8 +1,12 @@
 <!-- component/common/authorize/authorize.wxml -->
-<view class="authorize_container">
-
-    <view class="C_window_wrapper">
-        <c-window />
+<view class="authorize_container" hidden="{{isAuthorized}}">
+    <view class="float-window_container">
+        <view class="float-window_title">{{title}}</view>
+        <view class="float-window_body">{{content}}</view>
+        <view class="float-window_choices">
+            <button class="float-window_btn_cancel" open-type="getUserInfo" bind:getuserinfo="onAuthorize">
+                授权
+            </button>
+        </view>
     </view>
-    
 </view>

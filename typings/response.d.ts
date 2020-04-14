@@ -1,21 +1,33 @@
 declare namespace Response {
-    
 
-
-
-    interface BaseResponse<T> extends WechatMiniprogram.RequestSuccessCallbackResult{
+    /**
+     * 基类
+     */
+    interface BaseResponse<T> extends WechatMiniprogram.RequestSuccessCallbackResult {
         success: boolean;
         stateCode: number;
         stateMsg: string;
         data: T
     }
 
-    interface LoginRes {
+    /**
+     * 登陆接口返回结果
+     */
+    interface LoginData {
         openid?: string;
         session_key?: string;
     }
 
-    export type CodeToSessionRes = BaseResponse<LoginRes>
+    interface AuthorizeData {
+        uid: string;
+        username: string;
+        avatarUrl: string;
+        createdTeamCounts: number;
+        managedTeamCounts: number;
+        joinedTeamCounts: number;
+    }
 
+    type CodeToSessionRes = BaseResponse<LoginData>;
+    type AuthorizeRes = BaseResponse<AuthorizeData>;
 
 }

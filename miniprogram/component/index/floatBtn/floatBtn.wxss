@@ -18,7 +18,7 @@
     background-color: #13227a !important;
 }
 
-.float_btn > text {
+.iconfont {
     font-size: 40px;
     font-weight: 500 !important;
 }

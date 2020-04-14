@@ -1,4 +1,4 @@
-import { request } from '../utils/https';
+import Https from '../utils/https';
 
 import { Openid_SessionKeyType, CustomUserInfo } from '../utils/typing';
 
@@ -24,20 +24,25 @@ class User {
             wx.checkSession({
                 success: (res) => {
                     if (res.errMsg === 'checkSession:ok') {
-                        resolve(wx.getStorageSync('OPENID_SESSIONKEY'));
+                        resolve(User.getOpenidSessionKeyStorage());
                     }
                 },
                 fail: (err) => {
                     wx.login({
                         success: (res) => {
                             const data = { code: res.code };
-                            const loginRes = request<Request.CodeToSessionReq, Response.CodeToSessionRes>('/wxma_auth/code_to_session', 'POST', data);
-                            loginRes.then(res => {
+                            const options = {
+                                url: '/wxma_auth/code_to_session',
+                                method: 'POST' as "POST", // ts类型推断不出来
+                                data: data
+                            }
+                            const loginRes = Https.request<Request.CodeToSessionReq, Response.CodeToSessionRes>(options);
+                            loginRes.then((res: any) => {
                                 // 此处应该校验res是否合法
-                                const openidWithSessionKey = res.data;
-                                wx.setStorageSync('OPENID_SESSIONKEY', openidWithSessionKey);
-                                resolve(openidWithSessionKey);
-                            }).catch(err => {
+                                const openid_sessionKey = res.data;
+                                User.setOpenidSessionKeyStorage(openid_sessionKey);
+                                resolve(openid_sessionKey);
+                            }).catch((err: any) => {
                                 console.log('login逻辑有误 - ', err);
                                 reject(err)
                             })
@@ -58,11 +63,12 @@ class User {
         return new Promise<CustomUserInfo>((resolve, reject) => {
             wx.getSetting({
                 success: (res) => {
+                    // console.log(res);
                     console.log(res);
                     if (res.authSetting['scope.userInfo']) {
                         // 已授权处理如下
                         let userInfo = null;
-                        const userInfoStorage = wx.getStorageSync('USERINFO');
+                        const userInfoStorage = User.getUserInfoStorage();
                         if (userInfoStorage) {
                             // 已授权，且有缓存
                             userInfo = userInfoStorage;
@@ -117,6 +123,52 @@ class User {
     }
 
 
+    /**
+     * 设置userinfo缓存
+     * @param userInfo 
+     */
+    static setUserInfoStorage(userInfo: CustomUserInfo): void {
+        const oUserInfo = this.getUserInfoStorage();
+        const nUserInfo = {
+            ...oUserInfo,
+            ...userInfo
+        }
+        delete nUserInfo['username'];
+        wx.setStorageSync('USERINFO', nUserInfo);
+    }
+
+    /**
+     * 获取openid_sessionKey缓存
+     */
+    static getOpenidSessionKeyStorage(): Openid_SessionKeyType {
+        return wx.getStorageSync('OPENID_SESSIONKEY');
+    }
+
+    /**
+     * 设置openid_sessionKey缓存
+     * @param openid_sessionKey 
+     */
+    static setOpenidSessionKeyStorage(openid_sessionKey: Openid_SessionKeyType): void {
+        const oOpenid_sessionKey = this.getOpenidSessionKeyStorage();
+        const nOpenid_sessionKey = {
+            ...oOpenid_sessionKey,
+            ...openid_sessionKey
+        };
+        wx.setStorageSync('OPENID_SESSIONKEY', nOpenid_sessionKey);
+    }
+
+
+    /**
+     * 获取userinfo缓存
+     */
+    static getUserInfoStorage(): CustomUserInfo {
+        try {
+            return wx.getStorageSync('USERINFO')
+        } catch (err) {
+            console.log('USERINFO提取失败', err);
+            return {}
+        }
+    }
 
     /**
      * 提取缓存中的userInfo(不包括open_id)

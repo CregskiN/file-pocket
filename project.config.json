@@ -5,8 +5,8 @@
 	},
 	"miniprogramRoot": "miniprogram/",
 	"compileType": "miniprogram",
-	"libVersion": "2.10.4",
-	"projectname": "hello-miniprogram",
+	"libVersion": "2.8.2",
+	"projectname": "file-pocket",
 	"scripts": {
 		"beforeCompile": "yarn run tsc",
 		"beforePreview": "npm run tsc",
@@ -15,13 +15,11 @@
 	"setting": {
 		"urlCheck": false,
 		"es6": true,
-		"enhance": true,
 		"postcss": true,
 		"preloadBackgroundData": false,
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
-		"nodeModules": true,
 		"autoAudits": false,
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": false,
@@ -37,105 +35,5 @@
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"appid": "wxf3a3c091f4a6fa94",
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"list": []
-		},
-		"gamePlugin": {
-			"current": -1,
-			"list": []
-		},
-		"miniprogram": {
-			"current": -1,
-			"list": [
-				{
-					"id": 0,
-					"name": "创建项目",
-					"pathName": "pages/found/found",
-					"query": "",
-					"scene": 1042
-				},
-				{
-					"id": 1,
-					"name": "pages/found/found",
-					"pathName": "pages/found/found",
-					"query": "",
-					"scene": 1044
-				},
-				{
-					"id": 2,
-					"name": "shareTicket进入项目详情页",
-					"pathName": "pages/detail/detail",
-					"query": "",
-					"scene": 1044,
-					"shareInfo": {
-						"groupName": "测试模拟群0",
-						"shareName": "CaziXDdYxNONJRneKUtMGF6ZCOoCKGSN_ewE2_QS6Yk@cr4dev",
-						"shareKey": "v7-lZYIwYFLrmKMhH_fhxGbOJlZqTTc9ypZH49U4BC8r6auMTS9gNvgE0D2bqXf950sBxmt-9fgFRb4gNLFy8A~~"
-					}
-				},
-				{
-					"id": -1,
-					"name": "好友搜索结果页进入小程序",
-					"pathName": "pages/index/index",
-					"query": "",
-					"scene": 1042
-				},
-				{
-					"id": 4,
-					"name": "单聊进入详情页",
-					"pathName": "pages/detail/detail",
-					"query": "",
-					"scene": 1007
-				},
-				{
-					"id": -1,
-					"name": "详情页",
-					"pathName": "pages/detail/detail",
-					"query": "",
-					"scene": 1001
-				},
-				{
-					"id": -1,
-					"name": "成员页",
-					"pathName": "pages/member/member",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 7,
-					"name": "个人页",
-					"pathName": "pages/my/my",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "我的文件-文件展示页",
-					"pathName": "pages/files-show/index",
-					"query": "uid=1",
-					"scene": null
-				},
-				{
-					"id": 9,
-					"name": "我的页面 - 反馈页面",
-					"pathName": "pages/feedback/index",
-					"query": "",
-					"scene": null
-				}
-			]
-		}
-	}
+	"condition": {}
 }

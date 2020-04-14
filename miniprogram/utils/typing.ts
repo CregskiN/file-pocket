@@ -15,19 +15,24 @@ export interface FileType {
  * 自定义用户信息userInfo类型
  */
 export interface CustomUserInfo {
+    nickName?: string;
     avatarUrl?: string;
     city?: string;
     country?: string;
     gender?: 0 | 1 | 2;
     language?: 'en' | 'zh_CN' | 'zh_TW';
-    nickName?: string;
     province?: string;
+    uid?: string;
+    username?: string;
+    createdTeamCounts?: number;
+    managedTeamCounts?: number;
+    joinedTeamCounts?: number;
 }
 
 /**
  * openid + sessionKey
  */
-export type Openid_SessionKeyType = Response.LoginRes;
+export type Openid_SessionKeyType = Response.LoginData;
 
 
 /**

@@ -101,6 +101,7 @@ Page({
 		windowWidth: 0,
 		startPoint: null,
 		floatBtnIconClass: '',
+		isAuthorized: false,
 	},
 
 	/**
@@ -162,25 +163,16 @@ Page({
 		})
 	},
 
-	/**
-	 * 获取授权点击事件
-	 * @param e 
-	 */
-	onGetAuthorization(e: any) {
-		try {
-			const detail: WechatMiniprogram.GetUserInfoSuccessCallbackResult = e.detail;
-			User.setUserInfo(detail.userInfo);
-			this.setData({
-				isLogin: true,
-				floatBtnIconClass,
-			})
-		} catch (err) {
-			console.log(err);
-			wx.showToast({
-				title: '授权失败'
-			})
-		}
 
+	/**
+	 * 完成授权逻辑，撤除授权窗口
+	 */
+	onAuthorize() {
+		console.log('toogle isAuthorized', this.data);
+
+		this.setData({
+			isAuthorized: true
+		})
 	},
 
 
@@ -189,12 +181,16 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad() {
+
+
 		const init: Promise<GlobalDataType> = app.init();
 		init.then(globalData => {
+			const { isAuthorized, isLogin } = globalData;
 			console.log('Index.onload - globalData is', globalData);
 			this.setData({
-				isLogin: globalData.isLogin,
-				floatBtnIconClass
+				isLogin,
+				floatBtnIconClass,
+				isAuthorized
 			})
 
 			getWindowInfo().then(res => {
@@ -204,7 +200,7 @@ Page({
 				})
 			})
 		}).catch(err => { // 报错逻辑的最后一道防线
-			console.log('页面初始化错误',err);
+			console.log('页面初始化错误', err);
 		})
 
 	},

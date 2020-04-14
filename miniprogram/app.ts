@@ -1,14 +1,13 @@
 import config from './config/config';
-import { CustomUserInfo, Openid_SessionKeyType, GlobalDataType } from './utils/typing';
+import { GlobalDataType } from './utils/typing';
 import User from './models/User';
 
 
 interface AppOptionCustom {
 	globalData: GlobalDataType;
-	login: () => any;
-	getAuthorize: () => any;
-	init: () => Promise<any>;
 	setGlobalData: (e: any) => void;
+	getGlobalData: (e: any) => GlobalDataType;
+	init: () => Promise<any>;
 	getShareTicket: (cb?: Function) => any;
 }
 
@@ -39,12 +38,24 @@ App<AppOptionCustom>({
 	},
 
 	/**
-	 * 提供给Page设置globalData之用
+	 * 设置globalData之用
 	 * @param e 
 	 */
 	setGlobalData(e) {
-		return;
+		this.globalData = {
+			...this.globalData,
+			...e,
+		}
 	},
+
+	/**
+	 * 获取globalData
+	 * @param e 
+	 */
+	getGlobalData(e: any) {
+		return this.globalData;
+	},
+
 
 	/**
 	 * 页面初始化
@@ -59,7 +70,7 @@ App<AppOptionCustom>({
 				};
 
 				User.getAuthorize().then(userInfo => {
-					if (userInfo) {
+					if (userInfo.nickName) {
 						console.log('App.onLaunch 初始化完成');
 						this.globalData = {
 							...this.globalData,
@@ -95,20 +106,7 @@ App<AppOptionCustom>({
 		})
 	},
 
-	/**
-	 * 登陆逻辑
-	 */
-	login() {
 
-
-	},
-
-	/**
-	 * 获取授权
-	 */
-	getAuthorize() {
-
-	},
 
 
 	getShareTicket(cb) {
