@@ -1,7 +1,7 @@
 {
   "usingComponents": {
     "c-input":"../../component/found/input/input",
-    "c-imgUpload":"../../component/found/img-upload/img-upload"
+    "c-theader":"../../component/found/avatar/avatar"
   },
   "navigationBarTitleText": "创建口袋"
 }

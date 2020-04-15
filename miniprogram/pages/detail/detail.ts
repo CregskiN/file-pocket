@@ -212,7 +212,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    console.log(options);
+    console.log(options.gid);
+
     wx.hideShareMenu();
     const userInfo = User.getUserInfo();
     const oFiles = this.data.files;

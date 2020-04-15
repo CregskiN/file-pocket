@@ -1,4 +1,8 @@
 import User from '../../models/User';
+import Https from '../../utils/https';
+
+import { CustomUserInfo } from '../../utils/typing';
+
 
 Page({
 
@@ -6,42 +10,79 @@ Page({
    * 页面的初始数据
    */
   data: {
-    creatorAvatarUrl: '',
-    creatorNickName: '',
-    theme: '项目名称',
-    isSelected: false,
+    userInfo: {} as CustomUserInfo,
+    inputValue: '',
   },
 
-  onSelect() {
+  /**
+   * 接收输入框失焦事件
+   * @param e 
+   */
+  onFinish(e: any) {
     this.setData({
-      isSelected: !this.data.isSelected
+      inputValue: e.detail.inputValue
     })
   },
-  
+
+  /**
+   * 返回
+   */
   onBack() {
     wx.navigateBack()
   },
 
+  /**
+   * 完成
+   */
   onComplete() {
-    wx.showToast({
-      title: '创建成功',
-    });
-    setTimeout(() => {
-      wx.navigateBack()
-    }, 1000)
+    const options = {
+      url: '/team/create_team',
+      method: "POST" as "POST",
+      data: {
+        uid: this.data.userInfo.uid as string,
+        teamName: this.data.inputValue ? this.data.inputValue : `${this.data.userInfo.nickName}的口袋` as string,
+        teamAvatarUrl: this.data.userInfo.avatarUrl as string,
+        teamGrade: 1 as number,
+      }
+    }
+    Https.request<Request.CreateTeamReq, Response.CreateTeamRes>(options).then(res => {
+      if (res.success) {
+        wx.showToast({
+          title: '创建成功！',
+          duration: 1500,
+        });
+        setTimeout(() => {
+          wx.switchTab({
+            url: '/pages/index/index'
+          })
+        }, 1500)
+
+      } else {
+        wx.showModal({
+          title: '操作失败',
+          content: '点击"确定"以重试',
+          success: (res) => {
+            if (res.confirm) {
+              console.log('重试');
+            } else {
+              console.log('返回');
+            }
+          }
+        })
+      }
+
+    })
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad() {
-    const userInfo = User.getUserInfo();
+    const userInfo = User.getUserInfoStorage();
+    console.log('found页初始化数据为 - ', userInfo);
+
     this.setData({
-      creatorAvatarUrl: userInfo!.avatarUrl,
-      creatorNickName: userInfo!.nickName
-    })
-    wx.showShareMenu({
-      withShareTicket: true
+      userInfo
     })
   },
 

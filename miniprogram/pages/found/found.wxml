@@ -1,25 +1,9 @@
 <!-- miniprogram/pages/found.wxml -->
 <view class="found_container">
-    <view class="found_top">
-        <c-imgUpload avatarUrl="{{creatorAvatarUrl}}" />
-    </view>
+    <c-theader avatarUrl="{{userInfo.avatarUrl}}"/>
 
-    <!-- 考虑拓展，使用found_input_wrapper -->
-    <view class="found_input_wrapper">
-        <c-input theme="{{theme}}" nickName="{{creatorNickName}}" />
-    </view>
-
-    <view class="found_bindGroupChat">
-        <view class="found_bindGroupChat_left">
-            <view class="bind_title">绑定微信群</view>
-            <view class="bind_description">绑定微信群后，只有群成员可查看该项目组</view>
-        </view>
-        <view class="found_bindGroupChat_right" wx:if="{{!isSelected}}">
-            <button class="bind_btn" open-type="share" bind:tap="onSelect">选择群聊</button>
-        </view>
-        <view class="found_bindGroupChat_right" wx:else>
-            <button class="bind_btn_active" open-type="share" bind:tap="onSelect">重新选择</button>
-        </view>
+    <view class="found_body">
+        <c-input title="口袋名称" userInfo="{{userInfo}}" bind:finish="onFinish"/>
     </view>
 
     <view class="found_buttons">

@@ -63,6 +63,8 @@ App<AppOptionCustom>({
 	init() {
 		return new Promise((resolve, reject) => {
 			User.login().then(OPENID_SESSIONKEY => {
+				console.log('login接口调用完成，获取OPENID_SESSIONKEY', OPENID_SESSIONKEY);
+				
 				this.globalData = {
 					...this.globalData,
 					openid_sessionKey: OPENID_SESSIONKEY,

@@ -8,18 +8,17 @@
 		<c-search/>
 	</view>
 
+	
+
 	<view class="body">
 		<view class="body_items">
 			<c-item
 			 class="body_item"
-			 wx:for="{{items}}"
+			 wx:for="{{teams}}"
 			 wx:key="id"
-			 gid="{{item.gid}}"
-			 icon="{{item.iconUrl}}"
-			 name="{{item.name}}"
+			 team="{{item}}"
 			 docCount="{{item.count.doc}}"
 			 imgCount="{{item.count.img}}"
-			 bind:more="onMore"
 			/>
 		</view>
 	</view>

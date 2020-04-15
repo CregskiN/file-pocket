@@ -1,0 +1,8 @@
+<!--component/found/avatar/avatar.wxml-->
+<view class="t-header_container">
+
+    <image class="t-header_avatar" src="{{avatarUrl}}" mode="aspectFit"></image>
+    <view class="t-header_lint">(目前仅支持将您的头像作为口袋图标)</view>
+
+
+</view>

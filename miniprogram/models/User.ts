@@ -23,13 +23,20 @@ class User {
         return new Promise<Openid_SessionKeyType>((resolve, reject) => {
             wx.checkSession({
                 success: (res) => {
-                    if (res.errMsg === 'checkSession:ok') {
-                        resolve(User.getOpenidSessionKeyStorage());
-                    }
+                    // console.log('wx.checkSession成功',res);
+                    
+                    // if (res.errMsg === 'checkSession:ok') {
+                    //     resolve(User.getOpenidSessionKeyStorage());
+                    // }
                 },
                 fail: (err) => {
+                    
+                },
+                complete: () => {
                     wx.login({
                         success: (res) => {
+                            console.log('wx.login res', res);
+
                             const data = { code: res.code };
                             const options = {
                                 url: '/wxma_auth/code_to_session',
@@ -39,7 +46,10 @@ class User {
                             const loginRes = Https.request<Request.CodeToSessionReq, Response.CodeToSessionRes>(options);
                             loginRes.then((res: any) => {
                                 // 此处应该校验res是否合法
+                                console.log(res);
+                                
                                 const openid_sessionKey = res.data;
+                                console.log('login接口获取的openid_sessionKey', openid_sessionKey);
                                 User.setOpenidSessionKeyStorage(openid_sessionKey);
                                 resolve(openid_sessionKey);
                             }).catch((err: any) => {
@@ -48,6 +58,8 @@ class User {
                             })
                         },
                         fail: (err) => {
+                            console.log('wx.login接口调用失败', err);
+
                             reject(err)
                         }
                     })

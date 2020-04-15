@@ -1,6 +1,8 @@
 <!-- component/found/input/input.wxml -->
 <view class="input_container">
-    <view class="input_theme">{{theme}}</view>
-    <input class="input" type="text" value="{{nickName + '的项目组'}}" bind:input="onChange" bind:blur="onFinish" placeholder="请输入项目名称..."/>
-    <c-line />
+    <view class="input_title" wx:if="{{title}}">{{title}}</view>
+    <input class="input" type="text" placeholder="{{userInfo.nickName + '的口袋'}}"
+        bind:input="onChange" bind:blur="onFinish"
+    />
+
 </view>
