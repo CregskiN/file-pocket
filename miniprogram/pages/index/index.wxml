@@ -1,5 +1,4 @@
 <!-- index.wxml -->
-<c-authorize isAuthorized="{{isAuthorized}}" bind:authorize="onAuthorize"/>
 
 
 <view class="container">
@@ -13,7 +12,6 @@
 	<view class="body">
 		<view class="body_items">
 			<c-item
-			 class="body_item"
 			 wx:for="{{teams}}"
 			 wx:key="id"
 			 team="{{item}}"
@@ -36,3 +34,5 @@
 
 </view>
 
+<c-loading lint="{{lints.loading}}" isLoading="{{isLoading}}"/>
+<c-authorize isAuthorized="{{isAuthorized}}" bind:authorize="onAuthorize"/>

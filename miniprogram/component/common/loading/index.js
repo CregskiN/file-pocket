@@ -1,0 +1,10 @@
+"use strict";
+Component({
+    properties: {
+        lint: String,
+        isLoading: Boolean,
+    },
+    data: {},
+    methods: {}
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJpbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQ0EsU0FBUyxDQUFDO0lBSVIsVUFBVSxFQUFFO1FBQ1YsSUFBSSxFQUFFLE1BQU07UUFDWixTQUFTLEVBQUUsT0FBTztLQUNuQjtJQUtELElBQUksRUFBRSxFQUVMO0lBS0QsT0FBTyxFQUFFLEVBRVI7Q0FDRixDQUFDLENBQUEiLCJzb3VyY2VzQ29udGVudCI6WyIvLyBjb21wb25lbnQvY29tbW9uL2xvYWRpbmcvaW5kZXguanNcbkNvbXBvbmVudCh7XG4gIC8qKlxuICAgKiDnu4Tku7bnmoTlsZ7mgKfliJfooahcbiAgICovXG4gIHByb3BlcnRpZXM6IHtcbiAgICBsaW50OiBTdHJpbmcsXG4gICAgaXNMb2FkaW5nOiBCb29sZWFuLFxuICB9LFxuXG4gIC8qKlxuICAgKiDnu4Tku7bnmoTliJ3lp4vmlbDmja5cbiAgICovXG4gIGRhdGE6IHtcblxuICB9LFxuXG4gIC8qKlxuICAgKiDnu4Tku7bnmoTmlrnms5XliJfooahcbiAgICovXG4gIG1ldGhvZHM6IHtcblxuICB9XG59KVxuIl19

@@ -1,0 +1,12 @@
+<!-- component/common/share-window/index.wxml -->
+<view class="share-window_container" hidden="{{!isShareWindowVisible}}">
+    <view class="float-window_container">
+        <view class="float-window_title">{{title}}</view>
+        <view class="float-window_body">{{content}}</view>
+        <view class="float-window_choices">
+            <button class="float-window_btn_cancel" open-type="share">
+                选择好友或群聊
+            </button>
+        </view>
+    </view>
+</view>

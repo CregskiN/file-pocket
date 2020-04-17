@@ -1,4 +1,4 @@
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html, body, view, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, image, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   color: rgba(0, 0, 0, 0.65);
   margin: 0;
   padding: 0;
@@ -192,10 +192,13 @@ table {
 }
 
 @font-face {
-  font-family: 'iconfont';
-  /* project id 1730085 */
-  src: url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.eot');
-  src: url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.woff') format('woff'), url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.ttf') format('truetype'), url('//at.alicdn.com/t/font_1730085_h4bnmjsfvxk.svg#iconfont') format('svg');
+  font-family: 'iconfont';  /* project id 1730085 */
+  src: url('//at.alicdn.com/t/font_1730085_qv50ml4xwsq.eot');
+  src: url('//at.alicdn.com/t/font_1730085_qv50ml4xwsq.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1730085_qv50ml4xwsq.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1730085_qv50ml4xwsq.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1730085_qv50ml4xwsq.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1730085_qv50ml4xwsq.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -204,6 +207,50 @@ table {
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-quxiao:before {
+  content: "\e677";
+}
+
+.icon-guanyu:before {
+  content: "\e698";
+}
+
+.icon-guanyu1:before {
+  content: "\e648";
+}
+
+.icon-guanlicopy:before {
+  content: "\e61a";
+}
+
+.icon-kaifazheshequicon-:before {
+  content: "\e694";
+}
+
+.icon-shangchuan:before {
+  content: "\e6be";
+}
+
+.icon-fenxiang:before {
+  content: "\e616";
+}
+
+.icon-shanchu:before {
+  content: "\e622";
+}
+
+.icon-xuanze:before {
+  content: "\e601";
+}
+
+.icon-tianjiachengyuan:before {
+  content: "\e608";
+}
+
+.icon-fenxiang1:before {
+  content: "\e606";
 }
 
 .icon-wendang:before {

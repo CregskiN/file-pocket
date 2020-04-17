@@ -11,7 +11,7 @@
     </view>
 
     <view class="header_joinCount" bind:tap="onShow">
-        <view class="header_count">{{user.joinedTeamCounts + 1000}}</view>
+        <view class="header_count">{{user.createdTeamCounts}}</view>
         <view class="header_text">我的口袋</view>
     </view>
 

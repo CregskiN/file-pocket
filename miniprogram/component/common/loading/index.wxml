@@ -1,0 +1,10 @@
+<!-- component/common/loading/index.wxml -->
+<view class="loading_container" hidden="{{!isLoading}}">
+    <view class="spinner">
+        <view class="double-bounce1"></view>
+        <view class="double-bounce2"></view>
+    </view>
+    <view class="lint">
+        {{lint}}
+    </view>
+</view>

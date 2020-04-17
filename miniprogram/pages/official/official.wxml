@@ -1,0 +1,14 @@
+<!--miniprogram/pages/official/official.wxml-->
+<view class="official_container">
+    <c-searcher />
+
+    <view class="official_body">
+        <c-item wx:for="{{teams}}" wx:key="id" team="{{item}}" type="official"
+            bind:invite="onInvite" bind:rename="onRename" bind:dropOut="onDropOut" bind:share="onShare"
+        />
+    </view>
+
+</view>
+
+<c-loading lint="{{lints.loading}}" isLoading="{{loading}}"/>
+<c-shareWindow isShareWindowVisible="{{isShareWindowVisible}}"/>

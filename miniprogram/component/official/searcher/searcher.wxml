@@ -1,0 +1,28 @@
+<!-- component/official/searcher/searcher.wxml -->
+<view class="searcher_container">
+    <view class="searcher_top">
+        <view class="{{isFocus ? 'searcher_left searcher_left_active' : 'searcher_left'}}">
+            <view class="iconfont icon-iconfont_fangdajing" 
+                bind:tap="onFocusOrSearch"
+            />
+            <input class="searcher_input" placeholder="搜索官方口袋文件..." value="{{inputValue}}" focus="{{isFocus}}"
+                bind:focus="onFocus" bind:input="onInput" bind:confirm="onConfirm"
+            />
+            <view class="{{inputValue ? 'icon_wrap iconfont icon-cuowu' : 'icon_wrap'}}"
+                bind:tap="onClean"
+            />
+        </view>
+        <view class="searcher_right" hidden="{{!isFocus}}">
+            <!-- <view class="btn searcher_complete">搜索</view> -->
+            <view class="btn searcher_cancel" bind:tap="onCancel">取消</view>
+        </view>
+    </view>
+
+    <view class="searcher_body" hidden="{{!isFocus}}">
+        <c-fileItem />
+        <c-fileItem />
+        <c-fileItem />
+        <c-fileItem />
+        <c-fileItem />
+    </view>
+</view>

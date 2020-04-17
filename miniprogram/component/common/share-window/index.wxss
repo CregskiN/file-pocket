@@ -1,0 +1,33 @@
+/* component/common/share-window/index.wxss */
+.share-window_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    left:0;
+    top:0;
+    z-index: 101;
+    overflow: hidden;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(0,0,0, 0.5);
+}
+
+.float-window_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    width: 560rpx;
+    height: 360rpx;
+    margin: 0 0 50rpx 0;
+
+    border-radius: 10rpx;
+
+    background-color: #fff;
+}

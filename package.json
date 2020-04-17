@@ -7,7 +7,7 @@
     "tsc": "node ./node_modules/typescript/lib/tsc.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "CregskiN",
   "license": "MIT",
   "dependencies": {
     "moment": "^2.24.0"

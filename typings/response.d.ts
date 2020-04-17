@@ -1,3 +1,5 @@
+import { TeamType, OfficialTeam } from '../miniprogram/utils/typing';
+
 declare namespace Response {
 
     /**
@@ -45,7 +47,7 @@ declare namespace Response {
         joinedNumberCounts: number;
         fileCounts: number;
         creationTime: number;
-    }  
+    }
 
     /**
      * 查询uid对应的项目列表resData
@@ -61,8 +63,42 @@ declare namespace Response {
         creationTim: number;
     }
 
+    // /**
+    //  * 获取官方项目组列表 resData
+    //  */
+    // interface GetOfficialTeamListData {
+    //     teamUserList: OfficialTeam[];
+    // }
+
+    // /**
+    //  * 获取我加入的项目组列表 resData
+    //  */
+    // interface GetJoinedTeamListData {
+    //     teamUserList: Team[];
+    // }
+
+    // /**
+    //  * 获取我管理的项目组列表 resData
+    //  */
+    // interface GetManagedTeamListData {
+    //     teamUserList: Team[];
+    // }
+
+    // /**
+    //  * 获取我创建的项目组列表 resData
+    //  */
+    // interface GetCreatedTeamListData {
+    //     teamUserList: Team[];
+    // }
+
+
     type CodeToSessionRes = BaseResponse<LoginData>;
     type AuthorizeRes = BaseResponse<AuthorizeData>;
     type CreateTeamRes = BaseResponse<CreateTeamData>
     type QueryTeamListRes = BaseResponse<QueryTeamListData>;
+
+    type GetOfficialTeamListRes = BaseResponse<OfficialTeam[]>;
+    type GetJoinedTeamListRes = BaseResponse<TeamType[]>;
+    type GetCreatedTeamListRes = BaseResponse<TeamType[]>;
+    type GetManagedTeamListRes = BaseResponse<TeamType[]>;
 }

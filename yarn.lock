@@ -4,7 +4,7 @@
 
 miniprogram-api-typings@^2.8.3-1:
   version "2.10.3"
-  resolved "https://registry.npm.taobao.org/miniprogram-api-typings/download/miniprogram-api-typings-2.10.3.tgz#68597092d88176c95674ff20c09816f63b329089"
+  resolved "https://registry.npm.taobao.org/miniprogram-api-typings/download/miniprogram-api-typings-2.10.3.tgz?cache=0&sync_timestamp=1585905666089&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fminiprogram-api-typings%2Fdownload%2Fminiprogram-api-typings-2.10.3.tgz#68597092d88176c95674ff20c09816f63b329089"
   integrity sha1-aFlwktiBdslWdP8gwJgW9jsykIk=
 
 moment@^2.24.0:
@@ -14,5 +14,5 @@ moment@^2.24.0:
 
 typescript@^3.3.3333:
   version "3.8.3"
-  resolved "https://registry.npm.taobao.org/typescript/download/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
+  resolved "https://registry.npm.taobao.org/typescript/download/typescript-3.8.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftypescript%2Fdownload%2Ftypescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
   integrity sha1-QJ64VE6gM1cRIFhp7EWKsQnuEGE=

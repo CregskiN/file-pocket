@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/official/official",
     "pages/index/index",
     "pages/found/found",
     "pages/my/my",
@@ -22,8 +23,14 @@
     "color": "#c7c7c7",
     "list": [
       {
+        "pagePath": "pages/official/official",
+        "text":"官方",
+        "iconPath":"static/tabbar/official_icon.png",
+        "selectedIconPath":"static/tabbar/official_icon_active.png"
+      },
+      {
         "pagePath": "pages/index/index",
-        "text": "项目",
+        "text": "口袋",
         "iconPath": "static/tabbar/todo_icon.png",
         "selectedIconPath": "static/tabbar/todo_icon_active.png"
       },

@@ -1,10 +1,10 @@
 /* component/item/item.wxss */
 
 .item_container {
-    width: 93%;
+    width: 695rpx;
     height: 150rpx;
-    margin: 0 0 15rpx 0;
     padding: 0 10rpx;
+    margin: 20rpx 0 0 0;
     border-radius: 10rpx;
     box-shadow: #fff 0 0 10rpx;
     background-color: #fff;

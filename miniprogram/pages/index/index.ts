@@ -1,8 +1,10 @@
 import User from '../../models/User';
+import Team from '../../models/Team';
 import { getWindowInfo } from '../../utils/util';
-import { GlobalDataType, CustomUserInfo } from '../../utils/typing';
+import { GlobalDataType, CustomUserInfo, TeamType } from '../../utils/typing';
 import Https from '../../utils/https';
-import { relativeTimeThreshold } from 'moment';
+// import { relativeTimeThreshold } from 'moment';
+
 
 const app = getApp();
 
@@ -15,7 +17,7 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		teams: [] as any,
+		teams: [] as TeamType[],
 		isLogin: true,
 		buttonTop: 10000,
 		buttonLeft: 10000,
@@ -25,6 +27,10 @@ Page({
 		floatBtnIconClass: '',
 		isAuthorized: true,
 		userInfo: {} as CustomUserInfo,
+		lints: {
+			loading: '正在加载...'
+		},
+		isLoading: true,
 	},
 
 
@@ -48,7 +54,9 @@ Page({
 		this.setData({
 			isAuthorized: true
 		})
-		this._getTeamList();
+		Team.getOfficialTeamList().then(res => {
+			console.log(res);
+		})
 	},
 
 
@@ -66,34 +74,20 @@ Page({
 				isLogin,
 				isAuthorized,
 				floatBtnIconClass,
+				isLoading: false
 			})
-			this._getTeamList();
 		}).catch(err => { // 报错逻辑的最后一道防线
 			console.log('页面初始化错误', err);
-		})
+		});
+		Team.getOfficialTeamList().then(res => {
+			console.log(res);
 
-	},
-
-	/**
-	 * 获取首页 我加入的项目组列表
-	 */
-	_getTeamList() {
-		const { uid } = app.getGlobalData().userInfo;
-		const options = {
-			url: '/user/query_created_team_list_by_uid',
-			method: "GET" as "GET",
-			data: {
-				uid: uid as string
-			}
-		}
-
-		Https.request<Request.QueryTeamListReq, Response.QueryTeamListRes>(options).then(res => {
-			console.log('获取teams数据成功！', res);
 			this.setData({
-				teams: res.data
+				teams: (res as any).data,
 			})
-		})
+		});
 	},
+
 
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -127,6 +121,10 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
+		const isAuthorized = app.getGlobalData();
+		this.setData({
+			isAuthorized
+		})
 
 	},
 

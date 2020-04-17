@@ -27,7 +27,7 @@ Page({
 	 */
 	data: {
 		bgUrl: '',
-		user: {},
+		userInfo: {},
 		items: [{
 			title: '我的文件',
 			baseUrl: '/pages/files-show/index',
@@ -70,19 +70,13 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		const { uid } = options;
+		const userInfo = User.getUserInfoStorage();
+		console.log('My.onLoad获取 - ', userInfo);
 
-		const bgUrl = getBgUrl()
-		const userInfo = User.getUserInfo();
+		const bgUrl = getBgUrl();
 		this.setData({
 			bgUrl,
-			user: {
-				...userInfo,
-				createdTeamCounts: 10,
-				managedTeamCounts: 20,
-				joinedTeamCounts: 30,
-				uid,
-			}
+			userInfo,
 		})
 	},
 
@@ -97,7 +91,12 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-
+		if (this.data.userInfo === {}) {
+			const userInfo = User.getUserInfoStorage();
+			this.setData({
+				userInfo,
+			})
+		}
 	},
 
 	/**

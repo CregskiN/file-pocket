@@ -1,6 +1,7 @@
 import Https from '../utils/https';
 
 import { Openid_SessionKeyType, CustomUserInfo } from '../utils/typing';
+import { Response } from '../../typings/response';
 
 
 interface GetUserInfoResult {
@@ -40,7 +41,7 @@ class User {
                             const data = { code: res.code };
                             const options = {
                                 url: '/wxma_auth/code_to_session',
-                                method: 'POST' as "POST", // ts类型推断不出来
+                                method: 'GET' as "GET", // ts类型推断不出来
                                 data: data
                             }
                             const loginRes = Https.request<Request.CodeToSessionReq, Response.CodeToSessionRes>(options);
@@ -90,6 +91,7 @@ class User {
                             // 已经授权，但无缓存
                             wx.getUserInfo({
                                 success: res => {
+                                    User.setUserInfoStorage(res.userInfo);
                                     resolve(res.userInfo);
                                     return;
                                 },

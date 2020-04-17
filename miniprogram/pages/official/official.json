@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "c-searcher":"../../component/official/searcher/searcher",
+    "c-item":"../../component/index/item/item",
+    "c-shareWindow":"../../component/common/share-window/index",
+    "c-loading":"../../component/common/loading/index"
+  },
+  "navigationBarTitleText": "官方口袋",
+  "backgroundTextStyle": "dark"
+}

@@ -1,3 +1,5 @@
+// import * as Response from './response';
+
 declare namespace Request {
 
     /**
@@ -6,7 +8,7 @@ declare namespace Request {
     interface Options<T> {
         url: string;
         method: Method;
-        data: T;
+        data?: T;
     }
 
     /**
@@ -30,7 +32,7 @@ declare namespace Request {
      */
     interface CreateTeamReq {
         uid: string;
-        teamName:  string;
+        teamName: string;
         teamAvatarUrl: string;
         teamGrade: number;
     }
@@ -42,6 +44,35 @@ declare namespace Request {
         uid: string;
     }
 
+
+
+    /**
+     * 获取我加入的项目组列表 reqData
+     */
+    interface GetJoinedTeamListReq {
+        uid: string;
+    }
+
+    /**
+     * 获取我创建的项目组列表 reqData
+     */
+    interface GetCreatedTeamListReq {
+        uid: string;
+    }
+
+    /**
+     * 获取官方项目组列表 reqData
+     */
+    interface GetOfficialTeamListReq {
+        uid: string;
+    }
+
+    /**
+     * 获取我管理的项目组列表 reqData
+     */
+    interface GetManagedTeamListReq {
+        uid: string;
+    }
 
     type Method = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
 }

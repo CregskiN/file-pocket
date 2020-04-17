@@ -1,4 +1,7 @@
 // component/item/item.js
+
+let itemList: string[] = [];
+
 Component({
 	/**
 	 * 组件的属性列表
@@ -6,7 +9,8 @@ Component({
 	properties: {
 		team: Object,
 		docCount: Number,
-		imgCount: Number
+		imgCount: Number,
+		type: String,
 	},
 	options: {
 		addGlobalClass: true
@@ -27,48 +31,67 @@ Component({
 	 * @param e 点击事件
 	 */
 		onMore(e: any) {
-			console.log(e);
-			// enum actionSheet {
-			// 	'添加共享成员' = 0,
-			// 	'修改项目名称' = 1,
-			// 	'退出项目' = 2
-			// }
-			wx.showActionSheet({
-				itemList: ['添加共享成员', '修改项目名称', '退出项目'],
-				success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
-					switch (res.tapIndex) {
-						case 0: {
-							wx.showToast({
-								title: '弹出好友选择界面'
-							})
-							break;
-						}
-						case 1: {
-							wx.showToast({
-								title: '弹出输入模块'
-							})
-							break;
-						}
-						case 2: {
-							wx.showModal({
-								title: '注意',
-								content: '您确定退出该群组？',
-								success: (res: WechatMiniprogram.ShowModalSuccessCallbackResult) => {
-									if (res.confirm) {
-										this.triggerEvent('dropOut', {
-											tid: this.data.team.tid
-										})
-									}
-								},
-							})
-						}
-					}
+			switch (this.properties.type) {
+				case 'normal': {
+					wx.showActionSheet({
+						itemList: ['邀请加入口袋', '重命名', '退出项目'],
+						success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
+							switch (res.tapIndex) {
+								case 0: {
+									this.triggerEvent('invite', {
+										tid: this.data.team.tid
+									})
+									break;
+								}
+								case 1: {
+									this.triggerEvent('rename', {
+										tid: this.data.team.tid
+									})
+									break;
+								}
+								case 2: {
+									this.triggerEvent('dropOut', {
+										tid: this.data.team.tid
+									})
+									break;
+								}
+							}
 
-				},
-				fail: (res: WechatMiniprogram.GeneralCallbackResult) => {
-					console.log('fail');
+						},
+						fail: (res: WechatMiniprogram.GeneralCallbackResult) => {
+							console.log('fail');
+						}
+					})
+					break;
 				}
-			})
+				case 'official': {
+					wx.showActionSheet({
+						itemList: ['分享口袋', '退出口袋'],
+						success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
+							switch (res.tapIndex) {
+								case 0: {
+									this.triggerEvent('share', {
+										tid: this.data.team.tid
+									});
+									break;
+								}
+								case 1: {
+									this.triggerEvent('dropOut', {
+										tid: this.data.team.tid
+									})
+									break;
+								}
+							}
+
+						},
+						fail: (res) => {
+							console.log('fail');
+						}
+					})
+					break;
+				}
+			}
+
 		},
 
 		toDetail() {

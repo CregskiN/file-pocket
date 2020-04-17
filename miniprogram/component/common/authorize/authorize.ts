@@ -1,6 +1,7 @@
 // component/common/authorize/authorize.js
 import User from '../../../models/User';
 import Https from '../../../utils/https';
+import { Response } from '../../../../typings/response';
 
 const app = getApp();
 

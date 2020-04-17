@@ -1,4 +1,4 @@
-
+import { Response } from '../../typings/response';
 /**
  * 文件类型
  */
@@ -46,6 +46,30 @@ export interface GlobalDataType {
     isLogin?: boolean;
     isAuthorized?: boolean;
 }
+
+/**
+ * 项目组信息
+ */
+export interface TeamType {
+    tid: string;
+    uid: string;
+    teamName: string;
+    username: string;
+    teamAvatarUrl: string;
+    userAvatarUrl: string;
+    userGrade: number;
+    creationTime: string;
+}
+
+/**
+ * 官方项目组信息
+ */
+export interface OfficialTeam {
+    tid: string;
+    teamName: string;
+    avatarUrl: string;
+}
+
 
 /**
  * desprated

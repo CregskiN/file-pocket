@@ -2,7 +2,7 @@
 <view class="item_container">
 
     <view class="item_left" bind:tap="toDetail">
-        <image class="item_icon_avatar" src="{{team.teamAvatarUrl}}" mode="aspectFit" />
+        <image class="item_icon_avatar" src="{{team.avatarUrl}}" mode="aspectFit" />
     </view>
 
     <view class="item_middle" bind:tap="toDetail">

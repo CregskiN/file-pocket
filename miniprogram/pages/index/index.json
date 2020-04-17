@@ -3,7 +3,8 @@
     "c-search":"../../component/index/search/search",
     "c-item":"../../component/index/item/item",
     "c-floatBtn":"../../component/index/floatBtn/floatBtn",
-    "c-authorize":"../../component/common/authorize/authorize"
+    "c-authorize":"../../component/common/authorize/authorize",
+    "c-loading":"../../component/common/loading/index"
   },
   "navigationBarTitleText": "文件口袋",
   "backgroundTextStyle": "dark"

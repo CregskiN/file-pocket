@@ -61,8 +61,8 @@
 			"list": [
 				{
 					"id": -1,
-					"name": "创建项目组",
-					"pathName": "pages/found/found",
+					"name": "口袋页",
+					"pathName": "pages/index/index",
 					"scene": null
 				}
 			]
