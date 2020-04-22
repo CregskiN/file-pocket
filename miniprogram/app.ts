@@ -64,45 +64,39 @@ App<AppOptionCustom>({
 		return new Promise((resolve, reject) => {
 			User.login().then(OPENID_SESSIONKEY => {
 				console.log('login接口调用完成，获取OPENID_SESSIONKEY', OPENID_SESSIONKEY);
-				
-				this.globalData = {
-					...this.globalData,
+				this.setGlobalData({
 					openid_sessionKey: OPENID_SESSIONKEY,
 					isLogin: true
-				};
+				})
 
 				User.getAuthorize().then(userInfo => {
 					if (userInfo.nickName) {
 						console.log('App.onLaunch 初始化完成');
-						this.globalData = {
-							...this.globalData,
+						this.setGlobalData({
 							userInfo,
 							isAuthorized: true,
-						}
+						})
 					} else {
 						// 无法获取userInfo，需跳转授权
-						this.globalData = {
-							...this.globalData,
+						this.setGlobalData({
 							userInfo: {},
 							isAuthorized: false,
-						}
+						})
 					}
 					resolve(this.globalData); // 最终出口！
 				}).catch(err => {
 					console.log('授权调用失败', err);
-					this.globalData = {
-						...this.globalData,
+					this.setGlobalData({
 						isAuthorized: false,
-					}
+					})
 					reject(err);
 				})
 			}).catch(err => {
 				console.log('login失败', err);
-				this.globalData = {
-					...this.globalData,
+				this.setGlobalData({
 					userInfo: {},
 					isLogin: false,
-				}
+				})
 				reject(err);
 			})
 		})

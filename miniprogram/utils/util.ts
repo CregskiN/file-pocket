@@ -1,3 +1,4 @@
+import moment from 'moment';
 /**
  * 获取
  */
@@ -41,5 +42,13 @@ export function checkRes(res: any) {
 
 }
 
+/**
+ * 获取事件
+ * @param nickName 用户昵称
+ * @param ext 扩展名 jpeg png等
+ */
+export function getTime(nickName: string, ext: string) {
+	return moment().format('YYYY-MM-DD');
+}
 
 

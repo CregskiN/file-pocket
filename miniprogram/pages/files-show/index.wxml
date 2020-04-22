@@ -1,4 +1,0 @@
-<!-- miniprogram/pages/files-show/index.wxml -->
-<view class="files-show">
-    <c-fileItem wx:for="{{files}}" wx:key="id" file="{{item}}" uid="{{uid}}" bind:delete="onDelete"/>
-</view>

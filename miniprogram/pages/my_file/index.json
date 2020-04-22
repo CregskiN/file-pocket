@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "c-filesController":"../../component/common/files-controller/index"
+  },
+  "navigationBarTitleText": "个人文件"
+}

@@ -7,6 +7,7 @@ Component({
     editting: Boolean,
     selectCount: Number,
     tid: Number,
+    type: String, // 控制台类型：1.team 2.my_file 
   },
   options: {
     addGlobalClass: true
@@ -40,14 +41,16 @@ Component({
        */
     onUpload() {
       wx.showActionSheet({
-        itemList: ['群聊文件', '本地文件'],
+        itemList: ['聊天文件', '本地图片'],
         success: (res) => {
           switch (res.tapIndex) {
             case 0: {
               wx.chooseMessageFile({
                 count: 100,
-                type: 'file',
+                type: 'all',
                 success: (res) => {
+                  console.log(res);
+
                   const names = [];
                   for (let file of res.tempFiles) {
                     names.push(file.name);
@@ -56,8 +59,8 @@ Component({
                     title: '提示',
                     content: `您将添加文件${JSON.stringify(names)}`,
                     success: () => {
-                      wx.showToast({
-                        title: '添加成功'
+                      this.triggerEvent('uploadMessageFile', {
+                        fileObjects: res
                       })
                     }
                   })
@@ -66,12 +69,23 @@ Component({
               break;
             }
             case 1: {
-              wx.showModal({
-                title: '提示',
-                content: '抱歉，微信小程序暂不支持此功能'
+              wx.chooseImage({
+                success: (res) => {
+                  // console.log(res);
+                  this.triggerEvent('uploadLocalImg', {
+                    chooseLocalImgRes: res
+                  })
+                }
               })
               break;
             }
+            // case 1: {
+            //   wx.showModal({
+            //     title: '提示',
+            //     content: '抱歉，微信小程序暂不支持此功能'
+            //   })
+            //   break;
+            // }
           }
         }
       })
@@ -90,7 +104,7 @@ Component({
      * 进入编辑状态
      */
     inEdit() {
-      this.triggerEvent('edit')
+      this.triggerEvent('inEdit')
     },
 
     /**

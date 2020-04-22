@@ -96,7 +96,7 @@ Component({
 
 		toDetail() {
 			wx.navigateTo({
-				url: `/pages/detail/detail?gid=${this.data.team.tid}`
+				url: `/pages/detail/detail?tid=${this.data.team.tid}`
 			})
 		}
 	}

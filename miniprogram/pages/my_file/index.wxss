@@ -1,0 +1,5 @@
+/* miniprogram/pages/my_file/index.wxss */
+.my_file_container {
+    width: 100vw;
+    height: 100vh;
+}

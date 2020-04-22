@@ -1,10 +1,6 @@
 import config from '../config/config';
 
 
-
-
-
-
 class Https {
 
     /**

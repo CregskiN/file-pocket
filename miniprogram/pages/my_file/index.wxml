@@ -1,0 +1,4 @@
+<!--miniprogram/pages/my_file/index.wxml-->
+<view class="my_file_container">
+    <c-filesController files="{{files}}"/>
+</view>

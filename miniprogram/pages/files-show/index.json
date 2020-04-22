@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "c-fileItem":"../../component/detail/file-item/file-item"
-  },
-  "navigationBarTitleText": "我的文件"
-}

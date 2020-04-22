@@ -1,9 +1,9 @@
 <!-- component/my/header/header.wxml -->
 <view class="header_container">
     <image class="header_bg" src="{{bgUrl}}" mode="aspectFill" bind:tap="onChangeBg"/>
-    <image class="header_avatar" src="{{user.avatarUrl}}" mode="aspectFit" />
+    <image class="header_avatar" src="{{userInfo.avatarUrl}}" mode="aspectFit" />
     <view class="header_block" />
-    <view class="header_nickName">{{user.nickName}}</view>
+    <view class="header_nickName">{{userInfo.nickName}}</view>
 
     <view class="header_about text">
         <view class="icon"></view>
@@ -11,7 +11,7 @@
     </view>
 
     <view class="header_joinCount" bind:tap="onShow">
-        <view class="header_count">{{user.createdTeamCounts}}</view>
+        <view class="header_count">{{userInfo.createdTeamCounts}}</view>
         <view class="header_text">我的口袋</view>
     </view>
 

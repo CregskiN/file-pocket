@@ -5,7 +5,7 @@ Component({
    */
   properties: {
     bgUrl: String,
-    user: Object,
+    userInfo: Object,
   },
   options: {
     addGlobalClass: true
@@ -22,9 +22,16 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    /**
+     * 展示
+     */
     onShow(){
-      console.log(this.data.user);
+      console.log(this.data.userInfo);
     },
+
+    /**
+     * 改变背景
+     */
     onChangeBg(){
       this.triggerEvent('changeBg')
     },

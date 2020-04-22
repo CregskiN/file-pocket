@@ -6,7 +6,7 @@ Component({
   properties: {
     file: Object,
     editting: Boolean,
-    checked: Boolean,
+    type: String,
     isChecked: Boolean,
   },
   options: {
@@ -25,7 +25,7 @@ Component({
   methods: {
 
     onMore() {
-      if (typeof this.data.checked === 'undefined' && typeof this.data.editting === 'undefined') {
+      if (this.data.type === 'my_file') {
         // 我的文件操作
         wx.showActionSheet({
           itemList: ['分享', '重命名', '删除'],
@@ -55,7 +55,6 @@ Component({
                 })
               }
             }
-
           },
         })
       } else {
@@ -97,8 +96,6 @@ Component({
           },
         })
       }
-
-
     },
 
     onSelect(e: any) {

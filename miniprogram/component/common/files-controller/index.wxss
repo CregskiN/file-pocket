@@ -1,0 +1,17 @@
+/* component/common/files-controller/index.wxss */
+.files-controller {
+    width: 100%;
+    height: 100%;
+
+    background-color: #f2f2f2;
+}
+
+.scroll_view {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 135rpx;
+    box-sizing: border-box;
+}
+
+
+

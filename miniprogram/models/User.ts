@@ -25,19 +25,17 @@ class User {
             wx.checkSession({
                 success: (res) => {
                     // console.log('wx.checkSession成功',res);
-                    
+
                     // if (res.errMsg === 'checkSession:ok') {
                     //     resolve(User.getOpenidSessionKeyStorage());
                     // }
                 },
                 fail: (err) => {
-                    
+
                 },
                 complete: () => {
                     wx.login({
                         success: (res) => {
-                            console.log('wx.login res', res);
-
                             const data = { code: res.code };
                             const options = {
                                 url: '/wxma_auth/code_to_session',
@@ -46,9 +44,8 @@ class User {
                             }
                             const loginRes = Https.request<Request.CodeToSessionReq, Response.CodeToSessionRes>(options);
                             loginRes.then((res: any) => {
-                                // 此处应该校验res是否合法
-                                console.log(res);
-                                
+                                // @TODO:此处应该校验res是否合法
+
                                 const openid_sessionKey = res.data;
                                 console.log('login接口获取的openid_sessionKey', openid_sessionKey);
                                 User.setOpenidSessionKeyStorage(openid_sessionKey);
@@ -112,30 +109,9 @@ class User {
                     return;
                 }
             })
-            // // 获取用户信息
-            // wx.getSetting({
-            // 	success: res => {
-            // 		if (res.authSetting['scope.userInfo']) {
-            // 			// 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-            // 			wx.getUserInfo({
-            // 				success: res => {
-            // 					// 可以将 res 发送给后台解码出 unionId
-            // 					this.globalData.userInfo = res.userInfo
-
-            // 					// 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-            // 					// 所以此处加入 callback 以防止这种情况
-            // 					if (this.userInfoReadyCallback) {
-            // 						this.userInfoReadyCallback(res)
-            // 					}
-            // 				},
-            // 			})
-            // 		}
-            // 	},
-            // })
         })
 
     }
-
 
     /**
      * 设置userinfo缓存
@@ -170,6 +146,31 @@ class User {
         };
         wx.setStorageSync('OPENID_SESSIONKEY', nOpenid_sessionKey);
     }
+
+
+    /**
+     * 使用uid获取userInfo
+     * @param uid 
+     */
+    static getUserInfoByUid(uid: string) {
+        return new Promise((resolve, reject) => {
+            const options = {
+                url: '/user/query_user_info_by_uid',
+                method: 'GET' as "GET",
+                data: {
+                    uid
+                }
+            }
+            Https.request(options).then(res => {
+                console.log('成功获取userInfo', res);
+                resolve(res);
+            }).catch(err => {
+                console.log('获取userInfo失败', err);
+                reject(err);
+            })
+        })
+    }
+
 
 
     /**
@@ -217,7 +218,6 @@ class User {
         } catch (err) {
             console.log(err);
         }
-
     }
 }
 

@@ -88,4 +88,56 @@ export default class Team {
         })
     }
 
+
+    /**
+     * 使用tid查询项目组信息
+     * @param tid
+     */
+    static getTeamInfoByTid(tid: string) {
+        return new Promise((resolve, reject) => {
+            const options = {
+                url: '/team/query_team_info_by_tid',
+                method: 'GET' as "GET",
+                data: {
+                    tid
+                }
+            }
+            Https.request(options).then(res => {
+                console.log('成功查询到项目组信息', res);
+                resolve(res);
+            }).catch(err => {
+                console.log('查询项目组信息失败', err);
+                reject(err);
+            })
+        })
+
+    }
+
+
+    /**
+     * 使用tid查询项目组成员列表
+     * @param tid 
+     */
+    static getTeamUserListByTid(tid: string) {
+        return new Promise((resolve, reject) => {
+            const options = {
+                url: '/team/query_team_user_list_by_tid',
+                method: 'GET' as "GET",
+                data: {
+                    tid
+                }
+            }
+            Https.request(options).then(res => {
+                console.log('成功查询成员列表', res);
+                resolve(res);
+            }).catch(err => {
+                console.log('查询成员列表失败', err);
+                reject(err);
+            })
+        })
+    }
+
+
+    
+
 }

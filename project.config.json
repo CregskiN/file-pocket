@@ -13,7 +13,7 @@
 		"beforeUpload": "npm run tsc"
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"enhance": false,
 		"postcss": true,
@@ -63,6 +63,14 @@
 					"id": -1,
 					"name": "口袋页",
 					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 1,
+					"name": "个人文件",
+					"pathName": "pages/my_file/index",
+					"query": "",
 					"scene": null
 				}
 			]

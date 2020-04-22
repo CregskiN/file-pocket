@@ -4,7 +4,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    hidden: Boolean,
+    editting: Boolean,
     selectCount: Number,
   },
   options: {
@@ -29,6 +29,9 @@ Component({
       this.triggerEvent('outEdit')
     },
 
+    /**
+     * 全选事件
+     */
     onSelectAll(){
       this.triggerEvent('selectAll')
     },

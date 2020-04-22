@@ -7,9 +7,9 @@
     "pages/detail/detail",
     "pages/member/member",
     "pages/browsing-history/index",
-    "pages/files-show/index",
     "pages/feedback/index",
-    "pages/authorize/authorize"
+    "pages/authorize/authorize",
+    "pages/my_file/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -24,9 +24,9 @@
     "list": [
       {
         "pagePath": "pages/official/official",
-        "text":"官方",
-        "iconPath":"static/tabbar/official_icon.png",
-        "selectedIconPath":"static/tabbar/official_icon_active.png"
+        "text": "官方",
+        "iconPath": "static/tabbar/official_icon.png",
+        "selectedIconPath": "static/tabbar/official_icon_active.png"
       },
       {
         "pagePath": "pages/index/index",

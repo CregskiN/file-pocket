@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "c-fileItem":"../../detail/file-item/file-item",
+    "c-console":"../../detail/console/console",
+    "c-topBar":"../../detail/top-bar/top-bar"
+  }
+}

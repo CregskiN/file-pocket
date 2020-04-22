@@ -31,6 +31,8 @@ Page({
 			loading: '正在加载...'
 		},
 		isLoading: true,
+
+		current: 0,
 	},
 
 
@@ -60,6 +62,23 @@ Page({
 	},
 
 
+	/**
+	 * 切换tap
+	 * @param e 
+	 */
+	onSwitchTap(e: any) {
+		if (e.type === 'change') {
+			const { current } = e.detail;
+			this.setData({
+				current
+			})
+		} else if (e.type === 'tap') {
+			const current = e.target.dataset.current;
+			this.setData({
+				current
+			})
+		}
+	},
 
 	/**
 	 * 生命周期函数--监听页面加载
@@ -69,23 +88,21 @@ Page({
 		init.then(globalData => {
 			const { isAuthorized, isLogin, userInfo } = globalData;
 			console.log('Index.onload - globalData is', globalData);
-			this.setData({
-				userInfo,
-				isLogin,
-				isAuthorized,
-				floatBtnIconClass,
-				isLoading: false
-			})
+
+			Team.getOfficialTeamList().then(res => {
+				this.setData({
+					teams: (res as any).data,
+					userInfo,
+					isLogin,
+					isAuthorized,
+					floatBtnIconClass,
+					isLoading: false
+				})
+			});
 		}).catch(err => { // 报错逻辑的最后一道防线
 			console.log('页面初始化错误', err);
 		});
-		Team.getOfficialTeamList().then(res => {
-			console.log(res);
 
-			this.setData({
-				teams: (res as any).data,
-			})
-		});
 	},
 
 

@@ -30,7 +30,7 @@ Page({
 		userInfo: {},
 		items: [{
 			title: '我的文件',
-			baseUrl: '/pages/files-show/index',
+			baseUrl: '/pages/my_file/index',
 			fontIconCLass: '',
 			backIconClass: '',
 		}, {
