@@ -12,13 +12,13 @@ class Https {
      * @param data 
      */
     static request<T, P>(options: Request.Options<T>) {
-        const { url, method, data } = options;
+        const { url, method, data, header } = options;
         const promise = new Promise<P>((resolve, reject) => {
             wx.request({
                 url: config.baseUrl + url,
                 method: method,
                 data: data,
-                header: {
+                header: header? header : {
                     'Content-Type': "application/x-www-form-urlencoded"
                 },
                 success: (res) => {

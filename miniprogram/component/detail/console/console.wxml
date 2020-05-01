@@ -1,6 +1,6 @@
 <!-- component/detail/console/console.wxml -->
 <!-- 详情页控制台 type = detail-->
-<block wx:if="{{type==='team'}}">
+<block wx:if="{{type==='detail'}}">
 	<view class="detail_console" hidden="{{editting}}">
 		<button class="detail_console_btn" bind:tap="onUpload">上传</button>
 		<button class="detail_console_btn" bind:tap="toMember">成员</button>
@@ -14,7 +14,7 @@
 	</view>
 </block>
 
-<block wx:elif="{{type==='my_file'}}">
+<block wx:if="{{type==='my_file'}}">
 	<view class="detail_console" hidden="{{editting}}">
 		<button class="detail_console_btn" bind:tap="onUpload">上传</button>
 		<button class="detail_console_btn" bind:tap="inEdit">选择</button>

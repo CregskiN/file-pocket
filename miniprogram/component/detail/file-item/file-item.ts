@@ -100,7 +100,7 @@ Component({
 
     onSelect(e: any) {
       this.triggerEvent('select', {
-        fid: this.data.file.fid
+        fid: this.data.file.fid || this.data.file.fileId
       })
 
     }

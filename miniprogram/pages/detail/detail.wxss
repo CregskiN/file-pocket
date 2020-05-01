@@ -3,23 +3,16 @@
 .detail_container {
     width: 100vw;
     height: 100vh;
-
 }
 
-.detail_head {
-
-    height: 15%;
-    box-shadow: #fff 0 10rpx;
-
-    background-color: #fff;
-}
-
-
-.detail_body {
+.team-header_wrapper {
     width: 100%;
-    margin-bottom: 11vh;
-    padding: 10rpx 0 0 0;
+    height: 15%;
+}
+
+.file-controller_wrapper {
+    height: 85%;
+    width: 100%;
 
     background-color: #f2f2f2;
 }
-

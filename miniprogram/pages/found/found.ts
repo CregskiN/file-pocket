@@ -2,7 +2,6 @@ import User from '../../models/User';
 import Https from '../../utils/https';
 
 import { CustomUserInfo } from '../../utils/typing';
-import { Response } from '../../../typings/response';
 
 
 Page({

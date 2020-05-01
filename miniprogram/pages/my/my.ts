@@ -29,7 +29,7 @@ Page({
 		bgUrl: '',
 		userInfo: {},
 		items: [{
-			title: '我的文件',
+			title: '个人文件',
 			baseUrl: '/pages/my_file/index',
 			fontIconCLass: '',
 			backIconClass: '',

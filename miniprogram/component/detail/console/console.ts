@@ -46,18 +46,12 @@ Component({
           switch (res.tapIndex) {
             case 0: {
               wx.chooseMessageFile({
-                count: 100,
+                count: 10,
                 type: 'all',
                 success: (res) => {
-                  console.log(res);
-
-                  const names = [];
-                  for (let file of res.tempFiles) {
-                    names.push(file.name);
-                  }
                   wx.showModal({
                     title: '提示',
-                    content: `您将添加文件${JSON.stringify(names)}`,
+                    content: `您将添加${res.tempFiles.length}个文件`,
                     success: () => {
                       this.triggerEvent('uploadMessageFile', {
                         fileObjects: res
@@ -70,22 +64,16 @@ Component({
             }
             case 1: {
               wx.chooseImage({
+                count: 5,
+                sourceType:['album'],
                 success: (res) => {
-                  // console.log(res);
                   this.triggerEvent('uploadLocalImg', {
-                    chooseLocalImgRes: res
+                    chooseLocalImgs: res
                   })
                 }
               })
               break;
             }
-            // case 1: {
-            //   wx.showModal({
-            //     title: '提示',
-            //     content: '抱歉，微信小程序暂不支持此功能'
-            //   })
-            //   break;
-            // }
           }
         }
       })
@@ -104,7 +92,7 @@ Component({
      * 进入编辑状态
      */
     inEdit() {
-      this.triggerEvent('inEdit')
+      this.triggerEvent('inEdit');
     },
 
     /**
@@ -120,14 +108,14 @@ Component({
      * 分享已选文件
      */
     onShare() {
-      this.triggerEvent('share')
+      this.triggerEvent('share');
     },
 
     /**
      * 删除已选
      */
     onDelete() {
-      this.triggerEvent('delete')
+      this.triggerEvent('delete');
     }
   }
 })

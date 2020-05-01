@@ -7,8 +7,7 @@ Component({
    */
   properties: {
     files: Array,
-    editting: Boolean,
-
+    type: String,
   },
 
   /**
@@ -16,7 +15,7 @@ Component({
    */
   data: {
     editting: false,
-    selectList: [],
+    selectList: [] as string[],
   },
 
   /**
@@ -27,9 +26,14 @@ Component({
      * 进入编辑模式
      */
     inEdit() {
+      const files = this.properties.files;
+      files.forEach(file => {
+        file.isChecked = false;
+      })
       this.setData({
         editting: true,
-        selectList: []
+        selectList: [],
+        files,
       })
     },
 
@@ -37,9 +41,14 @@ Component({
      * 退出编辑模式
      */
     outEdit() {
+      const files = this.properties.files;
+      files.forEach(file => {
+        file.isChecked = false;
+      })
       this.setData({
         editting: false,
-        selectList: []
+        selectList: [],
+        files
       })
     },
 
@@ -48,11 +57,27 @@ Component({
      * @param e 
      */
     onSelect(e) {
-      (this.data.selectList as Array<any>).forEach(value => {
-        if (value.fid === e.detail.fid) {
-
+      const hitFileId = e.detail.fid;
+      const files = this.properties.files;
+      const selectList = this.data.selectList;
+      for (const file of files as Response.FileType[]) {
+        if (file.fileId === hitFileId) {
+          if (file.isChecked) {
+            // 若已选
+            file.isChecked = false;
+            selectList.splice(selectList.indexOf(hitFileId), 1);
+          } else {
+            // 若未选
+            file.isChecked = true;
+            selectList.push(hitFileId);
+          }
+          this.setData({
+            files,
+            selectList
+          })
+          break;
         }
-      })
+      }
 
 
     },
@@ -61,9 +86,28 @@ Component({
      * 全选事件
      */
     onSelecteAll() {
-      this.setData({
-        selectList: this.data.files as any
-      })
+      if (this.data.selectList.length === this.properties.files.length) {
+        const files: Response.FileType[] = this.data.files;
+        files.forEach(file => {
+          file.isChecked = false;
+        });
+        this.setData({
+          files,
+          selectList: []
+        })
+      } else {
+        const files = this.data.files;
+        const selectList: string[] = [];
+        files.forEach(file => {
+          file.isChecked = true;
+          selectList.push(file.fileId);
+        });
+        this.setData({
+          files,
+          selectList
+        })
+      }
+
     },
 
 
@@ -72,7 +116,21 @@ Component({
      * @param e 
      */
     onUploadLocalImg(e: any) {
-      Upload.uploadLocalImg(e.detail.chooseLocalImgRes)
+      console.log('file-controller出发上传本地图片事件', e);
+
+      this.triggerEvent('uploadLocalImg', {
+        chooseLocalImgs: e.detail.chooseLocalImgs
+      })
+    },
+
+    /**
+     * 上传群聊文件
+     * @param e 
+     */
+    onUploadMessageFile(e: any) {
+      this.triggerEvent('uploadMessageFile', {
+        fileObjects: e.detail.fileObjects
+      })
     }
 
   }

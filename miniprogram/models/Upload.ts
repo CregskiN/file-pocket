@@ -1,5 +1,6 @@
 import User from './User';
 import { getTime } from '../utils/util';
+import { QiniuUploaderResData } from '../utils/typing';
 
 const qiniuUploader = require('../utils/qiniuUploader');
 
@@ -35,40 +36,38 @@ export default class Upload {
      * @param imgObject 
      */
     static uploadLocalImg(imgObject: WechatMiniprogram.ChooseImageSuccessCallbackResult) {
-        // 初始化七牛云配置
-        initQiniu();
+        return new Promise((resolve, reject) => {
+            // 初始化七牛云配置
+            initQiniu();
 
-        console.log(imgObject);
-        const userInfo = User.getUserInfoStorage();
+            console.log(imgObject);
+            const userInfo = User.getUserInfoStorage();
 
-        var filePath = imgObject.tempFilePaths[0];
-        const chunks = filePath.split('.');
-        const time = getTime(userInfo.nickName!, chunks[chunks.length - 1]);
-        var fileName = `${userInfo.nickName}_${time}.${chunks[chunks.length - 1]}`;
+            var filePath = imgObject.tempFilePaths[0];
+            const chunks = filePath.split('.');
+            const time = getTime(userInfo.nickName!);
+            var fileName = `${userInfo.nickName}_${time}.${chunks[chunks.length - 1]}`;
 
-        // 向七牛云上传
-        qiniuUploader.upload(
-            filePath,
-            (res: any) => {
-                console.log('刚刚上传的文件信息', res);
-
-            },
-            (err: any) => {
-                console.error('error: ' + JSON.stringify(err));
-            },
-            null,
-            (progress: any) => {
-                console.log('上传进度', progress.progress)
-                console.log('已经上传的数据长度', progress.totalBytesSent)
-                console.log('预期需要上传的数据总长度', progress.totalBytesExpectedToSend)
-            },
-            // (cancelTask: any) => that.setData({ cancelTask })
-            (cancelTask: any) => {
-                console.log('中断上传', cancelTask);
-            }
-        );
-
-
+            // 向七牛云上传
+            qiniuUploader.upload(
+                filePath,
+                (res: QiniuUploaderResData) => {
+                    resolve(res);
+                },
+                (error: any) => {
+                    // console.log('上传本地图片错误', error);
+                    reject(error);
+                },
+                null,
+                (progress: any) => {
+                    // console.log('上传进程', progress);
+                },
+                // (cancelTask: any) => that.setData({ cancelTask })
+                (cancelTask: any) => {
+                    console.log('中断上传', cancelTask);
+                }
+            );
+        })
     }
 
 
@@ -76,9 +75,38 @@ export default class Upload {
      * 上传聊天文件
      * @param imgObject 
      */
-    static uploadMessageFile(imgObject: WechatMiniprogram.ChooseImageSuccessCallbackResult) {
-        
+    static uploadMessageFile(fileObject: WechatMiniprogram.ChooseFile) {
+        return new Promise((resolve, reject) => {
+            // 初始化七牛云相关参数
+            initQiniu();
+            // 微信 API 选择文件
+            const filePath = fileObject.path;
+            const fileName = fileObject.name;
+            qiniuUploader.upload(
+                filePath,
+                (res: any) => {
+                    resolve(res);
+                },
+                (error: any) => {
+                    console.error('error: ' + JSON.stringify(error));
+                    reject(error);
+                },
+                null,
+                (progress: any) => {
+                    console.log('上传进程为', progress);
+
+                    // console.log('上传进度', progress.progress);
+                    // console.log('已经上传的数据长度', progress.totalBytesSent);
+                    // console.log('预期需要上传的数据总长度', progress.totalBytesExpectedToSend);
+                },
+                (cancelTask: any) => {
+                    console.log('中断上传', cancelTask);
+                }
+            );
+        })
+
     }
+
 
 }
 

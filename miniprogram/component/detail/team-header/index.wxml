@@ -1,0 +1,14 @@
+<!-- component/detail/team-head/index.wxml -->
+<view class="team-header_container">
+    <image class="team-header_avatar" src="{{teamInfo.avatarUrl}}" mode="aspectFit" />
+    <view class="team-header_content">
+        <!-- <view class="team_name">{{teamInfo.teamName}}</view> -->
+        <view class="team_name">小程序终结者</view>
+        <view class="team_groupName" hidden>绑定群聊:小程序终结者</view>
+
+        <view class="team-header_statistics">
+            <view class="team-header_members">成员数:15</view>
+            <view class="team-header_fileCount">文件数:1011</view>
+        </view>
+    </view>
+</view>

@@ -2,14 +2,14 @@
 <view class="file-item_container">
     <view class="file-item_left">
         <view class="file-item_iconWrapper">
-            <view class="file-icon file-icon" data-type="{{file.catagory}}" />
+            <view class="file-icon file-icon" data-type="{{file.mimeType}}" />
         </view>
     </view>
 
     <view class="file-item_middle">
-        <view class="file-item_fileName">{{file.name}}</view>
-        <view class="file-item_submitter">上传者：{{file.submitter}}</view>
-        <view class="file-item_time">{{file.time}}</view>
+        <view class="file-item_fileName">{{file.fileName}}</view>
+        <view class="file-item_submitter">上传者：{{file.username}}</view>
+        <view class="file-item_time">{{file.creationTIme}}</view>
     </view>
 
     <view class="file-item_right" hidden="{{editting}}">

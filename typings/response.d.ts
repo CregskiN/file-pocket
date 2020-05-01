@@ -1,5 +1,3 @@
-import { TeamType, OfficialTeam } from '../miniprogram/utils/typing';
-
 declare namespace Response {
 
     /**
@@ -35,70 +33,102 @@ declare namespace Response {
     /**
      * 创建项目resData
      */
-    interface CreateTeamData {
-        tid: number;
-        gid: number;
-        teamName: string;
-        avatarUrl: string;
-        grade: number;
-        numberCounts: number;
-        createdNumberCounts: number;
-        managedNumberCounts: number;
-        joinedNumberCounts: number;
-        fileCounts: number;
-        creationTime: number;
-    }
+    type CreateTeamData = TeamDetailType;
 
     /**
-     * 查询uid对应的项目列表resData
+     * 项目组信息(略)
      */
-    interface QueryTeamListData {
-        tid: number;
-        uid: number;
+    interface TeamType {
+        tid: string;
+        uid: string;
         teamName: string;
         username: string;
         teamAvatarUrl: string;
         userAvatarUrl: string;
         userGrade: number;
-        creationTim: number;
+        creationTime: string;
     }
 
-    // /**
-    //  * 获取官方项目组列表 resData
-    //  */
-    // interface GetOfficialTeamListData {
-    //     teamUserList: OfficialTeam[];
-    // }
+    /**
+     * 官方项目组信息(略)
+     */
+    interface OfficialTeam {
+        tid: string;
+        teamName: string;
+        avatarUrl: string;
+    }
 
-    // /**
-    //  * 获取我加入的项目组列表 resData
-    //  */
-    // interface GetJoinedTeamListData {
-    //     teamUserList: Team[];
-    // }
+    /**
+     * 项目组信息(详)
+     */
+    interface TeamDetailType {
+        tid: string;
+        id?: number;
+        teamName: string;
+        avatarUrl: string;
+        grade: number;
+        fileCount: number;
+        creationTime: number;
+        numberCount: number;
+        createdNumberCount: number;
+        joinedNumberCount: number;
+        managedNumberCount: number;
+        modifiedTime?: string;
+    }
 
-    // /**
-    //  * 获取我管理的项目组列表 resData
-    //  */
-    // interface GetManagedTeamListData {
-    //     teamUserList: Team[];
-    // }
 
-    // /**
-    //  * 获取我创建的项目组列表 resData
-    //  */
-    // interface GetCreatedTeamListData {
-    //     teamUserList: Team[];
-    // }
+    /**
+     * 进入项目组，获取项目组信息(不包括文件列表)resData
+     */
+    type EnterTeamData = TeamDetailType;
+
+
+    /**
+     * 文件类型字段
+     */
+    interface FileType {
+        fileId: string;
+        fileName: string;
+        fileSize: string | number;
+        fileUrl: string;
+        mimeType: Request.MIME;
+        isChecked?: boolean;
+        tid: string;
+        uid: string;
+        username: string;
+        modifiedTime?: string;
+        creationTime: number;
+    }
+
+
+    /**
+     * 上传文件至项目组 resData
+     */
+    interface UploadFileToTeamData {
+        fileId: string;
+        key: string;
+        hash: string;
+        fileName: string;
+        fileUrl: string;
+        fileSize: number;
+        mimeType: string;
+        username: string;
+    }
+
 
 
     type CodeToSessionRes = BaseResponse<LoginData>;
     type AuthorizeRes = BaseResponse<AuthorizeData>;
     type CreateTeamRes = BaseResponse<CreateTeamData>
-    type QueryTeamListRes = BaseResponse<QueryTeamListData>;
 
     type GetOfficialTeamListRes = BaseResponse<OfficialTeam[]>;
     type GetJoinedTeamListRes = BaseResponse<TeamType[]>;
     type GetCreatedTeamListRes = BaseResponse<TeamType[]>;
     type GetManagedTeamListRes = BaseResponse<TeamType[]>;
+
+    type EnterTeamDataRes = BaseResponse<EnterTeamData>;
+
+    type UploadFileToTeamRes = BaseResponse<UploadFileToTeamData>
+
+    type QueryTeamFileListRes = BaseResponse<FileType[]>
 }

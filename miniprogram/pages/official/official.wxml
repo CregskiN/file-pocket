@@ -1,6 +1,8 @@
 <!--miniprogram/pages/official/official.wxml-->
 <view class="official_container">
-    <c-searcher />
+    <view class="official-searcher_wrapper">
+        <c-searcher />
+    </view>
 
     <view class="official_body">
         <c-item wx:for="{{teams}}" wx:key="id" team="{{item}}" type="official"
@@ -10,5 +12,5 @@
 
 </view>
 
-<c-loading lint="{{lints.loading}}" isLoading="{{loading}}"/>
-<c-shareWindow isShareWindowVisible="{{isShareWindowVisible}}"/>
+<c-loading lint="{{lints.loading}}" isLoading="{{loading}}" />
+<c-shareWindow isShareWindowVisible="{{isShareWindowVisible}}" />

@@ -1,5 +1,5 @@
+import User from './User';
 import Https from '../utils/https';
-import { Response } from '../../typings/response';
 
 export default class Team {
     /**
@@ -81,6 +81,7 @@ export default class Team {
             };
             Https.request<Request.GetManagedTeamListReq, Response.GetManagedTeamListRes>(options).then(res => {
                 console.log('成功获取我管理的项目列表', res);
+                resolve(res);
             }).catch(err => {
                 console.log('获取我管理的列表失败', err);
                 reject(err);
@@ -90,21 +91,23 @@ export default class Team {
 
 
     /**
-     * 使用tid查询项目组信息
+     * 进入项目组，使用tid查询项目组信息
      * @param tid
      */
     static getTeamInfoByTid(tid: string) {
-        return new Promise((resolve, reject) => {
+        return new Promise<Response.TeamDetailType>((resolve, reject) => {
+            const uid = User.getUserInfoStorage().uid;
             const options = {
                 url: '/team/query_team_info_by_tid',
                 method: 'GET' as "GET",
                 data: {
-                    tid
+                    uid: uid as string,
+                    tid: tid as string
                 }
             }
-            Https.request(options).then(res => {
+            Https.request<Request.EnterTeamReq, Response.EnterTeamDataRes>(options).then(res => {
                 console.log('成功查询到项目组信息', res);
-                resolve(res);
+                resolve(res.data);
             }).catch(err => {
                 console.log('查询项目组信息失败', err);
                 reject(err);
@@ -138,6 +141,29 @@ export default class Team {
     }
 
 
-    
+    /**
+     * 使用tid和pageIndex获取项目组文件列表，分页一页10个
+     * @param tid 
+     * @param pageIndex 
+     */
+    static queryTeamFileList(tid: string, pageIndex: number) {
+        return new Promise<Response.FileType[]>((resolve, reject) => {
+            const options = {
+                url: '/team/query_team_file_list_order_by_creation_time',
+                method: 'GET' as 'GET',
+                data: {
+                    tid,
+                    pageIndex,
+                    pageSize: 10,
+                }
+            }
+            Https.request<Request.QueryTeamFileListReq, Response.QueryTeamFileListRes>(options).then(res => {
+                resolve(res.data);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    }
+
 
 }

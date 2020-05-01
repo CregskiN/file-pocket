@@ -1,15 +1,4 @@
-import { Response } from '../../typings/response';
-/**
- * 文件类型
- */
-export interface FileType {
-    fid?: number
-    name?: string,
-    catagory?: number,
-    submitter?: string,
-    time?: string,
-    isChecked?: boolean;
-}
+
 
 /**
  * 自定义用户信息userInfo类型
@@ -48,27 +37,18 @@ export interface GlobalDataType {
 }
 
 /**
- * 项目组信息
+ * 七牛上传返回的文件结果
  */
-export interface TeamType {
-    tid: string;
-    uid: string;
-    teamName: string;
-    username: string;
-    teamAvatarUrl: string;
-    userAvatarUrl: string;
-    userGrade: number;
-    creationTime: string;
+export interface QiniuUploaderResData {
+    fileUrl: string,
+    fsize: number,
+    hash: string,
+    key: string,
+    mimeType: 'image/jpeg' | 'image/jpg' | 'image/png'
 }
 
-/**
- * 官方项目组信息
- */
-export interface OfficialTeam {
-    tid: string;
-    teamName: string;
-    avatarUrl: string;
-}
+
+
 
 
 /**

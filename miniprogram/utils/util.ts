@@ -47,8 +47,13 @@ export function checkRes(res: any) {
  * @param nickName 用户昵称
  * @param ext 扩展名 jpeg png等
  */
-export function getTime(nickName: string, ext: string) {
+export function getTime(nickName: string) {
 	return moment().format('YYYY-MM-DD');
+}
+
+
+export function generateFileNameAuto(mimeType: string, nickName: string) {
+	return `${nickName}_${getTime(nickName)}.${mimeType.split('/')[1]}`
 }
 
 

@@ -9,6 +9,7 @@ declare namespace Request {
         url: string;
         method: Method;
         data?: T;
+        header?: any;
     }
 
     /**
@@ -36,14 +37,6 @@ declare namespace Request {
         teamAvatarUrl: string;
         teamGrade: number;
     }
-
-    /**
-     * 查询项目列表 reqData
-     */
-    interface QueryTeamListReq {
-        uid: string;
-    }
-
 
 
     /**
@@ -74,5 +67,42 @@ declare namespace Request {
         uid: string;
     }
 
+    /**
+     * 进入项目组列表 reqData
+     */
+    interface EnterTeamReq {
+        uid: string;
+        tid: string;
+    }
+
+    /**
+     * 查询项目组文件列表(分页) reqData
+     */
+    interface QueryTeamFileListReq {
+        tid: string;
+        pageIndex: number;
+        pageSize: number;
+    }
+
+    /**
+     * 同步文件至项目组类型
+     */
+    interface SyncFileWithBackendFileType {
+        tid: string;
+        uid: string;
+        key: string;
+        hash: string;
+        fileName: string;
+        fileUrl: string;
+        fileSize?: number;
+        mimeType: string;
+    }
+
+    /**
+     * 同步文件至项目组类型 req
+     */
+    type SyncFileWithBackendReq = SyncFileWithBackendFileType[];
+
     type Method = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
+    type MIME = 'image/jpeg' | string;
 }

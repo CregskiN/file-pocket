@@ -1,5 +1,5 @@
 // miniprogram/pages/browsing-history/index.js
-import { fileCatagory, FileType } from '../../utils/typing'
+import { fileCatagory } from '../../utils/typing'
 
 
 Page({
@@ -9,80 +9,14 @@ Page({
    */
 
   data: {
-    files: [{
-      name: '产品方法论',
-      catagory: 0,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 0
-    }, {
-      name: '浏览器战争史',
-      catagory: 1,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 1
-    }, {
-      name: '收购阿里巴巴的一千种方法',
-      catagory: 2,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 2
-    }, {
-      name: '小姐姐联系方式大全',
-      catagory: 3,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 3
-    }, {
-      name: '蓝精灵全集',
-      catagory: 4,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 4
-    }, {
-      name: '产品方法论',
-      catagory: 5,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 5
-    }, {
-      name: '产品方法论',
-      catagory: 6,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 6
-    }, {
-      name: '产品方法论',
-      catagory: 7,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 7
-    }] as FileType[],
+    files: [] as Response.FileType[],
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options: any) {
-    const { uid } = options;
-
-
-    const oFiles = this.data.files;
-
-    oFiles.map((file) => {
-      (file.catagory as any) = fileCatagory[file.catagory as number];
-    })
-    this.setData({
-      files: oFiles
-    })
+  
 
   },
 

@@ -1,0 +1,66 @@
+/* component/detail/team-head/index.wxss */
+/* component/found/team-header/team-header.wxss */
+
+.team-header_container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-header_avatar {
+    display: block;
+    width: 150rpx;
+    height: 150rpx;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    box-shadow: #f2f2f2 0 0 15rpx;
+}
+
+.team-header_content {
+    padding: 0 0 0 20rpx;
+    width: 350rpx;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+}
+
+.team_name {
+    font-size: 33rpx;
+    font-weight: 400;
+}
+
+/*  */
+.team_groupName {
+    font-size: 25rpx;
+    color: #47484c;
+    opacity: 0.8;
+}
+
+.team-header_statistics {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin-top: 15rpx;
+}
+
+.team-header_members {
+    font-size: 25rpx;
+
+    color: #757575;
+}
+
+.team-header_fileCount {
+    margin: 0 0 0 15rpx;
+
+    font-size: 25rpx;
+
+    color: #757575;
+}
+

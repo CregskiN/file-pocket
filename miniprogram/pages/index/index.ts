@@ -1,7 +1,7 @@
 import User from '../../models/User';
 import Team from '../../models/Team';
 import { getWindowInfo } from '../../utils/util';
-import { GlobalDataType, CustomUserInfo, TeamType } from '../../utils/typing';
+import { GlobalDataType, CustomUserInfo } from '../../utils/typing';
 import Https from '../../utils/https';
 // import { relativeTimeThreshold } from 'moment';
 
@@ -17,7 +17,7 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		teams: [] as TeamType[],
+		teams: [] as Response.TeamType[],
 		isLogin: true,
 		buttonTop: 10000,
 		buttonLeft: 10000,

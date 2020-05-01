@@ -1,18 +1,13 @@
 <!-- miniprogram/pages/detail/detail.wxml -->
 <view class="detail_container">
-    <view class="detail_head" hidden="{{editting}}">
-        <c-imgUpload content="{{groupCreator.nickName + '的项目组'}}" avatarUrl="{{groupCreator.avatarUrl}}" openGid="{{openGid}}"/>
+    
+    <view class="team-header_wrapper">
+        <c-teamHeader teamInfo="{{teamInfo}}"/>
     </view>
 
-    <c-topBar hidden="{{!editting}}" selectCount="{{selectCount}}" 
-        bind:outEdit="outEdit" bind:selectAll="onSelectAll" />
-
-    <view class="detail_body">
-        <c-fileItem wx:for="{{files}}" wx:key="id" 
-            file="{{item}}" editting="{{editting}}" isChecked="{{item.isChecked}}"
-            bind:delete="onDelete" bind:select="onSelect"/>
+    <view class="file-controller_wrapper">
+        <c-fileController type="detail" files="{{files}}"
+            bind:uploadLocalImg="onUploadLocalImg" bind:uploadMessageFile="onUploadMessageFile"
+        />
     </view>
-
-    <c-console editting="{{editting}}" selectCount="{{selectCount}}" 
-        bind:edit="inEdit" bind:delete="onDeleteSelectList" bind:invite="onInvite" bind:share="onShareSelectList"/>
 </view>

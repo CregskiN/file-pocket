@@ -1,5 +1,9 @@
 import User from '../../models/User';
-import { fileCatagory, FileType } from '../../utils/typing'
+import Team from '../../models/Team';
+import Upload from '../../models/Upload';
+import { generateFileNameAuto } from '../../utils/util';
+import { fileCatagory, QiniuUploaderResData } from '../../utils/typing'
+import File from '../../models/File';
 
 Page({
 
@@ -8,223 +12,109 @@ Page({
    */
   data: {
     groupCreator: {},
-    files: [{
-      name: '产品方法论',
-      catagory: 0,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 0
-    }, {
-      name: '浏览器战争史',
-      catagory: 1,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 1
-    }, {
-      name: '收购阿里巴巴的一千种方法',
-      catagory: 2,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 2
-    }, {
-      name: '小姐姐联系方式大全',
-      catagory: 3,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 3
-    }, {
-      name: '蓝精灵全集',
-      catagory: 4,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 4
-    }, {
-      name: '产品方法论',
-      catagory: 5,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 5
-    }, {
-      name: '产品方法论',
-      catagory: 6,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 6
-    }, {
-      name: '产品方法论',
-      catagory: 7,
-      submitter: '蓝精灵',
-      time: '2020-04-01 13:10',
-      isChecked: false,
-      fid: 7
-    }],
+    files: [] as Response.FileType[],
     isLogin: true,
-    editting: false,
     selectCount: 0,
-    selectList: [] as FileType[],
-    gid: -1,
-    openGid: '123'
+    selectList: [] as string[],
+    tid: '',
+    teamInfo: {} as Response.TeamDetailType,
+
+    uploadCount: -1,
+    isUploading: false,
   },
 
-  /**
-   * 删除文件事件
-   */
-  onDelete(e: any) {
-    console.log(e.detail);
-    wx.showToast({
-      title: '删除成功'
-    })
-  },
 
   /**
-   * 进入编辑模式事件
-   */
-  inEdit() {
-    wx.setNavigationBarTitle({ title: '文件多选' });
-    this.setData({
-      editting: true,
-      selectList: [],
-      selectCount: 0,
-    })
-  },
-
-  /**
-   * 退出编辑模式事件
-   */
-  outEdit() {
-    const files = this.data.files;
-    for (let file of files) {
-      file.isChecked = false;
-    }
-    wx.setNavigationBarTitle({ title: '文件详情' });
-    this.setData({
-      files,
-      editting: false,
-      selectList: [],
-      selectCount: 0,
-    })
-  },
-
-  /**
-   * 选择全部事件
-   */
-  onSelectAll() {
-    const files = this.data.files;
-    let selectList = this.data.selectList;
-    let selectCount = this.data.selectCount;
-    if (selectCount !== files.length) {
-      for (let file of files) {
-        file.isChecked = true;
-        selectList.push(file);
-      }
-      selectCount = files.length;
+ * 上传本地图片，上传多张的本质是多次触发选择事件
+ * @param e 
+ */
+  onUploadLocalImg(e: any) {
+    return new Promise((resolve, reject) => {
+      const chooseLocalImgs: WechatMiniprogram.ChooseImageSuccessCallbackResult = e.detail.chooseLocalImgs;
       this.setData({
-        files,
-        selectList,
-        selectCount,
+        uploadCount: chooseLocalImgs.tempFilePaths.length
       })
-    } else {
-      for (let file of files) {
-        file.isChecked = false;
-      }
-      selectList = [];
-      selectCount = 0;
-      this.setData({
-        files,
-        selectList,
-        selectCount,
-      })
-    }
-
-
-  },
-
-  /**
-   * 删除已选
-   */
-  onDeleteSelectList(e: any) {
-    if (this.data.selectCount === 0) {
-      wx.showToast({
-        title: '请选择要删除的文件'
-      })
-      return;
-    }
-    console.log('触发 - 删除已选 列表为：', this.data.selectList);
-  },
-
-  /**
-   * 分享已选文件
-   */
-  onShareSelectList() {
-    wx.showToast({
-      title: '分享文件功能暂未开放',
-      icon: 'none'
-    })
-  },
-
-  /**
-   * 邀请加项目组
-   */
-  onInvite() {
-    wx.showToast({
-      title: '选择群聊',
-      icon: 'none'
-    })
-  },
-
-  /**
-   * 编辑模式下 选择事件
-   */
-  onSelect(e: any) {
-    const fid = e.detail.fid;
-    const files = this.data.files;
-    const selectList = this.data.selectList;
-    let selectCount = this.data.selectCount;
-    for (let file of files) {
-      if (file.fid === fid) {
-        if (file.isChecked === true) {
-          file.isChecked = false;
-          selectCount = selectCount - 1;
-          selectList.splice(selectList.findIndex(sFile => (sFile as any).fid === fid), 1)
-        } else {
-          file.isChecked = true;
-          selectCount = selectCount + 1;
-          selectList.push(file);
+      const promises: Promise<any>[] = [];
+      chooseLocalImgs.tempFiles.forEach((value, index) => {
+        const imgObject = {
+          errMsg: chooseLocalImgs.errMsg,
+          tempFilePaths: new Array(chooseLocalImgs.tempFilePaths[index]),
+          tempFiles: new Array(chooseLocalImgs.tempFiles[index])
         }
+        promises.push(Upload.uploadLocalImg(imgObject));
+      });
+
+      if (promises.length === chooseLocalImgs.tempFilePaths.length) {
+        Promise.all(promises).then((res) => {
+          const uploadToTeamFiles: Request.SyncFileWithBackendReq = [];
+          (res as QiniuUploaderResData[]).forEach((uploaderResData) => {
+            const { uid, nickName } = User.getUserInfoStorage();
+            uploadToTeamFiles.push({
+              fileSize: uploaderResData.fsize,
+              fileUrl: uploaderResData.fileUrl,
+              key: uploaderResData.key,
+              hash: uploaderResData.hash,
+              mimeType: uploaderResData.mimeType,
+              tid: this.data.teamInfo.tid,
+              uid: uid as string,
+              fileName: generateFileNameAuto(uploaderResData.mimeType, nickName as string)
+            });
+            File.syncFileWithBackend(uploadToTeamFiles).then(res => {
+              resolve(res);
+            })
+          })
+        }).catch(err => {
+          reject(err);
+        })
       }
-    }
-    this.setData({
-      files,
-      selectList,
-      selectCount,
+
+
+    })
+
+  },
+
+  /**
+   * 上传群聊文件
+   * @param e 
+   */
+  onUploadMessageFile(e: any) {
+    return new Promise((resolve, reject) => {
+      const fileObjects: WechatMiniprogram.ChooseMessageFileSuccessCallbackResult = e.detail.fileObjects;
+      const pormises: Promise<any>[] = [];
+      fileObjects.tempFiles.forEach(fileObject => {
+        pormises.push(Upload.uploadMessageFile(fileObject));
+      })
+      Promise.all(pormises).then(res => {
+        resolve(res);
+      }).catch(err => {
+        reject(err);
+      })
     })
   },
+
 
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    console.log(options.gid);
+    if (options.tid) {
+      Team.getTeamInfoByTid('1717d492d49').then(teamInfo => {
+        this.setData({
+          teamInfo: teamInfo
+        })
+        Team.queryTeamFileList('1717d492d49', 1).then(res => {
+          res.forEach(file => {
+            file.isChecked = false;
+          })
+          this.setData({
+            files: res
+          })
 
-    wx.hideShareMenu();
-    const userInfo = User.getUserInfo();
-    const oFiles = this.data.files;
-    for (let file of oFiles) {
-      (file.catagory as any) = fileCatagory[file.catagory];
+        })
+
+      })
     }
-    this.setData({
-      groupCreator: userInfo,
-      files: oFiles,
-      gid: parseInt(options.gid as string)
-    })
 
   },
 

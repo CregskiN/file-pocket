@@ -1,7 +1,6 @@
 import Https from '../utils/https';
 
 import { Openid_SessionKeyType, CustomUserInfo } from '../utils/typing';
-import { Response } from '../../typings/response';
 
 
 interface GetUserInfoResult {
@@ -15,7 +14,6 @@ interface GetUserInfoResult {
 }
 
 class User {
-
 
     /**
      * 登陆： wx.checkSession检查是否过期 ？ wx.login + 加入缓存 : 从缓存提取openid + session_key

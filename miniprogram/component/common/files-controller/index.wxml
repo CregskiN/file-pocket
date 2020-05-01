@@ -1,10 +1,10 @@
 <!-- component/common/files-controller/index.wxml -->
 <view class="files-controller">
-    <c-topBar editting="{{editting}}"
+    <c-topBar editting="{{editting}}" selectCount="{{selectList.length}}"
         bind:outEdit="outEdit" bind:selectAll="onSelecteAll"
     />
 
-    <scroll-view class="scroll_view" scroll-y="true">
+    <scroll-view class="{{editting ? 'scroll_view scroll_view_editting' : 'scroll_view'}}" scroll-y="true">
         <block wx:for="{{files}}" wx:key="id">
             <c-fileItem file="{{item}}" editting="{{editting}}" isChecked="{{item.isChecked}}"
                 bind:select="onSelect"
@@ -12,7 +12,7 @@
         </block>
     </scroll-view>
 
-    <c-console type="my_file" selectCount="{{selecteList.length}}" editting="{{editting}}"
-        bind:inEdit="inEdit" bind:uploadLocalImg="onUploadLocalImg"
+    <c-console type="{{type}}" selectCount="{{selecteList.length}}" editting="{{editting}}"
+        bind:inEdit="inEdit" bind:uploadLocalImg="onUploadLocalImg" bind:uploadMessageFile="onUploadMessageFile"
     />
 </view>

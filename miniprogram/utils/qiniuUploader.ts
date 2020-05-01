@@ -1,6 +1,14 @@
 // created by gpake
 // updated by jellyfishmix
 
+interface QiniuUploaderResData {
+  fileUrl: string,
+  fsize: number,
+  hash: string,
+  key: string,
+  mimeType: string
+}
+
 
 
 (function () {
@@ -120,11 +128,10 @@
         //     dataString = String.fromCharCode.apply(null, res.data.data)
         //   }
         try {
-          var dataObject = JSON.parse(dataString);
+          var dataObject: QiniuUploaderResData = JSON.parse(dataString);
           // 拼接fileUrl
           var fileUrl = config.qiniuBucketUrlPrefix + '/' + dataObject.key;
           dataObject.fileUrl = fileUrl;
-          console.log('wx.upload().success', res);
 
           if (success) {
             success(dataObject);

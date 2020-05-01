@@ -3,7 +3,9 @@
     "c-imgUpload":"../../component/found/img-upload/img-upload",
     "c-fileItem":"../../component/detail/file-item/file-item",
     "c-console":"../../component/detail/console/console",
-    "c-topBar":"../../component/detail/top-bar/top-bar"
+    "c-topBar":"../../component/detail/top-bar/top-bar",
+    "c-fileController":"../../component/common/files-controller/index",
+    "c-teamHeader":"../../component/detail/team-header/index"
   },
   "navigationBarTitleText": "口袋详情"
 }
