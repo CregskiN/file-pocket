@@ -1,11 +1,11 @@
 // component/member/member-item/member-item.js
-import moment from 'moment';
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
     member: Object,
+    userInfo: Object,
   },
 
   /**

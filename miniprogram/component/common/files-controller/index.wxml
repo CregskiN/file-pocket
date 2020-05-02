@@ -4,7 +4,10 @@
         bind:outEdit="outEdit" bind:selectAll="onSelecteAll"
     />
 
-    <scroll-view class="{{editting ? 'scroll_view scroll_view_editting' : 'scroll_view'}}" scroll-y="true">
+    <scroll-view class="{{editting ? 'scroll_view scroll_view_editting' : 'scroll_view'}}"
+        scroll-y="true" enable-back-to-top="true" lower-threshold="70"
+        bind:scrolltolower="onScrollToBottom"
+    >
         <block wx:for="{{files}}" wx:key="id">
             <c-fileItem file="{{item}}" editting="{{editting}}" isChecked="{{item.isChecked}}"
                 bind:select="onSelect"
@@ -12,7 +15,10 @@
         </block>
     </scroll-view>
 
-    <c-console type="{{type}}" selectCount="{{selecteList.length}}" editting="{{editting}}"
-        bind:inEdit="inEdit" bind:uploadLocalImg="onUploadLocalImg" bind:uploadMessageFile="onUploadMessageFile"
+    <c-console type="{{type}}" selectCount="{{selecteList.length}}" editting="{{editting}}" teamInfo="{{teamInfo}}"
+        bind:inEdit="inEdit"
+        bind:uploadLocalImg="onUploadLocalImg" 
+        bind:uploadMessageFile="onUploadMessageFile"
+        bind:delete="onDeleteFile"
     />
 </view>

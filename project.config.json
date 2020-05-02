@@ -77,7 +77,14 @@
 					"id": 2,
 					"name": "项目组详情页面",
 					"pathName": "pages/detail/detail",
-					"query": "tid= 1717d310cf2",
+					"query": "tid=171d05c8b1b&action=join",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "项目成员页",
+					"pathName": "pages/member/member",
+					"query": "",
 					"scene": null
 				}
 			]

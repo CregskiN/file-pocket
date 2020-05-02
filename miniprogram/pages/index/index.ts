@@ -1,15 +1,10 @@
-import User from '../../models/User';
 import Team from '../../models/Team';
 import { getWindowInfo } from '../../utils/util';
 import { GlobalDataType, CustomUserInfo } from '../../utils/typing';
-import Https from '../../utils/https';
-// import { relativeTimeThreshold } from 'moment';
-
 
 const app = getApp();
 
 const floatBtnIconClass = 'iconfont icon-bingtu';
-
 
 Page({
 
@@ -17,6 +12,7 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
+		officialTeamList: [] as Response.OfficialTeam[],
 		teams: [] as Response.TeamType[],
 		isLogin: true,
 		buttonTop: 10000,
@@ -33,6 +29,12 @@ Page({
 		isLoading: true,
 
 		current: 0,
+
+		isModifing: false,
+		modifyTeam: {} as Response.TeamDetailType,
+
+		selectTeam: {} as Response.TeamDetailType,
+		isShareWindowVisible: false,
 	},
 
 
@@ -81,6 +83,80 @@ Page({
 	},
 
 	/**
+	 * 重命名 - 获取选中项目组信息。含鉴权
+	 * @param e 
+	 */
+	onRename(e: any) {
+		const tid = e.detail.tid;
+		const uid = this.data.userInfo.uid;
+		Team.getTeamMemberListByTid(tid).then(memberList => {
+			for (const member of memberList) {
+				if (member.uid === uid && member.userGrade < 3) {
+					Team.queryTeamInfoByTid(tid).then(modifyTeam => {
+						this.setData({
+							modifyTeam,
+							isModifing: true,
+						})
+					})
+				} else {
+					wx.showToast({
+						title: '权限不足',
+						icon: 'none'
+					})
+				}
+			}
+		})
+	},
+
+	/**
+	 * 取消修改
+	 */
+	onModifyCancel() {
+		this.setData({
+			isModifing: false,
+			modifyTeam: {} as any,
+		})
+	},
+
+	/**
+	 * 确认修改项目组信息
+	 */
+	onModifyComplete(e: any) {
+		// const teamType = e.detail.teamType;
+		// if(teamType === '')
+		this.setData({
+			isModifing: false,
+			modifyTeam: {} as any,
+		});
+		Team.getOfficialTeamList().then(officialTeamList => {
+			this.setData({
+				officialTeamList,
+			})
+		})
+	},
+
+	/**
+	 * 邀请加入项目组 -> 设置selectTeam + 显示弹窗
+	 * @param e 
+	 */
+	onInvite(e: any) {
+		this.setData({
+			selectTeam: e.detail.selectTeam,
+			isShareWindowVisible: true,
+		})
+	},
+
+	/**
+	 * 邀请
+	 * @param e 
+	 */
+	onShareCancel(e: any) {
+		this.setData({
+			isShareWindowVisible: false,
+		})
+	},
+
+	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad() {
@@ -89,9 +165,9 @@ Page({
 			const { isAuthorized, isLogin, userInfo } = globalData;
 			console.log('Index.onload - globalData is', globalData);
 
-			Team.getOfficialTeamList().then(res => {
+			Team.getOfficialTeamList().then(officialTeamList => {
 				this.setData({
-					teams: (res as any).data,
+					officialTeamList,
 					userInfo,
 					isLogin,
 					isAuthorized,
@@ -178,6 +254,9 @@ Page({
 	 */
 	onShareAppMessage(opts): WechatMiniprogram.Page.ICustomShareContent {
 		console.log(opts.target)
-		return {}
+		return {
+			title: `快来加入${this.data.selectTeam.teamName}吧！`,
+			path: `/pages/detail/detail?tid=${this.data.selectTeam.tid}&action=join`
+		}
 	}
 })

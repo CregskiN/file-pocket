@@ -1,9 +1,11 @@
 {
   "usingComponents": {
-    "c-item":"../../component/index/item/item",
-    "c-floatBtn":"../../component/index/floatBtn/floatBtn",
-    "c-authorize":"../../component/common/authorize/authorize",
-    "c-loading":"../../component/common/loading/index"
+    "c-item": "../../component/index/item/item",
+    "c-floatBtn": "../../component/index/floatBtn/floatBtn",
+    "c-authorize": "../../component/common/authorize/authorize",
+    "c-loading": "../../component/common/loading/index",
+    "c-modifyTeam": "../../component/common/modify-team/index",
+    "c-shareWindow": "../../component/common/share-window/index"
   },
   "navigationBarTitleText": "文件口袋",
   "backgroundTextStyle": "dark"

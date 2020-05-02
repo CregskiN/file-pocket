@@ -8,6 +8,7 @@ Component({
     selectCount: Number,
     tid: Number,
     type: String, // 控制台类型：1.team 2.my_file 
+    teamInfo: Object,
   },
   options: {
     addGlobalClass: true
@@ -84,7 +85,7 @@ Component({
      */
     toMember() {
       wx.navigateTo({
-        url: '/pages/member/member?tid=1'
+        url: `/pages/member/member?tid=${this.data.teamInfo.tid}`
       })
     },
 

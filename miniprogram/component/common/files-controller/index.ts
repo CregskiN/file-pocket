@@ -1,5 +1,3 @@
-import Upload from '../../../models/Upload';
-
 // component/common/files-controller/index.js
 Component({
   /**
@@ -8,6 +6,8 @@ Component({
   properties: {
     files: Array,
     type: String,
+    isLazyLoading: Boolean,
+    teamInfo: Object,
   },
 
   /**
@@ -110,7 +110,6 @@ Component({
 
     },
 
-
     /**
      * 上传本地图片
      * @param e 
@@ -131,6 +130,30 @@ Component({
       this.triggerEvent('uploadMessageFile', {
         fileObjects: e.detail.fileObjects
       })
+    },
+
+    /**
+     * 批量删除文件
+     */
+    onDeleteFile() {
+      this.triggerEvent('deleteFile', {
+        fileIds: this.data.selectList
+      })
+      this.outEdit();
+    },
+
+    /**
+     * 
+     * @param e 滚动事件
+     */
+    onScrollToBottom(e: any) {
+      if (!this.properties.isLazyLoading) {
+        this.setData({
+          isLazyLoading: true
+        });
+        this.triggerEvent('loadMore');
+      }
+
     }
 
   }

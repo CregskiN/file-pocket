@@ -1,13 +1,21 @@
 <!-- miniprogram/pages/detail/detail.wxml -->
 <view class="detail_container">
     
-    <view class="team-header_wrapper">
+    <view class="team-header_wrapper" bind:tap="onShowData">
         <c-teamHeader teamInfo="{{teamInfo}}"/>
     </view>
 
     <view class="file-controller_wrapper">
-        <c-fileController type="detail" files="{{files}}"
-            bind:uploadLocalImg="onUploadLocalImg" bind:uploadMessageFile="onUploadMessageFile"
+        <c-fileController type="detail" files="{{files}}" isLazyLoading="{{isLazyLoading}}" teamInfo="{{teamInfo}}"
+            bind:uploadLocalImg="onUploadLocalImg"
+            bind:uploadMessageFile="onUploadMessageFile" 
+            bind:deleteFile="onDeleteFile"
+            bind:loadMore="onLoadMore"
         />
     </view>
 </view>
+
+<c-loading lint="正在进入口袋..." isLoading="{{isLoading}}"/>
+<c-authorize isAuthorized="{{isAuthorized}}" 
+    bind:authorize="onAuthorize"
+/>

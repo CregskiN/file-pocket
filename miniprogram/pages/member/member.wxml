@@ -1,14 +1,11 @@
 <!-- miniprogram/pages/member/member.wxml -->
 <view class="member_container">
-    <view class="member_body">
-        <view class="member_body_manager">
-            <c-memberItem wx:for="{{members}}" wx:key="uid" member="{{item}}" bind:delete="onDelete"/>
-        </view>
 
-        <!-- <view class="member_body_member">
-            <c-memberItem />
-        </view> -->
-    </view>
+    <scroll-view class="member_body" scroll-y="true">
+        <c-memberItem wx:for="{{members}}" wx:key="uid" member="{{item}}" userInfo="{{userInfo}}"
+            bind:delete="onDelete"
+        />
+    </scroll-view>
 
     <view class="member_invitation">
         <button class="member_invitation_btn" open-type="share">一键邀请更多好友</button>

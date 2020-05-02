@@ -1,5 +1,7 @@
 <!-- component/common/share-window/index.wxml -->
-<view class="share-window_container" hidden="{{!isShareWindowVisible}}">
+<view class="share-window_container" hidden="{{!isShareWindowVisible}}" 
+    bind:tap="onCancel"
+>
     <view class="float-window_container">
         <view class="float-window_title">{{title}}</view>
         <view class="float-window_body">{{content}}</view>

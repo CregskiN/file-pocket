@@ -1,11 +1,12 @@
 // created by gpake
 // updated by jellyfishmix
 
-interface QiniuUploaderResData {
+export interface QiniuUploaderResData { 
   fileUrl: string,
   fsize: number,
   hash: string,
   key: string,
+  fileName?: string;
   mimeType: string
 }
 
@@ -39,7 +40,7 @@ interface QiniuUploaderResData {
   }
 
   interface Options {
-    region: any;
+    region: string;
     uptoken: string;
     uptokenURL: string;
     uptokenFunc: () => void;
@@ -97,7 +98,7 @@ interface QiniuUploaderResData {
 
   // 正式上传
   function doUpload(filePath: string, success: any, fail: any, options: any, progress: any, cancelTask: any) {
-    console.log(arguments);
+    // console.log(arguments);
 
     if (null == config.qiniuUploadToken && config.qiniuUploadToken.length > 0) {
       console.error('qiniu UploadToken is null, please check the init config or networking');

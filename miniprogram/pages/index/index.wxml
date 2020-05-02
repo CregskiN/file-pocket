@@ -16,19 +16,28 @@
 		>
 			<swiper-item class="index_swiper_item">
 				<scroll-view scroll-y="true" style="width:100vw;height:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
-					<c-item wx:for="{{teams}}" wx:key="id" team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="normal"/>
+					<c-item wx:for="{{officialTeamList}}" wx:key="id" team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="normal"
+						teamType="team_all"
+						bind:rename="onRename" bind:invite="onInvite"
+					/>
 				</scroll-view>
 			</swiper-item>
 
 			<swiper-item class="index_swiper_item">
 				<scroll-view scroll-y="true" style="width:100vw;height:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
-					<c-item wx:for="{{teams}}" wx:key="id" team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="normal"/>
+					<c-item wx:for="{{officialTeamList}}" wx:key="id" team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="normal"
+						teamType="team_create"
+						bind:rename="onRename"
+					/>
 				</scroll-view>
 			</swiper-item>
 
 			<swiper-item class="index_swiper_item">
 				<scroll-view scroll-y="true" style="width:100vw;height:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
-					<c-item wx:for="{{teams}}" wx:key="id" team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="normal"/>
+					<c-item wx:for="{{officialTeamList}}" wx:key="id" team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="normal"
+						teamType="team_join"
+						bind:rename="onRename" bind:invite="onInvite"
+					/>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -51,5 +60,11 @@
 
 <c-loading lint="{{lints.loading}}" isLoading="{{isLoading}}"/>
 <c-authorize isAuthorized="{{isAuthorized}}" bind:authorize="onAuthorize"/>
-
+<c-modifyTeam isModifing="{{isModifing}}" modifyTeam="{{modifyTeam}}"
+	bind:modifyCancel="onModifyCancel"
+	bind:modifyComplete="onModifyComplete"
+/>
+<c-shareWindow isShareWindowVisible="{{isShareWindowVisible}}"
+	bind:cancel="onShareCancel"
+/>
 

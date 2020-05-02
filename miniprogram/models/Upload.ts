@@ -1,6 +1,6 @@
 import User from './User';
 import { getTime } from '../utils/util';
-import { QiniuUploaderResData } from '../utils/typing';
+import { QiniuUploaderResData } from '../utils/qiniuUploader'
 
 const qiniuUploader = require('../utils/qiniuUploader');
 
@@ -46,7 +46,6 @@ export default class Upload {
             var filePath = imgObject.tempFilePaths[0];
             const chunks = filePath.split('.');
             const time = getTime(userInfo.nickName!);
-            var fileName = `${userInfo.nickName}_${time}.${chunks[chunks.length - 1]}`;
 
             // 向七牛云上传
             qiniuUploader.upload(
@@ -76,15 +75,17 @@ export default class Upload {
      * @param imgObject 
      */
     static uploadMessageFile(fileObject: WechatMiniprogram.ChooseFile) {
-        return new Promise((resolve, reject) => {
+        return new Promise<QiniuUploaderResData>((resolve, reject) => {
             // 初始化七牛云相关参数
             initQiniu();
             // 微信 API 选择文件
             const filePath = fileObject.path;
             const fileName = fileObject.name;
+
             qiniuUploader.upload(
                 filePath,
-                (res: any) => {
+                (res: QiniuUploaderResData) => {
+                    res.fileName = fileName;
                     resolve(res);
                 },
                 (error: any) => {

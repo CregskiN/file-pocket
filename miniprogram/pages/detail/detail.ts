@@ -2,8 +2,13 @@ import User from '../../models/User';
 import Team from '../../models/Team';
 import Upload from '../../models/Upload';
 import { generateFileNameAuto } from '../../utils/util';
-import { fileCatagory, QiniuUploaderResData } from '../../utils/typing'
+import { QiniuUploaderResData } from '../../utils/qiniuUploader'
 import File from '../../models/File';
+import { CustomUserInfo, GlobalDataType } from '../../utils/typing';
+import { teamInfoFormatter } from '../../utils/formatters';
+import moment from 'moment';
+
+const app = getApp();
 
 Page({
 
@@ -13,63 +18,56 @@ Page({
   data: {
     groupCreator: {},
     files: [] as Response.FileType[],
-    isLogin: true,
     selectCount: 0,
     selectList: [] as string[],
     tid: '',
     teamInfo: {} as Response.TeamDetailType,
+    userInfo: {} as CustomUserInfo,
+
+    pageId: 1,
+    isLazyLoading: false,
 
     uploadCount: -1,
     isUploading: false,
+
+    isAuthorized: true,
+    isLoading: true,
+
+    isDeleting: false, // 保留变量，执行删除操作过渡动画
   },
 
+  onShowData() {
+    console.log(this.data);
+  },
 
   /**
  * 上传本地图片，上传多张的本质是多次触发选择事件
  * @param e 
  */
   onUploadLocalImg(e: any) {
-    return new Promise((resolve, reject) => {
-      const chooseLocalImgs: WechatMiniprogram.ChooseImageSuccessCallbackResult = e.detail.chooseLocalImgs;
-      this.setData({
-        uploadCount: chooseLocalImgs.tempFilePaths.length
-      })
-      const promises: Promise<any>[] = [];
-      chooseLocalImgs.tempFiles.forEach((value, index) => {
-        const imgObject = {
-          errMsg: chooseLocalImgs.errMsg,
-          tempFilePaths: new Array(chooseLocalImgs.tempFilePaths[index]),
-          tempFiles: new Array(chooseLocalImgs.tempFiles[index])
-        }
-        promises.push(Upload.uploadLocalImg(imgObject));
-      });
-
-      if (promises.length === chooseLocalImgs.tempFilePaths.length) {
-        Promise.all(promises).then((res) => {
-          const uploadToTeamFiles: Request.SyncFileWithBackendReq = [];
-          (res as QiniuUploaderResData[]).forEach((uploaderResData) => {
-            const { uid, nickName } = User.getUserInfoStorage();
-            uploadToTeamFiles.push({
-              fileSize: uploaderResData.fsize,
-              fileUrl: uploaderResData.fileUrl,
-              key: uploaderResData.key,
-              hash: uploaderResData.hash,
-              mimeType: uploaderResData.mimeType,
-              tid: this.data.teamInfo.tid,
-              uid: uid as string,
-              fileName: generateFileNameAuto(uploaderResData.mimeType, nickName as string)
-            });
-            File.syncFileWithBackend(uploadToTeamFiles).then(res => {
-              resolve(res);
-            })
-          })
-        }).catch(err => {
-          reject(err);
-        })
+    const chooseLocalImgs: WechatMiniprogram.ChooseImageSuccessCallbackResult = e.detail.chooseLocalImgs;
+    const uploadCount = chooseLocalImgs.tempFilePaths.length;
+    const promises: Promise<any>[] = [];
+    chooseLocalImgs.tempFiles.forEach((value, index) => {
+      const imgObject = {
+        errMsg: chooseLocalImgs.errMsg,
+        tempFilePaths: new Array(chooseLocalImgs.tempFilePaths[index]),
+        tempFiles: new Array(chooseLocalImgs.tempFiles[index])
       }
+      promises.push(Upload.uploadLocalImg(imgObject));
+    });
 
-
-    })
+    if (promises.length === uploadCount) {
+      this._syncFileWithBackend(promises).then(res => {
+        if (res.success) {
+          wx.showToast({
+            title: '上传成功'
+          })
+          this._getMoreFileList(this.data.teamInfo.tid, 1);
+          this._refreshTeamInfo(this.data.teamInfo.tid);
+        }
+      })
+    }
 
   },
 
@@ -78,43 +76,120 @@ Page({
    * @param e 
    */
   onUploadMessageFile(e: any) {
-    return new Promise((resolve, reject) => {
-      const fileObjects: WechatMiniprogram.ChooseMessageFileSuccessCallbackResult = e.detail.fileObjects;
-      const pormises: Promise<any>[] = [];
-      fileObjects.tempFiles.forEach(fileObject => {
-        pormises.push(Upload.uploadMessageFile(fileObject));
-      })
-      Promise.all(pormises).then(res => {
-        resolve(res);
-      }).catch(err => {
-        reject(err);
-      })
-    })
+    const fileObjects: WechatMiniprogram.ChooseMessageFileSuccessCallbackResult = e.detail.fileObjects;
+    const uploadCount = fileObjects.tempFiles.length;
+    const promises: Promise<any>[] = [];
+    fileObjects.tempFiles.forEach(fileObject => {
+      promises.push(Upload.uploadMessageFile(fileObject));
+    });
+
+    if (promises.length === uploadCount) {
+      this._syncFileWithBackend(promises).then(res => {
+        if (res.success) {
+          wx.showToast({
+            title: '上传成功'
+          });
+          this._getMoreFileList(this.data.teamInfo.tid, 1);
+          this._refreshTeamInfo(this.data.teamInfo.tid);
+        }
+      });
+    }
+  },
+
+  /**
+   *  批量删除
+   * @param e 
+   */
+  onDeleteFile(e: any) {
+    File.deleteFiles(e.detail.fileIds, this.data.teamInfo.tid).then(res => {
+      if (res.success) {
+        wx.showToast({
+          title: '删除成功'
+        });
+        this._getMoreFileList(this.data.teamInfo.tid, 1);
+        this._refreshTeamInfo(this.data.teamInfo.tid);
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+
   },
 
 
+  /**
+   * 懒加载获取更多
+   */
+  onLoadMore() {
+    this._getMoreFileList(this.data.teamInfo.tid).then(res => {
+      this.setData({
+        isLazyLoading: false,
+      })
+    });
+  },
+
+  /**
+  * 完成授权逻辑，撤除授权窗口
+  */
+  onAuthorize() {
+    const { tid } = this.data.teamInfo;
+    const userInfo = User.getUserInfoStorage();
+    const { uid } = userInfo;
+    Team.enterTeamByTidAndUid(tid, (uid as string)).then(teamInfo => {
+      this.setData({
+        teamInfo: teamInfoFormatter(teamInfo),
+        isAuthorized: true,
+        userInfo,
+      });
+    }).catch(err => {
+      console.log('加入失败', err);
+    })
+  },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
-    if (options.tid) {
-      Team.getTeamInfoByTid('1717d492d49').then(teamInfo => {
-        this.setData({
-          teamInfo: teamInfo
-        })
-        Team.queryTeamFileList('1717d492d49', 1).then(res => {
-          res.forEach(file => {
-            file.isChecked = false;
-          })
+  onLoad(options: any) {
+    const { tid, action } = options;
+    const init: Promise<GlobalDataType> = app.init();
+
+    init.then(globalData => {
+      const { isAuthorized, isLogin } = globalData;
+      const userInfo = User.getUserInfoStorage();
+      const { uid } = userInfo;
+      console.log('Detail.onload - globalData is', globalData);
+      Team.queryTeamInfoByTid(tid).then(teamInfo => {
+        this._getMoreFileList(tid, 1).then(res => {
           this.setData({
-            files: res
-          })
-
+            isLoading: false,
+            isAuthorized,
+            isLogin,
+            teamInfo: teamInfoFormatter(teamInfo),
+            userInfo,
+          });
         })
 
-      })
-    }
+        // 已授权 -> 直接加入
+        if (isAuthorized && uid) {
+          // Team.qu
+          Team.enterTeamByTidAndUid(tid, uid).then(teamInfo => {
+            console.log('成功加入口袋');
+            this.setData({
+              teamInfo: teamInfoFormatter(teamInfo),
+            })
+          }).catch(err => {
+            console.log('加入失败');
+          })
+
+        }
+      });
+
+    }).catch(err => { // 报错逻辑的最后一道防线
+      console.log('页面初始化错误', err);
+    });
+
+    this._getMoreFileList(tid, 1); // 加载文件列表
+    this._refreshTeamInfo(tid); // 刷新项目组信息
+
 
   },
 
@@ -164,7 +239,102 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage(opts): WechatMiniprogram.Page.ICustomShareContent {
-    console.log(opts.target)
-    return {}
+    console.log(this.data)
+    if (this.data.teamInfo.tid && this.data.userInfo !== {}) {
+      return {
+        title: `来加入${this.data.teamInfo.teamName}吧！`,
+        path: `/pages/detail/detail?tid=${this.data.teamInfo.tid}&action=join`,
+        // imageUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg'
+      }
+    }
+    return {
+      title: `文件口袋出现异常`,
+      path: `/pages/index/index`,
+      // imageUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg'
+    }
+  },
+
+  /**
+   * 同步文件只后端
+   * @param promises 
+   */
+  _syncFileWithBackend(promises: Promise<any>[]) {
+    return new Promise<Response.UploadFileToTeamRes>((resolve, reject) => {
+      Promise.all(promises).then((res) => {
+        const uploadToTeamFiles: Request.SyncFileWithBackendFileType[] = [];
+        const { uid, nickName } = User.getUserInfoStorage();
+        const tid = this.data.teamInfo.tid;
+        (res as QiniuUploaderResData[]).forEach((uploaderResData) => {
+          uploadToTeamFiles.push({
+            fileSize: uploaderResData.fsize,
+            fileUrl: uploaderResData.fileUrl,
+            fileKey: uploaderResData.key,
+            fileHash: uploaderResData.hash,
+            mimeType: uploaderResData.mimeType,
+            tid: this.data.teamInfo.tid,
+            uid: uid as string,
+            fileName: uploaderResData.fileName ? uploaderResData.fileName : generateFileNameAuto(uploaderResData.mimeType, nickName as string)
+          });
+        })
+        File.syncFileWithBackend(uploadToTeamFiles, tid, uid as string).then(res => {
+          resolve(res);
+        })
+      }).catch(err => {
+        console.log(err);
+        //@TODO: 统一错误提示
+        reject(err);
+      })
+    })
+
+  },
+
+  /**
+   * 获取最新页的文件列表
+   * @param tid 
+   */
+  _getMoreFileList(tid: string, pageId?: number) {
+    return new Promise<Response.FileType[]>((resolve, reject) => {
+      const pId = pageId ? pageId : this.data.pageId;
+
+      Team.queryTeamFileList(tid, pId).then(newFiles => {
+        newFiles.forEach(file => {
+          file.isChecked = false;
+          const chunks = file.fileName.split('.');
+          file.mimeType = chunks[chunks.length - 1];
+          file.creationTime = moment(file.creationTime).format('YYYY-MM-DD');
+        })
+        if (pageId === 1) {
+          this.setData({
+            files: newFiles,
+            pageId: pId + 1,
+          })
+        } else {
+          this.setData({
+            files: [
+              ...this.data.files,
+              ...newFiles
+            ],
+            pageId: pId + 1,
+          })
+        }
+
+        resolve();
+      })
+    })
+  },
+
+  /**
+   * 刷新项目组信息
+   */
+  _refreshTeamInfo(tid: string) {
+    return new Promise((resovle, reject) => {
+      Team.queryTeamInfoByTid(tid).then(teamInfo => {
+        this.setData({
+          teamInfo: teamInfoFormatter(teamInfo)
+        });
+        resovle(teamInfo);
+      })
+    })
+
   }
 })

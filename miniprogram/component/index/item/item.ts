@@ -39,7 +39,7 @@ Component({
 							switch (res.tapIndex) {
 								case 0: {
 									this.triggerEvent('invite', {
-										tid: this.data.team.tid
+										selectTeam: this.properties.team
 									})
 									break;
 								}

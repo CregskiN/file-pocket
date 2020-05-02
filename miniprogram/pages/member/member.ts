@@ -1,4 +1,7 @@
+import moment from 'moment';
 import User from '../../models/User';
+import Team from '../../models/Team';
+import { CustomUserInfo } from '../../utils/typing';
 
 Page({
 
@@ -6,81 +9,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    nickName: '',
-    tid: -1,
-    members: [{
-      uid: 0,
-      tid: 1,
-      username: '产品大刘',
-      createdTeamCounts: 20,
-      managedTeamCounts: 30,
-      joinedTeamCounts: 40,
-      avatarUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
-    }, {
-      uid: 1,
-      tid: 1,
-      username: '产品良木',
-      createdTeamCounts: 20,
-      managedTeamCounts: 30,
-      joinedTeamCounts: 40,
-      avatarUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
-    }, {
-      uid: 2,
-      tid: 1,
-      username: '后端士杰',
-      createdTeamCounts: 20,
-      managedTeamCounts: 30,
-      joinedTeamCounts: 40,
-      avatarUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
-    }, {
-      uid: 3,
-      tid: 1,
-      username: '前端老吴',
-      createdTeamCounts: 20,
-      managedTeamCounts: 30,
-      joinedTeamCounts: 40,
-      avatarUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
-    }, {
-      uid: 3,
-      tid: 1,
-      username: '前端老吴',
-      createdTeamCounts: 20,
-      managedTeamCounts: 30,
-      joinedTeamCounts: 40,
-      avatarUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
-    }, {
-      uid: 3,
-      tid: 1,
-      username: '前端老吴',
-      createdTeamCounts: 20,
-      managedTeamCounts: 30,
-      joinedTeamCounts: 40,
-      avatarUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
-    }, {
-      uid: 3,
-      tid: 1,
-      username: '前端老吴',
-      createdTeamCounts: 20,
-      managedTeamCounts: 30,
-      joinedTeamCounts: 40,
-      avatarUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
-    }, {
-      uid: 3,
-      tid: 1,
-      username: '前端老吴',
-      createdTeamCounts: 20,
-      managedTeamCounts: 30,
-      joinedTeamCounts: 40,
-      avatarUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
-    }, {
-      uid: 3,
-      tid: 1,
-      username: '前端老吴',
-      createdTeamCounts: 20,
-      managedTeamCounts: 30,
-      joinedTeamCounts: 40,
-      avatarUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
-    }]
+    members: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}] as FilePocket.MemberType[],
+    teamInfo: {} as Response.TeamDetailType,
+    userInfo: {} as CustomUserInfo,
   },
 
   /**
@@ -92,26 +23,31 @@ Page({
 
   },
 
-
-  /**
-   * 一键邀请更多好友
-   */
-  onInvite() {
-
-  },
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options: any) {
-    console.log('member 页面 onload获取 - ', options);
-    const { nickName } = User.getUserInfo();
-    const { tid } = options;
+    const tid = options.tid;
+    Team.getTeamMemberListByTid(tid).then(memberList => {
+      memberList.forEach(member => {
+        member.creationTime = moment(member.creationTime).format('YYYY-MM-DD');
+      });
+      const userInfo = User.getUserInfoStorage();
+      Team.queryTeamInfoByTid(tid).then(teamInfo => {
+        this.setData({
+          members: [
+            ...memberList,
+            ...this.data.members,
+          ],
+          userInfo,
+          teamInfo
+        })
+      })
 
-    this.setData({
-      tid,
-      nickName,
-    })
+    }).catch(err => {
+      console.log(err);
+    });
+
     wx.showShareMenu({
       withShareTicket: true
     })
@@ -163,18 +99,18 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage(opts): WechatMiniprogram.Page.ICustomShareContent {
-    console.log(opts.target)
-    if (this.data.tid !== -1 && this.data.nickName !== '') {
+    console.log(this.data)
+    if (this.data.teamInfo.tid && this.data.userInfo !== {}) {
       return {
-        title: `我是${this.data.nickName}`,
-        path: `/pages/detail/detail?tid=${this.data.members.length}`,
-        imageUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
+        title: `来加入${this.data.teamInfo.teamName}吧！`,
+        path: `/pages/detail/detail?tid=${this.data.teamInfo.tid}&action=join`,
+        // imageUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg'
       }
     }
     return {
-      title: `小程序卡片转发出错，请不要点击`,
-      path: `/pages/detail/detail`,
-      imageUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg',
+      title: `文件口袋出现异常`,
+      path: `/pages/index/index`,
+      // imageUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg'
     }
   }
 })

@@ -6,7 +6,7 @@
 
     border-radius: 15rpx;
     background-color: #fff;
-    box-shadow: #eee 0 0 10rpx;
+    /* box-shadow: #eee 0 0 10rpx; */
 
     display: flex;
     flex-direction: row;

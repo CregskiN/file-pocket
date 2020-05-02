@@ -68,7 +68,14 @@ declare namespace Request {
     }
 
     /**
-     * 进入项目组列表 reqData
+     * 获取项目组信息 reqData
+     */
+    interface QueryTeamInfoByTidReq {
+        tid: string;
+    }
+
+    /**
+     * 加入项目组 reqData
      */
     interface EnterTeamReq {
         uid: string;
@@ -90,8 +97,8 @@ declare namespace Request {
     interface SyncFileWithBackendFileType {
         tid: string;
         uid: string;
-        key: string;
-        hash: string;
+        fileKey: string;
+        fileHash: string;
         fileName: string;
         fileUrl: string;
         fileSize?: number;
@@ -101,7 +108,38 @@ declare namespace Request {
     /**
      * 同步文件至项目组类型 req
      */
-    type SyncFileWithBackendReq = SyncFileWithBackendFileType[];
+    interface SyncFileWithBackendReq {
+        tid: string;
+        uid: string;
+        fileInfoList: SyncFileWithBackendFileType[];
+    }
+
+    /**
+     * 删除文件
+     */
+    interface DeleteFilesReq {
+        tid: string;
+        fileInfoList: {
+            fileId: string
+        }[];
+    }
+
+    /**
+     * 获取成员列表
+     */
+    interface GetMemberListReq {
+        tid: string;
+    }
+
+    /**
+     * 更新项目组信息(重命名 + 更新头像)
+     */
+    interface UpdateTeamInfoReq {
+        tid: string;
+        newTeamName?: string;
+        newTeamAvatarUrl?: string;
+    }
+
 
     type Method = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
     type MIME = 'image/jpeg' | string;

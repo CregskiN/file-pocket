@@ -43,9 +43,9 @@
 
 .team-header_statistics {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
 
     margin-top: 15rpx;
 }
@@ -57,10 +57,12 @@
 }
 
 .team-header_fileCount {
-    margin: 0 0 0 15rpx;
-
     font-size: 25rpx;
 
+    color: #757575;
+}
+.team-header_creationTime {
+    font-size: 25rpx;
     color: #757575;
 }
 

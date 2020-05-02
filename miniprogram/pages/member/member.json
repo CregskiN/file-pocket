@@ -1,7 +1,6 @@
 {
   "usingComponents": {
-    "c-memberItem": "../../component/member/member-item/member-item",
-    "c-creatorItem": "../../component/member/member-item/member-item"
+    "c-memberItem": "../../component/member/member-item/member-item"
   },
   "navigationBarTitleText": "口袋成员"
 }

@@ -1,11 +1,11 @@
 import Team from '../../models/Team';
-Page({
 
+Page({
   /**
    * 页面的初始数据
    */
   data: {
-    teams: [],
+    officialTeamList: [] as Response.OfficialTeam[],
     isShareWindowVisible: false,
     isLoading: true,
     lints: {
@@ -18,6 +18,16 @@ Page({
    */
   onInvite() {
 
+  },
+
+  /**
+   * 关闭分享框
+   * @param e 
+   */
+  onCancel(e: any) {
+    this.setData({
+      isShareWindowVisible: false,
+    })
   },
 
   /**
@@ -48,10 +58,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad() {
-    const officialTeams = Team.getOfficialTeamList();
-    officialTeams.then(res => {
+    Team.getOfficialTeamList().then(officialTeamList => {
       this.setData({
-        teams: (res as any).data,
+        officialTeamList,
         isLoading: false,
       })
     })
@@ -104,7 +113,7 @@ Page({
    */
   onShareAppMessage(opts): WechatMiniprogram.Page.ICustomShareContent {
     return {
-      
+
     }
   }
 })

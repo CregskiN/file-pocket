@@ -6,14 +6,14 @@ export default class Team {
      * 获取官方项目组列表
      */
     static getOfficialTeamList() {
-        return new Promise((resolve, reject) => {
+        return new Promise<Response.OfficialTeam[]>((resolve, reject) => {
             const options = {
                 url: '/team/query_official_team_list',
                 method: 'GET' as 'GET',
             };
             Https.request<Request.GetOfficialTeamListReq, Response.GetOfficialTeamListRes>(options).then(res => {
                 console.log('成功获取官方项目组列表', res);
-                resolve(res);
+                resolve(res.data);
             }).catch(err => {
                 console.log('获取官方项目组列表失败', err);
                 reject(err);
@@ -91,25 +91,47 @@ export default class Team {
 
 
     /**
-     * 进入项目组，使用tid查询项目组信息
+     * 使用tid + uid查询项目组信息
      * @param tid
      */
-    static getTeamInfoByTid(tid: string) {
-        return new Promise<Response.TeamDetailType>((resolve, reject) => {
-            const uid = User.getUserInfoStorage().uid;
+    static queryTeamInfoByTid(tid: string) {
+        return new Promise<Response.QueryTeamInfoData>((resolve, reject) => {
             const options = {
                 url: '/team/query_team_info_by_tid',
                 method: 'GET' as "GET",
                 data: {
-                    uid: uid as string,
                     tid: tid as string
                 }
             }
-            Https.request<Request.EnterTeamReq, Response.EnterTeamDataRes>(options).then(res => {
+            Https.request<Request.QueryTeamInfoByTidReq, Response.QueryTeamInfoRes>(options).then(res => {
                 console.log('成功查询到项目组信息', res);
                 resolve(res.data);
             }).catch(err => {
                 console.log('查询项目组信息失败', err);
+                reject(err);
+            })
+        })
+
+    }
+
+    /**
+     * 加入项目组
+     * @param tid 
+     * @param uid 
+     */
+    static enterTeamByTidAndUid(tid: string, uid: string) {
+        return new Promise<Response.EnterTeamData>((resolve, reject) => {
+            const options = {
+                url: '/team/enter_team',
+                method: 'POST' as "POST",
+                data: {
+                    tid,
+                    uid,
+                }
+            };
+            Https.request<Request.QueryTeamInfoByTidReq, Response.EnterTeamDataRes>(options).then(res => {
+                resolve(res.data);
+            }).catch(err => {
                 reject(err);
             })
         })
@@ -121,8 +143,8 @@ export default class Team {
      * 使用tid查询项目组成员列表
      * @param tid 
      */
-    static getTeamUserListByTid(tid: string) {
-        return new Promise((resolve, reject) => {
+    static getTeamMemberListByTid(tid: string) {
+        return new Promise<FilePocket.MemberType[]>((resolve, reject) => {
             const options = {
                 url: '/team/query_team_user_list_by_tid',
                 method: 'GET' as "GET",
@@ -130,9 +152,9 @@ export default class Team {
                     tid
                 }
             }
-            Https.request(options).then(res => {
+            Https.request<Request.GetMemberListReq, Response.GetMemberListRes>(options).then(res => {
                 console.log('成功查询成员列表', res);
-                resolve(res);
+                resolve(res.data);
             }).catch(err => {
                 console.log('查询成员列表失败', err);
                 reject(err);
@@ -165,5 +187,35 @@ export default class Team {
         })
     }
 
+
+    /**
+     * 更新项目组信息（重命名、更换头像）
+     * @param tid 
+     * @param newTeamName 
+     * @param newTeamValue 
+     */
+    static updateTeamInfo(tid: string, newTeamName?: string, newTeamAvatarUrl?: string) {
+        return new Promise<Response.TeamDetailType>((resolve, reject) => {
+            const data: Request.UpdateTeamInfoReq = {
+                tid
+            };
+            if (newTeamName) {
+                data.newTeamName = newTeamName;
+            } else if (newTeamAvatarUrl) {
+                data.newTeamAvatarUrl = newTeamAvatarUrl;
+            }
+
+            const options = {
+                url: '/team/update_team_info',
+                method: 'POST' as "POST",
+                data: data
+            }
+            Https.request<Request.UpdateTeamInfoReq, Response.UpdateTeamInfoRes>(options).then(res => {
+                resolve(res.data);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    }
 
 }

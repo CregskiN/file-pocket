@@ -9,14 +9,13 @@
     position: relative;
 
     width: 100vw;
-
-    padding: 0 0 10vh 0;
+    height: 100vh;
 
     background-color: #f2f2f2;
 }
 
 .member_body {
-    height: 90%;
+    height: calc(100% - 135rpx);
     width: 100%;
 }
 
@@ -31,7 +30,7 @@
     left: 0;
     right: 0;
 
-    height: 10%;
+    height: 135rpx;
     width: 100%;
 }
 

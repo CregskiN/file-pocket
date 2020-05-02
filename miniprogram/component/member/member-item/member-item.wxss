@@ -8,7 +8,7 @@
 
     height: 140rpx;
     width: 95%;
-    margin: 0rpx auto 15rpx auto;
+    margin: 15rpx auto 0 auto;
 
     border-radius: 10rpx;
     box-shadow: #fff 0 0 10rpx;
@@ -53,9 +53,14 @@
     /* height: 30rpx; */
     width: 100%;
 
-    font-size: 35rpx;
+    font-size: 33rpx;
 
     /* color: #fff; */
+}
+
+.middle_userGrade {
+    font-size: 28rpx;
+    color: #bcc3ce;
 }
 
 .middle_joinTime {

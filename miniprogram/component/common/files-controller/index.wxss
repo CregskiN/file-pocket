@@ -8,13 +8,13 @@
 
 .scroll_view {
     width: 100%;
-    height: 100% - 15rpx; /* file-controller的css有bug */
+    height: calc(100%); /* file-controller的css有bug */
     padding-bottom: 135rpx;
     box-sizing: border-box;
 }
 
 .scroll_view_editting {
-    height: 100% - 80rpx;
+    height: calc(100% - 80rpx);
 }
 
 

@@ -61,7 +61,7 @@ App<AppOptionCustom>({
 	 * 页面初始化
 	 */
 	init() {
-		return new Promise((resolve, reject) => {
+		return new Promise<GlobalDataType>((resolve, reject) => {
 			User.login().then(OPENID_SESSIONKEY => {
 				console.log('login接口调用完成，获取OPENID_SESSIONKEY', OPENID_SESSIONKEY);
 				this.setGlobalData({

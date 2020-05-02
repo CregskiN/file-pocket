@@ -3,7 +3,7 @@ declare namespace Response {
     /**
      * 基类
      */
-    interface BaseResponse<T> extends WechatMiniprogram.RequestSuccessCallbackResult {
+    interface BaseResponse<T> {
         success: boolean;
         stateCode: number;
         stateMsg: string;
@@ -63,19 +63,23 @@ declare namespace Response {
      */
     interface TeamDetailType {
         tid: string;
-        id?: number;
+        id: number | undefined;
         teamName: string;
         avatarUrl: string;
         grade: number;
         fileCount: number;
-        creationTime: number;
+        creationTime: number | string;
         numberCount: number;
         createdNumberCount: number;
         joinedNumberCount: number;
         managedNumberCount: number;
-        modifiedTime?: string;
+        modifiedTime: string | undefined;
     }
 
+    /**
+     * 查询项目组信息
+     */
+    type QueryTeamInfoData = TeamDetailType;
 
     /**
      * 进入项目组，获取项目组信息(不包括文件列表)resData
@@ -97,7 +101,7 @@ declare namespace Response {
         uid: string;
         username: string;
         modifiedTime?: string;
-        creationTime: number;
+        creationTime: number | string;
     }
 
 
@@ -126,9 +130,16 @@ declare namespace Response {
     type GetCreatedTeamListRes = BaseResponse<TeamType[]>;
     type GetManagedTeamListRes = BaseResponse<TeamType[]>;
 
+    type QueryTeamInfoRes = BaseResponse<QueryTeamInfoData>
     type EnterTeamDataRes = BaseResponse<EnterTeamData>;
 
-    type UploadFileToTeamRes = BaseResponse<UploadFileToTeamData>
+    type UploadFileToTeamRes = BaseResponse<null>;
 
-    type QueryTeamFileListRes = BaseResponse<FileType[]>
+    type QueryTeamFileListRes = BaseResponse<FileType[]>;
+
+    type DeleteFilesRes = BaseResponse<null>;
+
+    type GetMemberListRes = BaseResponse<FilePocket.MemberType[]>;
+
+    type UpdateTeamInfoRes = BaseResponse<Response.TeamDetailType>;
 }
