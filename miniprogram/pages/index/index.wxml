@@ -6,9 +6,8 @@
 	<view class="index_body">
 
 		<scroll-view class="index_scroll_tab" scroll-x="true">
-			<view class="{{current == 0 ? 'tab_item active' : 'tab_item'}}" data-current="0" bind:tap="onSwitchTap">全部</view>
-			<view class="{{current == 1 ? 'tab_item active' : 'tab_item'}}" data-current="1" bind:tap="onSwitchTap">创建</view>
-			<view class="{{current == 2 ? 'tab_item active' : 'tab_item'}}" data-current="2" bind:tap="onSwitchTap">加入</view>
+			<view class="{{current == 0 ? 'tab_item active' : 'tab_item'}}" data-current="0" bind:tap="onSwitchTap">创建</view>
+			<view class="{{current == 1 ? 'tab_item active' : 'tab_item'}}" data-current="1" bind:tap="onSwitchTap">加入</view>
 		</scroll-view>
 
 		<swiper class="index_swiper" current="{{current}}"
@@ -16,27 +15,18 @@
 		>
 			<swiper-item class="index_swiper_item">
 				<scroll-view scroll-y="true" style="width:100vw;height:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
-					<c-item wx:for="{{officialTeamList}}" wx:key="id" team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="normal"
-						teamType="team_all"
-						bind:rename="onRename" bind:invite="onInvite"
+					<c-item wx:for="{{officialTeamList}}" wx:key="id" 
+						team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" userInfo="{{userInfo}}" type="create"
+						bind:rename="onRename" bind:invite="onInvite" bind:disband="onDisband"
 					/>
 				</scroll-view>
 			</swiper-item>
 
 			<swiper-item class="index_swiper_item">
 				<scroll-view scroll-y="true" style="width:100vw;height:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
-					<c-item wx:for="{{officialTeamList}}" wx:key="id" team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="normal"
-						teamType="team_create"
-						bind:rename="onRename"
-					/>
-				</scroll-view>
-			</swiper-item>
-
-			<swiper-item class="index_swiper_item">
-				<scroll-view scroll-y="true" style="width:100vw;height:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
-					<c-item wx:for="{{officialTeamList}}" wx:key="id" team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="normal"
-						teamType="team_join"
-						bind:rename="onRename" bind:invite="onInvite"
+					<c-item wx:for="{{officialTeamList}}" wx:key="id" 
+						team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" userInfo="{{userInfo}}" type="join" 
+						bind:invite="onInvite"
 					/>
 				</scroll-view>
 			</swiper-item>

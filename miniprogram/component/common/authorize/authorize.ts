@@ -32,7 +32,7 @@ Component({
 		 * @param e 
 		 */
 		onAuthorize(e) {
-			console.log(e);
+			// console.log(e);
 			const userInfo = e.detail.userInfo;
 			if (userInfo) {
 				User.setUserInfoStorage(userInfo);

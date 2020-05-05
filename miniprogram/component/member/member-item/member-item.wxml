@@ -12,7 +12,7 @@
     </view>
 
     <view class="right">
-        <view class="delete" bind:tap="onDelete" wx:if="{{member.userGrade<3 && member.uid !== userInfo.uid}}">
+        <view class="delete" bind:tap="onDelete" wx:if="{{member.userGrade===3 && member.uid !== userInfo.uid}}">
             踢除
         </view>
     </view>

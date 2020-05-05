@@ -5,7 +5,7 @@ Component({
    */
   properties: {
     item: Object,
-    uid: Number,
+    userInfo: Object,
   },
   options: {
     addGlobalClass: true
@@ -23,7 +23,7 @@ Component({
   methods: {
     toPage() {
       wx.navigateTo({
-        url: this.data.item.baseUrl + '?uid=' + this.data.uid
+        url: this.data.item.baseUrl + '?uid=' + this.data.userInfo.uid
       })
     }
   }

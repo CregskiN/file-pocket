@@ -4,7 +4,7 @@ declare namespace FilePocket {
      * 成员类型
      */
     interface MemberType {
-        tid: string;
+        tid: null;
         uid: string;
         teamName: string;
         username: string;

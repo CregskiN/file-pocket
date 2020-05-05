@@ -140,6 +140,51 @@ declare namespace Request {
         newTeamAvatarUrl?: string;
     }
 
+    /**
+     * 删除项目组成员
+     */
+    interface DeleteMemberReq {
+        tid: string;
+        uid: string;
+    }
+
+    /**
+     * 添加至个人文件(收藏集)
+     */
+    interface AddToMyCollectionFromTeamReq {
+        uid: string;
+        collectionFileList: {
+            fileId: string
+        }[];
+    }
+
+    /**
+     * 查询个人文件列表(收藏集列表)
+     */
+    interface QueryMyCollectionFileListReq {
+        uid: string;
+        pageIndex: number;
+        pageSize: number;
+    }
+
+    /**
+     * 批量删除个人文件(收藏集)
+     */
+    interface DeleteMyCollectionFilesReq {
+        collectionId: string;
+        collectionFileList: {
+            fileId: string;
+        }[];
+    }
+
+    /**
+     * 解散群聊
+     */
+    interface DisbandTeamReq {
+        uid: string;
+        tid: string;
+    }
+
 
     type Method = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
     type MIME = 'image/jpeg' | string;

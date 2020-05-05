@@ -9,8 +9,10 @@
         bind:scrolltolower="onScrollToBottom"
     >
         <block wx:for="{{files}}" wx:key="id">
-            <c-fileItem file="{{item}}" editting="{{editting}}" isChecked="{{item.isChecked}}"
-                bind:select="onSelect"
+            <c-fileItem file="{{item}}" editting="{{editting}}" isChecked="{{item.isChecked}}" type="{{type}}"
+                bind:select="onSelect" 
+                bind:delete="onDeleteFile" 
+                bind:addToMyCollection="onAddToMyCollection"
             />
         </block>
     </scroll-view>

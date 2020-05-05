@@ -133,13 +133,24 @@ Component({
     },
 
     /**
-     * 批量删除文件
+     * 批量删除文件（统一封装为批量删除）
      */
-    onDeleteFile() {
-      this.triggerEvent('deleteFile', {
-        fileIds: this.data.selectList
-      })
-      this.outEdit();
+    onDeleteFile(e: any) {
+      console.log('file-controller删除事件', e);
+      console.log('selectList', this.data.selectList);
+      
+      if (e.detail && e.detail.fileId) {
+        this.triggerEvent('deleteFile', {
+          fileIds: new Array(e.detail.fileId),
+        });
+      } else {
+        this.triggerEvent('deleteFile', {
+          fileIds: this.data.selectList,
+        });
+        this.outEdit();
+      }
+
+
     },
 
     /**
@@ -153,8 +164,23 @@ Component({
         });
         this.triggerEvent('loadMore');
       }
+    },
 
-    }
-
+    /**
+     * 添加至我的收藏集(批量添加和单个添加，统一封装为批量添加)
+     * @param e 滚动事件
+     */
+    onAddToMyCollection(e: any) {
+      const { fileId } = e.detail;
+      if (fileId) {
+        this.triggerEvent('addToMyCollection', {
+          fileIds: new Array(fileId),
+        })
+      } else {
+        this.triggerEvent('addToMyCollection', {
+          fileIds: this.data.selectList
+        })
+      }
+    },
   }
 })

@@ -54,8 +54,17 @@ declare namespace Response {
      */
     interface OfficialTeam {
         tid: string;
+        id: null;
         teamName: string;
         avatarUrl: string;
+        grade: null;
+        numberCount: null;
+        createdNumberCount: null;
+        managedNumberCount: null;
+        joinedNumberCount: null;
+        fileCount: null;
+        creationTime: null;
+        modifiedTime: null;
     }
 
     /**
@@ -104,6 +113,21 @@ declare namespace Response {
         creationTime: number | string;
     }
 
+    /**
+     * 收藏集文件类型
+     */
+    interface CollectionFileType {
+        collectionId: string;
+        creationTime: number | string;
+        fileId: string;
+        fileName: string;
+        fileSize: number;
+        fileUrl: string;
+        id: null;
+        mimeType: string;
+        modifiedTime: null | number;
+    }
+
 
     /**
      * 上传文件至项目组 resData
@@ -118,7 +142,6 @@ declare namespace Response {
         mimeType: string;
         username: string;
     }
-
 
 
     type CodeToSessionRes = BaseResponse<LoginData>;
@@ -142,4 +165,14 @@ declare namespace Response {
     type GetMemberListRes = BaseResponse<FilePocket.MemberType[]>;
 
     type UpdateTeamInfoRes = BaseResponse<Response.TeamDetailType>;
+
+    type DeleteMemberRes = BaseResponse<null>;
+
+    type AddToMyCollectionFromTeamRes = BaseResponse<null>;
+
+    type QueryMyCollectionFileListRes = BaseResponse<CollectionFileType[]>;
+
+    type DeleteMyCollectionFilesRes = BaseResponse<null>
+
+    type DisbandTeamRes = BaseResponse<null>
 }

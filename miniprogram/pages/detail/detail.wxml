@@ -6,10 +6,11 @@
     </view>
 
     <view class="file-controller_wrapper">
-        <c-fileController type="detail" files="{{files}}" isLazyLoading="{{isLazyLoading}}" teamInfo="{{teamInfo}}"
+        <c-fileController type="detail_normalTeam" files="{{files}}" isLazyLoading="{{isLazyLoading}}" teamInfo="{{teamInfo}}"
             bind:uploadLocalImg="onUploadLocalImg"
             bind:uploadMessageFile="onUploadMessageFile" 
             bind:deleteFile="onDeleteFile"
+            bind:addToMyCollection="onAddToMyCollection"
             bind:loadMore="onLoadMore"
         />
     </view>

@@ -1,6 +1,7 @@
 import Team from '../../models/Team';
 import { getWindowInfo } from '../../utils/util';
 import { GlobalDataType, CustomUserInfo } from '../../utils/typing';
+import { teamListFormatter } from '../../utils/formatters';
 
 const app = getApp();
 
@@ -13,7 +14,8 @@ Page({
 	 */
 	data: {
 		officialTeamList: [] as Response.OfficialTeam[],
-		teams: [] as Response.TeamType[],
+		createdTeamList: [] as Response.TeamDetailType[],
+		joinedTeamList: [] as Response.TeamDetailType[],
 		isLogin: true,
 		buttonTop: 10000,
 		buttonLeft: 10000,
@@ -75,7 +77,7 @@ Page({
 				current
 			})
 		} else if (e.type === 'tap') {
-			const current = e.target.dataset.current;
+			const { current } = e.target.dataset;
 			this.setData({
 				current
 			})
@@ -84,19 +86,20 @@ Page({
 
 	/**
 	 * 重命名 - 获取选中项目组信息。含鉴权
+	 * 获取tid - 获取uid在team的权限等级 - 鉴权
 	 * @param e 
 	 */
 	onRename(e: any) {
-		const tid = e.detail.tid;
-		const uid = this.data.userInfo.uid;
+		const teamInfo = e.detail.teamInfo;
+		const { tid } = teamInfo;
+		const { uid } = this.data.userInfo;
+
 		Team.getTeamMemberListByTid(tid).then(memberList => {
 			for (const member of memberList) {
 				if (member.uid === uid && member.userGrade < 3) {
-					Team.queryTeamInfoByTid(tid).then(modifyTeam => {
-						this.setData({
-							modifyTeam,
-							isModifing: true,
-						})
+					this.setData({
+						modifyTeam: teamInfo,
+						isModifing: true,
 					})
 				} else {
 					wx.showToast({
@@ -157,6 +160,32 @@ Page({
 	},
 
 	/**
+	 * 解散项目组
+	 */
+	onDisband(e: any) {
+		console.log(e);
+		const { tid, uid, type } = e.detail;
+		Team.disbandTeam(tid, uid).then(res => {
+			if (res.success) {
+				wx.showToast({
+					title: '解散成功'
+				});
+				if (type === 'create') {
+					this._refreshCreatedTeamList(tid);
+				} else if (type === 'join') {
+					this._refreshJoinedTeamList(tid);
+				}
+			}
+		}).catch(err => {
+			wx.showToast({
+				title: '解散失败'
+			})
+			console.log(err);
+		})
+	},
+
+
+	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad() {
@@ -165,18 +194,21 @@ Page({
 			const { isAuthorized, isLogin, userInfo } = globalData;
 			console.log('Index.onload - globalData is', globalData);
 
-			Team.getOfficialTeamList().then(officialTeamList => {
-				this.setData({
-					officialTeamList,
-					userInfo,
-					isLogin,
-					isAuthorized,
-					floatBtnIconClass,
-					isLoading: false
-				})
-			});
-		}).catch(err => { // 报错逻辑的最后一道防线
-			console.log('页面初始化错误', err);
+			if (userInfo) {
+				if (userInfo.uid) {
+					this._refreshCreatedTeamList(userInfo.uid);
+					this._refreshJoinedTeamList(userInfo.uid);
+					this._refreshOfficialTeamList();
+				}
+			}
+
+			this.setData({
+				userInfo,
+				isLogin,
+				isAuthorized,
+				floatBtnIconClass,
+				isLoading: false
+			})
 		});
 
 	},
@@ -258,5 +290,54 @@ Page({
 			title: `快来加入${this.data.selectTeam.teamName}吧！`,
 			path: `/pages/detail/detail?tid=${this.data.selectTeam.tid}&action=join`
 		}
+	},
+
+	/**
+	 * 刷新官方项目组列表
+	 */
+	_refreshOfficialTeamList() {
+		return new Promise<Response.OfficialTeam[]>((resolve, reject) => {
+			Team.getOfficialTeamList().then(officialTeamList => {
+				const newOfficialTeamList = teamListFormatter(officialTeamList);
+				this.setData({
+					officialTeamList: newOfficialTeamList as Response.OfficialTeam[]
+				})
+				resolve(newOfficialTeamList as Response.OfficialTeam[]);
+			});
+		}).catch(err => { // 报错逻辑的最后一道防线
+			console.log('页面初始化错误', err);
+		});
+	},
+
+	/**
+	 * 刷新我创建的项目组列表
+	 * @param uid 
+	 */
+	_refreshCreatedTeamList(uid: string) {
+		return new Promise<Response.TeamDetailType[]>((resolve, reject) => {
+			Team.getCreatedTeamList(uid).then(createdTeamList => {
+				const newCreatedTeamList = teamListFormatter(createdTeamList);
+				this.setData({
+					createdTeamList: newCreatedTeamList as Response.TeamDetailType[]
+				});
+				resolve(newCreatedTeamList as Response.TeamDetailType[]);
+			})
+		})
+	},
+
+	/**
+	 * 刷新我加入的列表
+	 * @param uid 
+	 */
+	_refreshJoinedTeamList(uid: string) {
+		return new Promise<Response.TeamDetailType[]>((resolve, reject) => {
+			Team.getJoinedTeamList(uid).then(joinedTeamList => {
+				const newJoinedTeamList = teamListFormatter(joinedTeamList);
+				this.setData({
+					joinedTeamList: newJoinedTeamList as Response.TeamDetailType[]
+				});
+				resolve(newJoinedTeamList as Response.TeamDetailType[]);
+			})
+		})
 	}
 })

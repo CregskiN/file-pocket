@@ -26,12 +26,15 @@ export default class Team {
      * @param uid 
      */
     static getJoinedTeamList(uid: string) {
-        return new Promise((resolve, reject) => {
+        return new Promise<Response.TeamDetailType[]>((resolve, reject) => {
             const options = {
                 url: '/user/query_joined_team_list_by_uid',
                 method: "GET" as "GET",
                 data: {
                     uid: uid as string
+                },
+                header: {
+                    'Content-Type': 'application/json'
                 }
             };
             Https.request<Request.GetJoinedTeamListReq, Response.GetJoinedTeamListRes>(options).then(res => {
@@ -48,7 +51,7 @@ export default class Team {
      * @param uid
      */
     static getCreatedTeamList(uid: string) {
-        return new Promise((resolve, reject) => {
+        return new Promise<Response.TeamDetailType[]>((resolve, reject) => {
             const options = {
                 url: '/user/query_created_team_list_by_uid',
                 method: 'GET' as "GET",
@@ -216,6 +219,59 @@ export default class Team {
                 reject(err);
             })
         })
+    }
+
+
+    /**
+     * 删除成员
+     * @param uid 
+     * @param tid 
+     */
+    static deleteMember(uid: string, tid: string) {
+        return new Promise<Response.DeleteMemberRes>((resolve, reject) => {
+            const options = {
+                url: '/team/delete_team_user',
+                method: 'POST' as "POST",
+                data: {
+                    uid,
+                    tid,
+                }
+            };
+            Https.request<Request.DeleteMemberReq, Response.DeleteMemberRes>(options).then(res => {
+                resolve(res);
+            }).catch(err => {
+                reject(err);
+            })
+
+        })
+    }
+
+
+    /**
+     * 解散项目组
+     * @param tid 
+     * @param uid 
+     */
+    static disbandTeam(tid: string, uid: string) {
+        return new Promise<Response.DisbandTeamRes>((resolve, reject) => {
+            const options = {
+                url: '/team/disband_group',
+                method: 'POST' as "POST",
+                data: {
+                    tid,
+                    uid
+                }/* ,
+                header: {
+                    'Content-Type': 'application'
+                } */
+            };
+            Https.request<Request.DisbandTeamReq, Response.DisbandTeamRes>(options).then(res => {
+                resolve(res);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+
     }
 
 }

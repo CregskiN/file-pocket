@@ -4,7 +4,7 @@
     <c-header bgUrl="{{bgUrl}}" userInfo="{{userInfo}}" bind:changeBg="onChangeBg"/>
 
     <view class="my_body">
-        <c-myItem wx:for="{{items}}" wx:key="id" item="{{item}}" uid="{{uid}}" />
+        <c-myItem wx:for="{{items}}" wx:key="id" item="{{item}}" userInfo="{{userInfo}}"/>
     </view>
 
 </view>

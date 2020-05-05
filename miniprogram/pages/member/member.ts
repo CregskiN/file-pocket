@@ -2,6 +2,7 @@ import moment from 'moment';
 import User from '../../models/User';
 import Team from '../../models/Team';
 import { CustomUserInfo } from '../../utils/typing';
+import { memberListFormatter } from '../../utils/formatters';
 
 Page({
 
@@ -18,8 +19,22 @@ Page({
    * 踢除成员事件
    */
   onDelete(options: any) {
-    const { uid, tid } = options.detail;
+    const { uid } = options.detail;
+    const { tid } = this.data.teamInfo;
+    Team.deleteMember(uid, tid).then(res => {
+      if (res.success) {
+        wx.showToast({
+          title: '删除成功'
+        })
+      } else {
+        wx.showToast({
+          title: '删除失败'
+        })
+      }
 
+    }).catch(err => {
+      console.log('删除失败', err);
+    })
 
   },
 
@@ -28,25 +43,15 @@ Page({
    */
   onLoad(options: any) {
     const tid = options.tid;
-    Team.getTeamMemberListByTid(tid).then(memberList => {
-      memberList.forEach(member => {
-        member.creationTime = moment(member.creationTime).format('YYYY-MM-DD');
-      });
+    this._refreshMemberList(tid).then(no => {
       const userInfo = User.getUserInfoStorage();
       Team.queryTeamInfoByTid(tid).then(teamInfo => {
         this.setData({
-          members: [
-            ...memberList,
-            ...this.data.members,
-          ],
           userInfo,
           teamInfo
         })
       })
-
-    }).catch(err => {
-      console.log(err);
-    });
+    })
 
     wx.showShareMenu({
       withShareTicket: true
@@ -112,5 +117,23 @@ Page({
       path: `/pages/index/index`,
       // imageUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg'
     }
-  }
+  },
+
+  /**
+   * 刷新成员列表
+   * @param tid 
+   */
+  _refreshMemberList(tid: string) {
+    return new Promise((resolve, reject) => {
+      Team.getTeamMemberListByTid(tid).then(memberList => {
+        this.setData({
+          members: memberListFormatter(memberList)
+        })
+        resolve();
+      }).catch(err => {
+        console.log(err);
+      });
+    })
+  },
+
 })

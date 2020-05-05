@@ -23,12 +23,13 @@ Component({
   methods: {
     onDelete(){
       wx.showModal({
-        title: '注意⚠️',
+        title: '注意',
         content: `此次操作将踢除 - ${this.data.member.username}`,
         success: () => {
+          console.log(this.data);
+          
           this.triggerEvent('delete', {
             uid: this.data.member.uid,
-            tid: this.data.member.tid,
           })
         }
       })

@@ -44,20 +44,14 @@ Component({
                 break;
               }
               case 2: {
-                wx.showModal({
-                  title: '删除',
-                  content: `您确定删除文件 - ${this.data.file.name} ?`,
-                  success: (res) => {
-                    this.triggerEvent('delete', {
-                      fid: this.data.file.fid
-                    })
-                  },
+                this.triggerEvent('delete', {
+                  fileId: this.data.file.fileId
                 })
               }
             }
           },
         })
-      } else {
+      } else if (this.data.type === 'detail_normalTeam') {
         wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
           itemList: ['分享', '重命名', '添加我的', '删除'],
           success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
@@ -69,26 +63,23 @@ Component({
                 break;
               }
               case 1: {
+                this.triggerEvent('rename', {
+                  file: this.data.file
+                })
                 wx.showToast({
                   title: '重命名'
                 })
                 break;
               }
               case 2: {
-                this.triggerEvent('addToMy', {
-                  fid: this.data.file.fid
+                this.triggerEvent('addToMyCollection', {
+                  fileId: this.data.file.fileId
                 });
                 break;
               }
               case 3: {
-                wx.showModal({
-                  title: '删除',
-                  content: `您确定删除文件 - ${this.data.file.name}`,
-                  success: (res) => {
-                    this.triggerEvent('delete', {
-                      fid: this.data.file.fid
-                    })
-                  },
+                this.triggerEvent('delete', {
+                  fileId: this.data.file.fileId
                 })
               }
             }

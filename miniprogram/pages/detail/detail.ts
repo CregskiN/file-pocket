@@ -7,6 +7,7 @@ import File from '../../models/File';
 import { CustomUserInfo, GlobalDataType } from '../../utils/typing';
 import { teamInfoFormatter } from '../../utils/formatters';
 import moment from 'moment';
+import Collection from '../../models/Collection';
 
 const app = getApp();
 
@@ -34,6 +35,8 @@ Page({
     isLoading: true,
 
     isDeleting: false, // 保留变量，执行删除操作过渡动画
+
+    isBottom: false, // 记录懒加载是否到头了
   },
 
   onShowData() {
@@ -68,7 +71,6 @@ Page({
         }
       })
     }
-
   },
 
   /**
@@ -101,13 +103,15 @@ Page({
    * @param e 
    */
   onDeleteFile(e: any) {
-    File.deleteFiles(e.detail.fileIds, this.data.teamInfo.tid).then(res => {
+    const { fileIds } = e.detail;
+    const { tid } = this.data.teamInfo;
+    File.deleteFiles(fileIds as string[], tid).then(res => {
       if (res.success) {
         wx.showToast({
           title: '删除成功'
         });
-        this._getMoreFileList(this.data.teamInfo.tid, 1);
-        this._refreshTeamInfo(this.data.teamInfo.tid);
+        this._getMoreFileList(tid, 1);
+        this._refreshTeamInfo(tid);
       }
     }).catch(err => {
       console.log(err);
@@ -134,9 +138,14 @@ Page({
     const { tid } = this.data.teamInfo;
     const userInfo = User.getUserInfoStorage();
     const { uid } = userInfo;
+    console.log(userInfo);
+
     Team.enterTeamByTidAndUid(tid, (uid as string)).then(teamInfo => {
+      wx.showToast({
+        title: '加入成功'
+      })
       this.setData({
-        teamInfo: teamInfoFormatter(teamInfo),
+        teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
         isAuthorized: true,
         userInfo,
       });
@@ -146,15 +155,38 @@ Page({
   },
 
   /**
+   * 添加至个人文件(收藏集)
+   * @param e 
+   */
+  onAddToMyCollection(e: any) {
+    const { fileIds } = e.detail;
+    Collection.addToMyCollectionFromTeam(this.data.userInfo.uid as string, fileIds as string[]).then(res => {
+      if (res.success) {
+        wx.showToast({
+          title: '添加成功'
+        })
+      } else {
+        wx.showToast({
+          title: '添加失败'
+        })
+      }
+    })
+  },
+
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options: any) {
+    console.log('Detail.onload() - options', options);
+
     const { tid, action } = options;
     const init: Promise<GlobalDataType> = app.init();
 
     init.then(globalData => {
       const { isAuthorized, isLogin } = globalData;
       const userInfo = User.getUserInfoStorage();
+      console.log(userInfo);
+
       const { uid } = userInfo;
       console.log('Detail.onload - globalData is', globalData);
       Team.queryTeamInfoByTid(tid).then(teamInfo => {
@@ -163,23 +195,29 @@ Page({
             isLoading: false,
             isAuthorized,
             isLogin,
-            teamInfo: teamInfoFormatter(teamInfo),
+            teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
             userInfo,
           });
         })
 
-        // 已授权 -> 直接加入
-        if (isAuthorized && uid) {
-          // Team.qu
+        console.log(isAuthorized, uid, action);
+        console.log(isAuthorized && uid && action);
+
+
+        // 已授权 + action -> 直接加入
+        // 未授权 -> 在授权后加入
+        if (isAuthorized && uid && action === 'join') {
           Team.enterTeamByTidAndUid(tid, uid).then(teamInfo => {
-            console.log('成功加入口袋');
+            wx.showToast({
+              title: '加入成功',
+              icon: 'success'
+            })
             this.setData({
-              teamInfo: teamInfoFormatter(teamInfo),
+              teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
             })
           }).catch(err => {
             console.log('加入失败');
           })
-
         }
       });
 
@@ -295,31 +333,41 @@ Page({
   _getMoreFileList(tid: string, pageId?: number) {
     return new Promise<Response.FileType[]>((resolve, reject) => {
       const pId = pageId ? pageId : this.data.pageId;
+      const isBorrom = this.data.isBottom;
 
-      Team.queryTeamFileList(tid, pId).then(newFiles => {
-        newFiles.forEach(file => {
-          file.isChecked = false;
-          const chunks = file.fileName.split('.');
-          file.mimeType = chunks[chunks.length - 1];
-          file.creationTime = moment(file.creationTime).format('YYYY-MM-DD');
+      if (!isBorrom) {
+        Team.queryTeamFileList(tid, pId).then(newFiles => {
+          newFiles.forEach(file => {
+            file.isChecked = false;
+            const chunks = file.fileName.split('.');
+            file.mimeType = chunks[chunks.length - 1];
+            file.creationTime = moment(file.creationTime).format('YYYY-MM-DD');
+          })
+          if (pageId === 1) {
+            this.setData({
+              files: newFiles,
+              pageId: pId + 1,
+            })
+          } else {
+            this.setData({
+              files: [
+                ...this.data.files,
+                ...newFiles
+              ],
+              pageId: pId + 1,
+            })
+          }
+          if (newFiles.length === 0) {
+            this.setData({
+              isBottom: true
+            })
+          }
+
+          resolve();
         })
-        if (pageId === 1) {
-          this.setData({
-            files: newFiles,
-            pageId: pId + 1,
-          })
-        } else {
-          this.setData({
-            files: [
-              ...this.data.files,
-              ...newFiles
-            ],
-            pageId: pId + 1,
-          })
-        }
+      }
 
-        resolve();
-      })
+
     })
   },
 
@@ -330,7 +378,7 @@ Page({
     return new Promise((resovle, reject) => {
       Team.queryTeamInfoByTid(tid).then(teamInfo => {
         this.setData({
-          teamInfo: teamInfoFormatter(teamInfo)
+          teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType
         });
         resovle(teamInfo);
       })

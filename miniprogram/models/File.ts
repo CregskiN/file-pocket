@@ -26,7 +26,6 @@ export default class File {
                 reject(err);
             })
         })
-
     }
 
     /**
@@ -35,7 +34,7 @@ export default class File {
      * @param tid 
      */
     static deleteFiles(fileIds: string[], tid: string) {
-        return new Promise<Response.DeleteFilesRes>((resolve, rejecct) => {
+        return new Promise<Response.DeleteMyCollectionFilesRes>((resolve, rejecct) => {
             const fileInfoList = [];
             for (const fileId of fileIds) {
                 fileInfoList.push({ fileId })
@@ -59,6 +58,41 @@ export default class File {
         })
     }
 
+
+    /**
+     * 删除收藏集的文件
+     * @param collection 
+     * @param fileIds 
+     */
+    static deleteMyCollectionFiles(collectionId: string, fileIds: string[]) {
+        return new Promise<Response.DeleteMyCollectionFilesRes>((resove, reject) => {
+            const collectionFileList = [];
+            for (const fileId of fileIds) {
+                collectionFileList.push({ fileId });
+            }
+            const options = {
+                url: '/collection/delete_file_list',
+                method: 'POST' as "POST",
+                data: {
+                    collectionId,
+                    collectionFileList
+                },
+                header: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            Https.request<Request.DeleteMyCollectionFilesReq, Response.DeleteMyCollectionFilesRes>(options).then(res => {
+                resove(res);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+
+    }
+
+    // static syncCollectionFileWithBackend(uploadToTeamFiles: Request.SyncCollectionFileWithBackendFileType[], tid: string, uid: string) {
+
+    // }
 
 
 
