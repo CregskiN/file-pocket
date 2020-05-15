@@ -1,5 +1,3 @@
-// component/common/input-window/index.js
-import Team from '../../../models/Team';
 
 /**
  * 功能性组件：项目组重命名
@@ -10,7 +8,7 @@ Component({
    */
   properties: {
     isModifing: Boolean,
-    modifyTeam: Object,
+    modifyFile: Object,
   },
 
   /**
@@ -18,8 +16,7 @@ Component({
    */
   data: {
     title: '重命名',
-    newTeamName: '',
-    newTeamAvatarUrl: '',
+    newFileName: '',
   },
 
   /**
@@ -33,7 +30,7 @@ Component({
      */
     onInput(e: any) {
       this.setData({
-        newTeamName: e.detail.value
+        newFileName: e.detail.value
       })
     },
 
@@ -48,8 +45,8 @@ Component({
      * 确认
      */
     onComplete() {
-      Team.updateTeamInfo(this.properties.modifyTeam.tid, this.data.newTeamName, this.data.newTeamAvatarUrl).then(res => {
-        this.triggerEvent('modifyComplete');
+      this.triggerEvent('complete', {
+        newFileName: this.data.newFileName
       })
     },
 

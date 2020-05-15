@@ -1,4 +1,5 @@
 import Team from '../../models/Team';
+import User from '../../models/User';
 import { getWindowInfo } from '../../utils/util';
 import { GlobalDataType, CustomUserInfo } from '../../utils/typing';
 import { teamListFormatter } from '../../utils/formatters';
@@ -15,7 +16,7 @@ Page({
 	data: {
 		officialTeamList: [] as Response.OfficialTeam[],
 		createdTeamList: [] as Response.TeamDetailType[],
-		joinedTeamList: [] as Response.TeamDetailType[],
+		joinedTeamList: [{},{}] as Response.TeamDetailType[],
 		isLogin: true,
 		buttonTop: 10000,
 		buttonLeft: 10000,
@@ -46,7 +47,7 @@ Page({
 	 * @param e 
 	 */
 	onCreate(e: any) {
-		wx.redirectTo({
+		wx.navigateTo({
 			url: '/pages/found/found'
 		})
 	},
@@ -56,13 +57,15 @@ Page({
 	 * 完成授权逻辑，撤除授权窗口
 	 */
 	onAuthorize() {
-		console.log('toogle isAuthorized', this.data);
-		this.setData({
-			isAuthorized: true
-		})
-		Team.getOfficialTeamList().then(res => {
-			console.log(res);
-		})
+		const { uid } = User.getUserInfoStorage();
+
+		this._refreshCreatedTeamList(uid as string).then(no => {
+			this._refreshJoinedTeamList(uid as string).then(no => {
+				this.setData({
+					isAuthorized: true
+				})
+			});
+		});
 	},
 
 
@@ -131,11 +134,8 @@ Page({
 			isModifing: false,
 			modifyTeam: {} as any,
 		});
-		Team.getOfficialTeamList().then(officialTeamList => {
-			this.setData({
-				officialTeamList,
-			})
-		})
+		this._refreshCreatedTeamList(this.data.userInfo.uid as string);
+		this._refreshJoinedTeamList(this.data.userInfo.uid as string);
 	},
 
 	/**
@@ -171,9 +171,9 @@ Page({
 					title: '解散成功'
 				});
 				if (type === 'create') {
-					this._refreshCreatedTeamList(tid);
+					this._refreshCreatedTeamList(uid);
 				} else if (type === 'join') {
-					this._refreshJoinedTeamList(tid);
+					this._refreshJoinedTeamList(uid);
 				}
 			}
 		}).catch(err => {
@@ -198,7 +198,6 @@ Page({
 				if (userInfo.uid) {
 					this._refreshCreatedTeamList(userInfo.uid);
 					this._refreshJoinedTeamList(userInfo.uid);
-					this._refreshOfficialTeamList();
 				}
 			}
 
@@ -249,7 +248,9 @@ Page({
 		const isAuthorized = app.getGlobalData();
 		this.setData({
 			isAuthorized
-		})
+		});
+		this._refreshCreatedTeamList(this.data.userInfo.uid as string);
+		this._refreshJoinedTeamList;
 
 	},
 
@@ -290,23 +291,6 @@ Page({
 			title: `快来加入${this.data.selectTeam.teamName}吧！`,
 			path: `/pages/detail/detail?tid=${this.data.selectTeam.tid}&action=join`
 		}
-	},
-
-	/**
-	 * 刷新官方项目组列表
-	 */
-	_refreshOfficialTeamList() {
-		return new Promise<Response.OfficialTeam[]>((resolve, reject) => {
-			Team.getOfficialTeamList().then(officialTeamList => {
-				const newOfficialTeamList = teamListFormatter(officialTeamList);
-				this.setData({
-					officialTeamList: newOfficialTeamList as Response.OfficialTeam[]
-				})
-				resolve(newOfficialTeamList as Response.OfficialTeam[]);
-			});
-		}).catch(err => { // 报错逻辑的最后一道防线
-			console.log('页面初始化错误', err);
-		});
 	},
 
 	/**

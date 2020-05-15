@@ -1,0 +1,12 @@
+<!--miniprogram/pages/share/share.wxml-->
+<view class="share_container">
+    <c-fileController files="{{fileList}}" type="share"
+        bind:addToMyCollectionOnce="onAddToMyCollectionOnce"
+        bind:view="onView"
+    />
+</view>
+
+<c-loading lint="正在获取文件..." isLoading="{{isLoading}}"/>
+<c-authorize isAuthorized="{{isAuthorized}}" 
+    bind:authorize="onAuthorize"
+/>

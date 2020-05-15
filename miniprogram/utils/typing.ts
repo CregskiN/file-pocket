@@ -13,9 +13,10 @@ export interface CustomUserInfo {
     province?: string;
     uid?: string;
     username?: string;
-    createdTeamCounts?: number;
-    managedTeamCounts?: number;
-    joinedTeamCounts?: number;
+    globalGrade?: number;
+    createdTeamCount?: number;
+    managedTeamCount?: number;
+    joinedTeamCount?: number;
 }
 
 /**
@@ -44,6 +45,7 @@ export interface QiniuUploaderResData {
     fsize: number,
     hash: string,
     key: string,
+    fileName?: string;
     mimeType: 'image/jpeg' | 'image/jpg' | 'image/png'
 }
 

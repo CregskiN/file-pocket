@@ -56,4 +56,8 @@ export function generateFileNameAuto(mimeType: string, nickName: string) {
 	return `${nickName}_${getTime(nickName)}.${mimeType.split('/')[1]}`
 }
 
+export function getDownloadingLint() {
+	
+}
+
 

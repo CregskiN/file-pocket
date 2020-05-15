@@ -90,9 +90,60 @@ export default class File {
 
     }
 
-    // static syncCollectionFileWithBackend(uploadToTeamFiles: Request.SyncCollectionFileWithBackendFileType[], tid: string, uid: string) {
+    /**
+     * 文件重命名
+     * @param uid 
+     * @param fileId 
+     * @param newFileName 
+     */
+    static renameFile(uid: string, fileId: string, newFileName: string) {
+        return new Promise<Response.FileType>((resolve, reject) => {
+            const options = {
+                url: '/file/update_file_info',
+                method: 'POST' as "POST",
+                data: {
+                    uid,
+                    fileId,
+                    newFileName
+                }
+            };
+            Https.request<Request.RenameFileReq, Response.RenameFileRes<Response.FileType>>(options).then(res => {
+                resolve(res.data)
+            }).catch(err => {
+                reject(err);
+            })
+        })
 
-    // }
+    }
+
+    /**
+     * 通过fileIds获取文件列表
+     * @param fileIds 
+     */
+    static getShareFileList(fileIds: string[]) {
+        return new Promise<Response.FileType[]>((resolve, reject) => {
+            const fileInfoList: { fileId: string }[] = [];
+            fileIds.forEach(fileId => {
+                fileInfoList.push({ fileId })
+            })
+            const options = {
+                url: '/file/query_file_info_list_by_file_id_list',
+                method: 'POST' as "POST",
+                data: {
+                    fileInfoList
+                },
+                header: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            Https.request<Request.GetShareFileListReq, Response.GetShareFileListRes>(options).then(res => {
+                resolve(res.data);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    }
+
 
 
 

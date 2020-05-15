@@ -24,8 +24,11 @@ App<AppOptionCustom>({
 	},
 
 	onLaunch(options) {
-
-
+		try {
+			wx.getStorageSync('VIEWHISTORY')
+		} catch (err) {
+			wx.setStorageSync('VIEWHISTORY', JSON.stringify([]))
+		}
 	},
 
 	onShow(options) {

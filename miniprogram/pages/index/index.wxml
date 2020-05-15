@@ -14,8 +14,8 @@
 			bind:change="onSwitchTap"
 		>
 			<swiper-item class="index_swiper_item">
-				<scroll-view scroll-y="true" style="width:100vw;height:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
-					<c-item wx:for="{{officialTeamList}}" wx:key="id" 
+				<scroll-view scroll-y="true" style="width:100vw;height:calc(100%-15rpx);display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
+					<c-item wx:for="{{createdTeamList}}" wx:key="id" 
 						team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" userInfo="{{userInfo}}" type="create"
 						bind:rename="onRename" bind:invite="onInvite" bind:disband="onDisband"
 					/>
@@ -23,8 +23,8 @@
 			</swiper-item>
 
 			<swiper-item class="index_swiper_item">
-				<scroll-view scroll-y="true" style="width:100vw;height:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
-					<c-item wx:for="{{officialTeamList}}" wx:key="id" 
+				<scroll-view scroll-y="true" style="width:100vw;height:calc(100%-15rpx);display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
+					<c-item wx:for="{{joinedTeamList}}" wx:key="id" 
 						team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" userInfo="{{userInfo}}" type="join" 
 						bind:invite="onInvite"
 					/>

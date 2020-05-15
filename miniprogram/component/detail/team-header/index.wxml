@@ -11,5 +11,9 @@
             <view class="team-header_fileCount">文件数: {{teamInfo.fileCount}}</view>
             <view class="team-header_creationTime">创建时间: {{teamInfo.creationTime}}</view>
         </view>
+
+        <view class="toggleMode" catch:tap="onToggleMode" wx:if="{{userGlobalGrade===1 && (type==='official' || type==='create')}}">
+            当前模式：{{isManagerMode ? 'Manager' : 'User'}}
+        </view>
     </view>
 </view>

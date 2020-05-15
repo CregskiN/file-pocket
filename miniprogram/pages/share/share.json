@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "c-fileController":"../../component/common/files-controller/index",
+    "c-authorize":"../../component/common/authorize/authorize"
+  }
+}

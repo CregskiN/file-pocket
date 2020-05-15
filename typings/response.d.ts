@@ -1,5 +1,9 @@
 declare namespace Response {
 
+
+    // type MimeType = "doc" | "docx" | "xls" | "xlsx" | "ppt" | "pptx" | "pdf";
+    type MimeType = string;
+
     /**
      * 基类
      */
@@ -65,6 +69,7 @@ declare namespace Response {
         fileCount: null;
         creationTime: null;
         modifiedTime: null;
+        teamType?: string;
     }
 
     /**
@@ -75,7 +80,7 @@ declare namespace Response {
         id: number | undefined;
         teamName: string;
         avatarUrl: string;
-        grade: number;
+        grade: number | string;
         fileCount: number;
         creationTime: number | string;
         numberCount: number;
@@ -83,6 +88,8 @@ declare namespace Response {
         joinedNumberCount: number;
         managedNumberCount: number;
         modifiedTime: string | undefined;
+        isChecked: boolean;
+        teamType: string;
     }
 
     /**
@@ -104,13 +111,15 @@ declare namespace Response {
         fileName: string;
         fileSize: string | number;
         fileUrl: string;
-        mimeType: Request.MIME;
+        mimeType: MimeType;
         isChecked?: boolean;
         tid: string;
         uid: string;
         username: string;
         modifiedTime?: string;
         creationTime: number | string;
+        viewTime?: number;
+        teamName?: string;
     }
 
     /**
@@ -124,7 +133,7 @@ declare namespace Response {
         fileSize: number;
         fileUrl: string;
         id: null;
-        mimeType: string;
+        mimeType: MimeType;
         modifiedTime: null | number;
     }
 
@@ -139,7 +148,7 @@ declare namespace Response {
         fileName: string;
         fileUrl: string;
         fileSize: number;
-        mimeType: string;
+        mimeType: MimeType;
         username: string;
     }
 
@@ -149,9 +158,9 @@ declare namespace Response {
     type CreateTeamRes = BaseResponse<CreateTeamData>
 
     type GetOfficialTeamListRes = BaseResponse<OfficialTeam[]>;
-    type GetJoinedTeamListRes = BaseResponse<TeamType[]>;
-    type GetCreatedTeamListRes = BaseResponse<TeamType[]>;
-    type GetManagedTeamListRes = BaseResponse<TeamType[]>;
+    type GetJoinedTeamListRes = BaseResponse<TeamDetailType[]>;
+    type GetCreatedTeamListRes = BaseResponse<TeamDetailType[]>;
+    type GetManagedTeamListRes = BaseResponse<TeamDetailType[]>;
 
     type QueryTeamInfoRes = BaseResponse<QueryTeamInfoData>
     type EnterTeamDataRes = BaseResponse<EnterTeamData>;
@@ -172,7 +181,15 @@ declare namespace Response {
 
     type QueryMyCollectionFileListRes = BaseResponse<CollectionFileType[]>;
 
-    type DeleteMyCollectionFilesRes = BaseResponse<null>
+    type DeleteMyCollectionFilesRes = BaseResponse<null>;
 
-    type DisbandTeamRes = BaseResponse<null>
+    type DisbandTeamRes = BaseResponse<null>;
+
+    type RenameFileRes<T> = BaseResponse<T>;
+
+    type ReceiveFilesFromCollectionRes = BaseResponse<null>;
+
+    type GetShareFileListRes = BaseResponse<FileType[]>;
+
+    type QueryTeamFilesByKeywordsRes = BaseResponse<FileType[]>;
 }

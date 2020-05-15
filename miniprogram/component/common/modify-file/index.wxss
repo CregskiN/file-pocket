@@ -6,6 +6,9 @@
     align-items: center;
 
     position: absolute;
+    left: 0;
+    top: 0;
+    
     z-index: 199;
     overflow: hidden;
 

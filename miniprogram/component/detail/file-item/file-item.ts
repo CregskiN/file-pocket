@@ -1,3 +1,5 @@
+import User from "../../../models/User";
+
 // component/detail/file-item/file-item.js
 Component({
   /**
@@ -28,22 +30,17 @@ Component({
       if (this.data.type === 'my_file') {
         // 我的文件操作
         wx.showActionSheet({
-          itemList: ['分享', '重命名', '删除'],
+          itemList: ['重命名', '删除'],
           success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
             switch (res.tapIndex) {
               case 0: {
-                wx.showToast({
-                  title: '选择好友'
+                console.log(this.data);
+                this.triggerEvent('rename', {
+                  file: this.properties.file
                 })
                 break;
               }
               case 1: {
-                wx.showToast({
-                  title: '重命名'
-                })
-                break;
-              }
-              case 2: {
                 this.triggerEvent('delete', {
                   fileId: this.data.file.fileId
                 })
@@ -51,48 +48,146 @@ Component({
             }
           },
         })
-      } else if (this.data.type === 'detail_normalTeam') {
+      } else if (this.data.type === 'detail_create') {
         wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
-          itemList: ['分享', '重命名', '添加我的', '删除'],
+          itemList: ['重命名', '添加我的', '删除'],
           success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
             switch (res.tapIndex) {
               case 0: {
-                wx.showToast({
-                  title: '选择好友'
+                this.triggerEvent('rename', {
+                  file: this.properties.file
                 })
                 break;
               }
               case 1: {
-                this.triggerEvent('rename', {
-                  file: this.data.file
-                })
-                wx.showToast({
-                  title: '重命名'
-                })
-                break;
-              }
-              case 2: {
                 this.triggerEvent('addToMyCollection', {
-                  fileId: this.data.file.fileId
+                  fileId: this.properties.file.fileId
                 });
                 break;
               }
-              case 3: {
+              case 2: {
                 this.triggerEvent('delete', {
-                  fileId: this.data.file.fileId
+                  fileId: this.properties.file.fileId
                 })
               }
             }
 
           },
         })
+      } else if (this.data.type === 'detail_join') {
+        const uid = User.getUserInfoStorage().uid;
+        if (this.properties.file.uid === uid) {
+          wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
+            itemList: ['重命名', '添加我的', '删除'],
+            success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
+              switch (res.tapIndex) {
+                case 0: {
+                  this.triggerEvent('rename', {
+                    file: this.properties.file
+                  })
+                  break;
+                }
+                case 1: {
+                  this.triggerEvent('addToMyCollection', {
+                    fileId: this.properties.file.fileId
+                  });
+                  break;
+                }
+                case 2: {
+                  this.triggerEvent('delete', {
+                    fileId: this.properties.file.fileId
+                  })
+                }
+              }
+            }
+          })
+        } else {
+          wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
+            itemList: ['添加我的'],
+            success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
+              switch (res.tapIndex) {
+                case 0: {
+                  this.triggerEvent('addToMyCollection', {
+                    fileId: this.properties.file.fileId
+                  });
+                  break;
+                }
+              }
+            }
+          })
+        }
+      } else if (this.data.type === 'detail_official') {
+        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
+          itemList: ['添加我的'],
+          success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
+            switch (res.tapIndex) {
+              case 0: {
+                this.triggerEvent('addToMyCollection', {
+                  fileId: this.properties.file.fileId
+                });
+                break;
+              }
+            }
+          }
+        })
       }
+      else if (this.data.type === 'searcher_official') {
+        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
+          itemList: ['添加我的'],
+          success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
+            switch (res.tapIndex) {
+              case 0: {
+                this.triggerEvent('addToMyCollection', {
+                  fileId: this.properties.file.fileId
+                });
+                break;
+              }
+            }
+
+          },
+        })
+      } else if (this.data.type === 'browse_history') {
+        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
+          itemList: ['添加我的'],
+          success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
+            switch (res.tapIndex) {
+              case 0: {
+                this.triggerEvent('addToMyCollection', {
+                  fileId: this.properties.file.fileId
+                });
+                break;
+              }
+            }
+
+          },
+        })
+
+      }
+
     },
 
-    onSelect(e: any) {
+    /**
+     * 编辑模式下选泽事件
+     * @param e 
+     */
+    onSelect() {
       this.triggerEvent('select', {
-        fid: this.data.file.fid || this.data.file.fileId
+        fid: this.properties.file.fid || this.properties.file.fileId
       })
+    },
+
+    /**
+     * 点击查看事件
+     * @param e 
+     */
+    onView(e: any) {
+      if (this.properties.editting) {
+        this.onSelect();
+      } else {
+        this.triggerEvent('view', {
+          file: this.properties.file
+        })
+      }
 
     }
   }

@@ -39,6 +39,7 @@ export default class Team {
             };
             Https.request<Request.GetJoinedTeamListReq, Response.GetJoinedTeamListRes>(options).then(res => {
                 console.log('成功获取我加入列表', res);
+                resolve(res.data);
             }).catch(err => {
                 console.log('获取我加入的项目组列表失败', err);
                 reject(err);
@@ -61,6 +62,7 @@ export default class Team {
             };
             Https.request<Request.GetCreatedTeamListReq, Response.GetCreatedTeamListRes>(options).then(res => {
                 console.log('成功获取我创建的列表', res);
+                resolve(res.data);
             }).catch(err => {
                 console.log('获取我创建的列表失败', err);
                 reject(err);
@@ -94,7 +96,7 @@ export default class Team {
 
 
     /**
-     * 使用tid + uid查询项目组信息
+     * 使用tid查询项目组信息
      * @param tid
      */
     static queryTeamInfoByTid(tid: string) {
@@ -103,7 +105,7 @@ export default class Team {
                 url: '/team/query_team_info_by_tid',
                 method: 'GET' as "GET",
                 data: {
-                    tid: tid as string
+                    tid: tid
                 }
             }
             Https.request<Request.QueryTeamInfoByTidReq, Response.QueryTeamInfoRes>(options).then(res => {
@@ -274,4 +276,65 @@ export default class Team {
 
     }
 
+    /**
+     * 文件：收藏集 -> 项目组
+     * @param tid 
+     * @param uid 
+     * @param fileIds 
+     */
+    static receiveFilesFromCollection(tid: string, uid: string, fileIds: string[]) {
+        return new Promise((resolve, reject) => {
+            const fileInfoList: { fileId: string }[] = [];
+            fileIds.forEach(fileId => {
+                fileInfoList.push({ fileId })
+            })
+            const options = {
+                url: '/team/add_file_list_to_team_by_file_id_list',
+                method: 'POST' as "POST",
+                data: {
+                    tid,
+                    uid,
+                    fileInfoList
+                },
+                header: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            Https.request<Request.ReceiveFilesFromCollectionReq, Response.ReceiveFilesFromCollectionRes>(options).then(res => {
+                resolve(res);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    }
+
+    /**
+     * 关键字查询项目组内文件
+     * @param tid 
+     * @param keyword 
+     * @param pageIndex 
+     */
+    static queryTeamFilesByKeywords(tid: string, keyword: string, pageIndex: number, teamName: string) {
+        return new Promise<Response.FileType[]>((resolve, reject) => {
+            const options = {
+                url: '/team/search_team_file_list_by_keyword',
+                method: 'GET' as "GET",
+                data: {
+                    tid,
+                    keyword,
+                    pageIndex,
+                    pageSize: 10
+                }
+            };
+            Https.request<Request.QueryTeamFilesByKeywordsReq, Response.QueryTeamFilesByKeywordsRes>(options).then(res => {
+                const files = res.data;
+                for (let i = 0; i < res.data.length; i++) {
+                    files[i].teamName = teamName;
+                }
+                resolve(files);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    }
 }

@@ -185,6 +185,44 @@ declare namespace Request {
         tid: string;
     }
 
+    /**
+     * 文件重命名
+     */
+    interface RenameFileReq {
+        uid: string;
+        fileId: string;
+        newFileName: string;
+    }
+
+    /**
+     * 项目组接收来自收藏集的文件
+     */
+    interface ReceiveFilesFromCollectionReq {
+        uid: string;
+        tid: string;
+        fileInfoList: {
+            fileId: string
+        }[];
+    }
+
+    /**
+     * 获取分享的文件列表
+     */
+    interface GetShareFileListReq {
+        fileInfoList: {
+            fileId: string;
+        }[];
+    }
+
+    /**
+     * 以关键字搜索项目组内文件
+     */
+    interface QueryTeamFilesByKeywordsReq {
+        tid: string;
+        keyword: string;
+        pageIndex: number;
+        pageSize: number;
+    }
 
     type Method = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
     type MIME = 'image/jpeg' | string;

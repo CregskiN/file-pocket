@@ -1,11 +1,10 @@
 
 <view class="modify-team_container" hidden="{{!isModifing}}"
-    bind:tap="onCancel"
 >
         <view class="float-window_container">
         <view class="float-window_title">{{title}}</view>
         <view class="float-window_body">
-            <input class="float-window_inputter" value="{{modifyTeam.teamName}}" placeholder="请输入新的口袋名称"
+            <input class="float-window_inputter" value="{{modifyFile.fileName}}" placeholder="请输入新的文件名称"
                 bind:input="onInput"
             />
         </view>

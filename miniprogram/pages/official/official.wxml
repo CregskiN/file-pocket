@@ -1,16 +1,29 @@
 <!--miniprogram/pages/official/official.wxml-->
 <view class="official_container">
     <view class="official-searcher_wrapper">
-        <c-searcher />
+        <c-searcher searchResultFiles="{{searchResultFiles}}"
+            bind:search="onSearch"
+            bind:addToMyCollection="onAddToMyCollection"
+            bind:cancel="onShutUpSearcher"
+            bind:searchMore="onSearchMore"
+        />
     </view>
 
     <view class="official_body">
-        <c-item wx:for="{{officialTeamList}}" wx:key="id" team="{{item}}" type="official"
-            bind:invite="onInvite" bind:rename="onRename" bind:dropOut="onDropOut" bind:share="onShare"
-        />
+        <view class="official_wrapper">
+            <block wx:for="{{officialTeamList}}" wx:key="id" >
+                <c-item type="official" userInfo="{{userInfo}}" team="{{item}}"
+                    bind:invite="onInvite" 
+                    bind:dropOut="onDropOut" 
+                    bind:share="onShare"
+                />
+            </block>
+        </view>
     </view>
 
 </view>
 
-<c-loading lint="{{lints.loading}}" isLoading="{{loading}}" />
+<c-loading lint="正在加载..." isLoading="{{loading}}" />
 <c-shareWindow isShareWindowVisible="{{isShareWindowVisible}}" bind:cancel="onCancel" />
+<c-authorize isAuthorized="{{isAuthorized}}" bind:authorize="onAuthorize"/>
+<c-downloading isDownloadingOrUploadingVisible="{{isSearching}}" lint="{{downloadingOrUploadingLint}}"/>

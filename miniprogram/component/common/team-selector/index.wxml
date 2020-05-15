@@ -1,0 +1,38 @@
+<!--component/common/team-selector/index.wxml-->
+<view class="team-selector_container" hidden="{{!isTeamSelectorVisible}}" catch:tap="onCancel">
+    <view class="team-selector_window">
+        <view class="window_header">
+            <view class="header_cancel" catch:tap="onCancel">取消</view>
+            <view class="header_title" catch:tap="onShow">已选{{selectList.length}}个口袋</view>
+            <view class="header_complete" catch:tap="onComplete">完成</view>
+        </view>
+        <view class="window_body">
+            <scroll-view class="index_scroll_tab" scroll-x="true">
+                <view class="{{current == 0 ? 'tab_item active' : 'tab_item'}}" data-current="0" catch:tap="onSwitchTap">创建</view>
+                <view class="{{current == 1 ? 'tab_item active' : 'tab_item'}}" data-current="1" catch:tap="onSwitchTap">加入</view>
+            </scroll-view>
+            
+            <swiper class="index_swiper" current="{{current}}"
+			    bind:change="onSwitchTap"
+		    >
+                <swiper-item class="index_swiper_item">
+                    <scroll-view class="scroll_body" scroll-y="true">
+                        <c-item wx:for="{{createdTeamList}}" wx:key="id" 
+                            team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="selector"
+                            bind:select="onSelectCreatedTeam"
+                        />
+                    </scroll-view>
+                </swiper-item>
+
+                <swiper-item class="index_swiper_item">
+                    <scroll-view class="scroll_body" scroll-y="true">
+                        <c-item wx:for="{{joinedTeamList}}" wx:key="id" 
+                            team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" type="selector"
+                            bind:select="onSelectJoinedTeam"
+                        />
+                    </scroll-view>
+                </swiper-item>
+		    </swiper>
+        </view>
+    </view>
+</view>

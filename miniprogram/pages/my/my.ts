@@ -38,11 +38,6 @@ Page({
 			baseUrl: '/pages/browsing-history/index',
 			fontIconCLass: '',
 			backIconClass: '',
-		}, {
-			title: '用户反馈',
-			baseUrl: '/pages/feedback/index',
-			fontIconCLass: '',
-			backIconClass: '',
 		}]
 	},
 

@@ -1,8 +1,21 @@
 <!--miniprogram/pages/my_file/index.wxml-->
 <view class="my_file_container">
-    <c-filesController files="{{fileList}}" type="my_file"
+    <c-filesController files="{{files}}" type="my_file"
         bind:uploadLocalImg="onUploadLocalImg" 
         bind:uploadMessageFile="onUploadMessageFile"
         bind:deleteFile="onDeleteFile"
+        bind:view="onView"
+        bind:addToTeam="onAddToTeam"
+        bind:change="onChangeFileIds"
+        bind:share="onShare"
+        bind:rename="onRename"
     />
 </view>
+
+<c-teamSelector isTeamSelectorVisible="{{isTeamSelectorVisible}}" createdTeamList="{{createdTeamList}}" joinedTeamList="{{joinedTeamList}}"
+    bind:cancel="onCancel" bind:complete="onComplete"
+/>
+<c-modifyFile isModifing="{{isRenaming}}" modifyFile="{{renameFile}}"
+    bind:complete="onRenameComplete"
+    bind:modifyCancel="onModifyCancel"
+/>

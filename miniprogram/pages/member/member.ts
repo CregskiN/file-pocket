@@ -1,4 +1,3 @@
-import moment from 'moment';
 import User from '../../models/User';
 import Team from '../../models/Team';
 import { CustomUserInfo } from '../../utils/typing';
@@ -10,7 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    members: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}] as FilePocket.MemberType[],
+    members: [] as FilePocket.MemberType[],
     teamInfo: {} as Response.TeamDetailType,
     userInfo: {} as CustomUserInfo,
   },
@@ -108,7 +107,7 @@ Page({
     if (this.data.teamInfo.tid && this.data.userInfo !== {}) {
       return {
         title: `来加入${this.data.teamInfo.teamName}吧！`,
-        path: `/pages/detail/detail?tid=${this.data.teamInfo.tid}&action=join`,
+        path: `/pages/detail/detail?tid=${this.data.teamInfo.tid}&action=join&type=join`,
         // imageUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg'
       }
     }

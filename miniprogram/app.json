@@ -9,7 +9,8 @@
     "pages/browsing-history/index",
     "pages/feedback/index",
     "pages/authorize/authorize",
-    "pages/my_file/index"
+    "pages/my_file/index",
+    "pages/share/share"
   ],
   "window": {
     "backgroundTextStyle": "light",

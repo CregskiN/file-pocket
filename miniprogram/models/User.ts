@@ -72,7 +72,7 @@ class User {
             wx.getSetting({
                 success: (res) => {
                     // console.log(res);
-                    console.log(res);
+                    // console.log(res);
                     if (res.authSetting['scope.userInfo']) {
                         // 已授权处理如下
                         let userInfo = null;

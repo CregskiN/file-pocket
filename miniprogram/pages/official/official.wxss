@@ -12,6 +12,17 @@
     justify-content: flex-start;
 
     width: 100%;
-    height: 100vh - 85rpx;
+    height: calc(100vh - 85rpx);
     overflow-y: scroll;
+    
 }
+
+.official_wrapper {
+    width: 100%;
+    padding-bottom: 15rpx;
+}
+
+
+/* .official_body :last-of-type {
+    margin-bottom: 15rpx;
+} */

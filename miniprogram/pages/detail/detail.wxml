@@ -2,16 +2,22 @@
 <view class="detail_container">
     
     <view class="team-header_wrapper" bind:tap="onShowData">
-        <c-teamHeader teamInfo="{{teamInfo}}"/>
+        <c-teamHeader teamInfo="{{teamInfo}}" userGlobalGrade="{{userInfo.globalGrade}}"
+            bind:toggleManager="onToggleManager"
+            bind:toggleUser="onToggleUser"
+            type="{{teamInfo.teamType}}"
+        />
     </view>
 
     <view class="file-controller_wrapper">
-        <c-fileController type="detail_normalTeam" files="{{files}}" isLazyLoading="{{isLazyLoading}}" teamInfo="{{teamInfo}}"
+        <c-fileController type="{{'detail_'+teamInfo.teamType}}" files="{{files}}" isLazyLoading="{{isLazyLoading}}" teamInfo="{{teamInfo}}"
             bind:uploadLocalImg="onUploadLocalImg"
             bind:uploadMessageFile="onUploadMessageFile" 
             bind:deleteFile="onDeleteFile"
             bind:addToMyCollection="onAddToMyCollection"
             bind:loadMore="onLoadMore"
+            bind:rename="onRename"
+            bind:view="onView"
         />
     </view>
 </view>
@@ -20,3 +26,8 @@
 <c-authorize isAuthorized="{{isAuthorized}}" 
     bind:authorize="onAuthorize"
 />
+<c-modifyFile isModifing="{{isRenaming}}" modifyFile="{{renameFile}}"
+    bind:complete="onRenameComplete"
+    bind:modifyCancel="onModifyCancel"
+/>
+<c-downloading isDownloadingOrUploadingVisible="{{isDownloadingOrUploadingVisible}}" lint="{{downloadingOrUploadingLint}}"/>

@@ -53,12 +53,12 @@
 }
 
 .btn_share_active {
-    background-color: #2775b6;
-    color: #fff;
+    background-color: #56b7f9 !important;
+    color: #fff !important;
 }
 
 .btn_share_normal {
-    background-color: #eee;
+    /* background-color: #eee; */
     color: #000;
 }
 
@@ -68,6 +68,10 @@
 }
 
 .btn_complete_normal {
-    background-color: #eee;
+    /* background-color: #eee; */
     color: #000;
+}
+
+.one {
+    width: 50% !important;
 }

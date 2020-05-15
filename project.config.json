@@ -70,14 +70,14 @@
 					"id": 1,
 					"name": "个人文件",
 					"pathName": "pages/my_file/index",
-					"query": "",
+					"query": "uid=1717835b7de",
 					"scene": null
 				},
 				{
 					"id": 2,
-					"name": "项目组详情页面",
+					"name": "受邀加入项目组",
 					"pathName": "pages/detail/detail",
-					"query": "tid=171d05c8b1b&action=join",
+					"query": "tid=1720ce2f77b&action=join&type=join",
 					"scene": null
 				},
 				{
@@ -85,6 +85,34 @@
 					"name": "项目成员页",
 					"pathName": "pages/member/member",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": 4,
+					"name": "分享页面",
+					"pathName": "pages/share/share",
+					"query": "fileIds=171e9002266-171e9002267-171e8ff127b-171e8ff127c-171e9002266-171e9002267-171e8ff127b-171e8ff127c-171e9002266-171e9002267-171e8ff127b-171e8ff127c-171e9002266-171e9002267-171e8ff127b-171e8ff127c",
+					"scene": 1008
+				},
+				{
+					"id": 5,
+					"name": "官方项目组详情",
+					"pathName": "pages/detail/detail",
+					"query": "tid=171edf2f13c&type=official",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "个人页面",
+					"pathName": "pages/my/my",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 7,
+					"name": "浏览历史",
+					"pathName": "pages/browsing-history/index",
+					"query": "uid=1717835b7de",
 					"scene": null
 				}
 			]

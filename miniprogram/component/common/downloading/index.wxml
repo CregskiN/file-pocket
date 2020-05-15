@@ -1,0 +1,14 @@
+<!-- component/common/downloading/index.wxml -->
+<view class="loader_container" hidden="{{!isDownloadingOrUploadingVisible}}">
+    <view class="loader">
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+    </view>
+    <view class="lint">
+        <!-- 正在上传 - 1 / 10 -->
+        {{lint}}
+    </view>
+</view>

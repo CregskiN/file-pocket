@@ -64,7 +64,7 @@ Component({
         }
         case 'create': {
           wx.showActionSheet({
-            itemList: ['邀请加入口袋', '重命名', '退出口袋', '解散口袋'],
+            itemList: ['邀请加入口袋', '重命名', '解散口袋'],
             success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
               switch (res.tapIndex) {
                 case 0: {
@@ -80,12 +80,6 @@ Component({
                   break;
                 }
                 case 2: {
-                  this.triggerEvent('dropOut', {
-                    tid
-                  })
-                  break;
-                }
-                case 3: {
                   this.triggerEvent('disband', {
                     tid,
                     uid,
@@ -127,15 +121,22 @@ Component({
           })
           break;
         }
-
       }
-
     },
 
     toDetail() {
       wx.navigateTo({
-        url: `/pages/detail/detail?tid=${this.data.team.tid}`
+        url: `/pages/detail/detail?tid=${this.data.team.tid}&type=${this.properties.type}`
       })
-    }
+    },
+
+    /**
+     * 项目组选择器 - 选择事件
+     */
+    onSelect() {
+      this.triggerEvent('select', {
+        tid: this.properties.team.tid
+      })
+    },
   }
 })

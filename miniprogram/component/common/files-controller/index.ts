@@ -1,3 +1,5 @@
+import Collection from "../../../models/Collection";
+
 // component/common/files-controller/index.js
 Component({
   /**
@@ -74,7 +76,8 @@ Component({
           this.setData({
             files,
             selectList
-          })
+          });
+          this._withChange(selectList);
           break;
         }
       }
@@ -105,7 +108,8 @@ Component({
         this.setData({
           files,
           selectList
-        })
+        });
+        this._withChange(selectList);
       }
 
     },
@@ -138,7 +142,7 @@ Component({
     onDeleteFile(e: any) {
       console.log('file-controller删除事件', e);
       console.log('selectList', this.data.selectList);
-      
+
       if (e.detail && e.detail.fileId) {
         this.triggerEvent('deleteFile', {
           fileIds: new Array(e.detail.fileId),
@@ -171,16 +175,73 @@ Component({
      * @param e 滚动事件
      */
     onAddToMyCollection(e: any) {
-      const { fileId } = e.detail;
-      if (fileId) {
-        this.triggerEvent('addToMyCollection', {
-          fileIds: new Array(fileId),
-        })
+      if (e.detail) {
+        if (e.detail.fileId) {
+          this.triggerEvent('addToMyCollection', {
+            fileIds: new Array(e.detail.fileId),
+          })
+        }
       } else {
         this.triggerEvent('addToMyCollection', {
           fileIds: this.data.selectList
         })
       }
     },
+
+    /**
+     * 一键添加至个人收藏
+     */
+    onAddToMyCollectionOnce() {
+      const fileIds: string[] = [];
+      const files = this.data.files;
+      files.forEach(file => {
+        fileIds.push(file.fileId);
+      });
+      this.triggerEvent('addToMyCollectionOnce', {
+        fileIds
+      })
+    },
+
+
+    /**
+     * 文件重命名
+     * @param e 
+     */
+    onRename(e: any) {
+      this.triggerEvent('rename', {
+        file: e.detail.file
+      })
+    },
+
+    /**
+     * 查看文件事件
+     * @param e 
+     */
+    onView(e: any) {
+      this.triggerEvent('view', {
+        file: e.detail.file
+      })
+    },
+
+    /**
+     * 添加至项目组
+     */
+    onAddToTeam() {
+      this.triggerEvent('addToTeam', {
+        fileIds: this.data.selectList
+      })
+    },
+
+    /**
+     * 伴随触发改变事件
+     * @param fileIds 
+     */
+    _withChange(fileIds: string[]) {
+      this.triggerEvent('change', {
+        fileIds
+      })
+    }
+
+
   }
 })

@@ -57,4 +57,30 @@ export default class Collection {
             })
         })
     }
+
+        /**
+     * 文件重命名
+     * @param uid 
+     * @param fileId 
+     * @param newFileName 
+     */
+    static renameFile(uid: string, fileId: string, newFileName: string) {
+        return new Promise<Response.CollectionFileType>((resolve, reject) => {
+            const options = {
+                url: '/file/update_file_info',
+                method: 'POST' as "POST",
+                data: {
+                    uid,
+                    fileId,
+                    newFileName
+                }
+            };
+            Https.request<Request.RenameFileReq, Response.RenameFileRes<Response.CollectionFileType>>(options).then(res => {
+                resolve(res.data)
+            }).catch(err => {
+                reject(err);
+            })
+        })
+
+    }
 }

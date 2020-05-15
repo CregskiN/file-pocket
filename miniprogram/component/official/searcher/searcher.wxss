@@ -11,12 +11,14 @@
 .searcher_top {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
 
     width: 750rpx;
     height: 70rpx;
     padding: 0 0 15rpx 0;
+
+    border-bottom: 1rpx solid #f2f2f2;
 
     background-color: #fff;
 }
@@ -91,7 +93,7 @@
 }
 
 .searcher_cancel {
-
+    margin-left: 10rpx;
     /* background-color: blue; */
 }
 
@@ -102,7 +104,7 @@
     right: 0;
     z-index: 100;
 
-    height: 1040rpx;
+    height: calc(100vh - 85rpx);
     width: 750rpx;
-    background: #f2f2f2;
+    background: rgb(0,0,0,0.5);
 }

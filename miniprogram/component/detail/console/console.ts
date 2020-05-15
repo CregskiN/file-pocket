@@ -50,14 +50,8 @@ Component({
                 count: 10,
                 type: 'all',
                 success: (res) => {
-                  wx.showModal({
-                    title: '提示',
-                    content: `您将添加${res.tempFiles.length}个文件`,
-                    success: () => {
-                      this.triggerEvent('uploadMessageFile', {
-                        fileObjects: res
-                      })
-                    }
+                  this.triggerEvent('uploadMessageFile', {
+                    fileObjects: res
                   })
                 }
               })
@@ -66,7 +60,7 @@ Component({
             case 1: {
               wx.chooseImage({
                 count: 5,
-                sourceType:['album'],
+                sourceType: ['album'],
                 success: (res) => {
                   this.triggerEvent('uploadLocalImg', {
                     chooseLocalImgs: res
@@ -117,6 +111,28 @@ Component({
      */
     onDelete() {
       this.triggerEvent('delete');
-    }
+    },
+
+    /**
+     * 添加至个人收藏集
+     */
+    onAddToMyCollection() {
+      this.triggerEvent('addToMyCollection');
+    },
+
+    /**
+     * 一键添加至个人收藏集
+     */
+    onAddToMyCollectionOnce() {
+      this.triggerEvent('addToMyCollectionOnce')
+    },
+
+
+    /**
+     * 添加至项目组
+     */
+    onAddToTeam() {
+      this.triggerEvent('addToTeam')
+    },
   }
 })

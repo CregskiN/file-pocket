@@ -1,12 +1,25 @@
 /* component/item/item.wxss */
 
 .item_container {
-    width: 695rpx;
+    width: 94%;
     height: 150rpx;
-    padding: 0 10rpx;
+    padding: 0 3%;
     margin: 15rpx auto 0 auto;
     border-radius: 10rpx;
     /* box-shadow: #fff 0 0 10rpx; */
+    background-color: #fff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.item_container_selector {
+    width: 90%;
+    height: 150rpx;
+    padding: 0 10rpx;
+    margin: 0 auto;
+    border-radius: 10rpx;
+    border-bottom: 1rpx solid #f2f2f2;
     background-color: #fff;
     display: flex;
     flex-direction: row;
@@ -28,7 +41,7 @@
 }
 
 .item_middle {
-    width: 70%;
+    width: 67%;
     height: 100%;
     padding: 15rpx 0 8rpx 0;
     box-sizing: border-box;
@@ -50,7 +63,6 @@
 }
 
 .item_counts {
-    padding: 0 0 5rpx 0;
 
     font-size: 25rpx;
     color: #47484c;
@@ -63,23 +75,30 @@
     align-items: center;
 }
 
-.item_count_doc {
-    margin: 0 10rpx 0 0;
-}
 
-.item_count_img {
-    margin: 0 0 0 10rpx;
+.item_count_doc {
+    margin-right: 10rpx;
 }
 
 .item-right {
-    width: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 8%;
     height: 100%;
     position: relative;
 }
 
 .item_icon_more {
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+
     margin: 0 5rpx 8rpx 0;
+
+    width: 100%;
     font-size: 40rpx;
     position: absolute;
     right: 0;

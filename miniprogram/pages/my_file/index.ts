@@ -1,7 +1,9 @@
-import Upload from '../../models/Upload';
 import Collection from '../../models/Collection';
 import File from '../../models/File';
-import { collectionFileInfoFormatter } from '../../utils/formatters';
+
+import Viewer from '../../utils/Viewer';
+import { teamListFormatter, fileListFormatter, collectionFileListFormatter, collectionFileFormatter } from '../../utils/formatters';
+import Team from '../../models/Team';
 
 
 Page({
@@ -10,51 +12,23 @@ Page({
    * 页面的初始数据
    */
   data: {
-    fileList: [] as Response.CollectionFileType[],
+    files: [] as Response.CollectionFileType[],
     pageIndex: 1,
     collectionInfo: {
       collectionId: ''
     },
     uid: '',
-  },
 
-  /**
-* 上传本地图片，上传多张的本质是多次触发选择事件
-* @param e 
-*/
-  onUploadLocalImg(e: any) {
-    const chooseLocalImgs: WechatMiniprogram.ChooseImageSuccessCallbackResult = e.detail.chooseLocalImgs;
-    const uploadCount = chooseLocalImgs.tempFilePaths.length;
-    const promises: Promise<any>[] = [];
-    chooseLocalImgs.tempFiles.forEach((value, index) => {
-      const imgObject = {
-        errMsg: chooseLocalImgs.errMsg,
-        tempFilePaths: new Array(chooseLocalImgs.tempFilePaths[index]),
-        tempFiles: new Array(chooseLocalImgs.tempFiles[index])
-      }
-      promises.push(Upload.uploadLocalImg(imgObject));
-    });
+    isTeamSelectorVisible: false,
+    selectTeamInfo: {},
+    fileIds: [] as string[],
 
-    if (promises.length === uploadCount) {
-      
-    }
-  },
+    isRenaming: false,
+    renameFile: {} as Response.FileType,
 
-  /**
-   * 上传群聊文件
-   * @param e 
-   */
-  onUploadMessageFile(e: any) {
-    const fileObjects: WechatMiniprogram.ChooseMessageFileSuccessCallbackResult = e.detail.fileObjects;
-    const uploadCount = fileObjects.tempFiles.length;
-    const promises: Promise<any>[] = [];
-    fileObjects.tempFiles.forEach(fileObject => {
-      promises.push(Upload.uploadMessageFile(fileObject));
-    });
 
-    if (promises.length === uploadCount) {
-      
-    }
+    createdTeamList: [] as Response.TeamDetailType[],
+    joinedTeamList: [] as Response.TeamDetailType[],
   },
 
   /**
@@ -66,7 +40,7 @@ Page({
     const { collectionId } = this.data.collectionInfo;
     File.deleteMyCollectionFiles(collectionId, fileIds).then(res => {
       if (res.success) {
-        this._QueryMoreFileList(this.data.uid, 1).then(res => {
+        this._queryMoreFileList(this.data.uid, 1).then(res => {
           wx.showToast({
             title: '删除成功'
           });
@@ -82,17 +56,140 @@ Page({
   },
 
   /**
+   * 在线查看
+   * @param e 
+   */
+  onView(e: any) {
+    Viewer.viewDocument(e.detail.file);
+  },
+
+  /**
+   * 添加至项目组
+   * @param e
+   */
+  onAddToTeam(e: any) {
+    console.log(e)
+    if (e.detail.fileId && e.detail.fileId.length !== 0) {
+      this.setData({
+        fileIds: new Array(e.detail.fileId),
+        isTeamSelectorVisible: true,
+      })
+    } else if (e.detail.fileIds && e.detail.fileIds.length !== 0) {
+      this.setData({
+        fileIds: e.detail.fileIds,
+        isTeamSelectorVisible: true,
+      })
+    }
+
+  },
+
+  /**
+   * 取消事件
+   * @param e 
+   */
+  onCancel(e: any) {
+    this.setData({
+      isTeamSelectorVisible: false
+    })
+  },
+
+  /**
+   * 完成事件
+   * @param e 
+   */
+  onComplete(e: any) {
+    const { teamList } = e.detail;
+    const promises = [];
+    for (const tid of teamList) {
+      promises.push(Team.receiveFilesFromCollection(tid, this.data.uid, this.data.fileIds));
+    }
+    Promise.all(promises).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+
+    })
+  },
+
+  /**
+   * 多选状态下选择文件
+   * @param e 
+   */
+  onChangeFileIds(e: any) {
+    const { fileIds } = e.detail;
+    this.setData({
+      fileIds
+    })
+  },
+
+  onModifyCancel() {
+    this.setData({
+      isRenaming: false
+    })
+  },
+
+  /**
+  * 文件重命名
+  * @param e 
+  */
+  onRename(e: any) {
+    const { file } = e.detail;
+    this.setData({
+      renameFile: file,
+      isRenaming: true,
+    })
+  },
+
+  /**
+   * 重命名成功
+   * @param e 
+   */
+  onRenameComplete(e: any) {
+    const { uid } = this.data;;
+    const { fileId } = this.data.renameFile;
+    const { newFileName } = e.detail;
+    const files = this.data.files;
+    Collection.renameFile(uid as string, fileId, newFileName).then(newFile => {
+      if (newFile) {
+        newFile = collectionFileFormatter(newFile);
+        for (let i = 0; i < files.length; i++) {
+          if (files[i].fileId === newFile.fileId) {
+            files[i] = newFile;
+          }
+        }
+        this.setData({
+          files,
+          isRenaming: false,
+          renameFile: {} as any,
+        })
+        wx.showToast({
+          title: '操作成功'
+        })
+      }
+    }).catch(err => {
+      wx.showToast({
+        title: '操作失败'
+      })
+      console.log('文件重命名失败', err);
+    })
+  },
+
+
+
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options: any) {
     console.log('My_File.onLoad()', options);
 
     const { uid } = options;
-    this._QueryMoreFileList(uid, 1).then(res => {
+    this._queryMoreFileList(uid, 1).then(res => {
       this.setData({
         uid
       })
     })
+    this._refreshCreatedTeamList(uid);
+    this._refreshJoinedTeamList(uid);
   },
 
   /**
@@ -140,9 +237,19 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage(opts): WechatMiniprogram.Page.ICustomShareContent {
-    console.log(opts.target)
-    return {}
+  onShareAppMessage(opts): any {
+    const fileIds = this.data.fileIds;
+    let params = '';
+    params += fileIds[0];
+    for (let i = 1; i < fileIds.length; i++) {
+      params += `-${fileIds[i]}`
+    }
+    if(fileIds.length!==0){
+      return {
+        title: `这里有${fileIds.length}个文件，请注意查收。`,
+        path: `/pages/share/share?fileIds=${params}`,
+      }
+    }
   },
 
   /**
@@ -150,32 +257,64 @@ Page({
    * @param uid 
    * @param pageIndex 
    */
-  _QueryMoreFileList(uid: string, pageIndex: number) {
+  _queryMoreFileList(uid: string, pageIndex: number) {
     return new Promise((resolve, reject) => {
-      Collection.queryMyCollectionFileList(uid, pageIndex).then(fileList => {
+      Collection.queryMyCollectionFileList(uid, pageIndex).then(files => {
         if (pageIndex === 1) {
           this.setData({
-            fileList: collectionFileInfoFormatter(fileList),
+            files: collectionFileListFormatter(files),
             pageIndex: pageIndex + 1
           })
         } else if (pageIndex !== 1) {
           this.setData({
-            fileList: [
-              ...this.data.fileList,
-              ...collectionFileInfoFormatter(fileList)
+            files: [
+              ...(this.data.files),
+              ...collectionFileListFormatter(files)
             ],
-            pageIndex: pageIndex + 1
+            pageIndex: this.data.pageIndex + 1
           })
         }
         if (this.data.collectionInfo.collectionId === '') {
           this.setData({
             collectionInfo: {
-              collectionId: fileList[0].collectionId,
+              collectionId: files[0].collectionId,
             }
           })
         }
 
         resolve();
+      })
+    })
+  },
+
+  /**
+	 * 刷新我创建的项目组列表
+	 * @param uid 
+	 */
+  _refreshCreatedTeamList(uid: string) {
+    return new Promise<Response.TeamDetailType[]>((resolve, reject) => {
+      Team.getCreatedTeamList(uid).then(createdTeamList => {
+        const newCreatedTeamList = teamListFormatter(createdTeamList);
+        this.setData({
+          createdTeamList: newCreatedTeamList as Response.TeamDetailType[]
+        });
+        resolve(newCreatedTeamList as Response.TeamDetailType[]);
+      })
+    })
+  },
+
+	/**
+	 * 刷新我加入的列表
+	 * @param uid 
+	 */
+  _refreshJoinedTeamList(uid: string) {
+    return new Promise<Response.TeamDetailType[]>((resolve, reject) => {
+      Team.getJoinedTeamList(uid).then(joinedTeamList => {
+        const newJoinedTeamList = teamListFormatter(joinedTeamList);
+        this.setData({
+          joinedTeamList: newJoinedTeamList as Response.TeamDetailType[]
+        });
+        resolve(newJoinedTeamList as Response.TeamDetailType[]);
       })
     })
   }

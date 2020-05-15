@@ -3,7 +3,7 @@
     width: 94%;
     height: 150rpx;
     margin: 15rpx auto;
-
+    padding: 0 3%;
     border-radius: 15rpx;
     background-color: #fff;
     /* box-shadow: #eee 0 0 10rpx; */
@@ -37,11 +37,10 @@
     height: 100%;
     padding: 10rpx;
     box-sizing: border-box;
-    /* background-color: red; */
-    /* display: flex; */
-    /* flex-direction: column;
+    display: flex;
+    flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-start; */
+    justify-content: flex-start;
 }
 
 .file-item_fileName {

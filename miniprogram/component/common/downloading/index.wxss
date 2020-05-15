@@ -1,0 +1,74 @@
+/* component/common/downloading/index.wxss */
+.loader_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0, 0.5);
+}
+
+.loader {
+    width: 120px;
+    margin-left: 120px;
+    margin-bottom: 50px;
+    transform: translate3d(-50%, -50%, 0);
+}
+
+.lint {
+    position: absolute;
+    top: calc(45% + 20px);
+}
+
+.dot {
+    width: 24px;
+    height: 24px;
+    background: #3ac;
+    border-radius: 100%;
+    display: inline-block;
+    animation: slide 1s infinite;
+}
+
+.dot:nth-child(1) {
+    animation-delay: 0.1s;
+    background: #32aacc;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+    background: #64aacc;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.3s;
+    background: #96aacc;
+}
+
+.dot:nth-child(4) {
+    animation-delay: 0.4s;
+    background: #c8aacc;
+}
+
+.dot:nth-child(5) {
+    animation-delay: 0.5s;
+    background: #faaacc;
+}
+
+@keyframes slide {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+

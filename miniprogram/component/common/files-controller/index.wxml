@@ -13,14 +13,19 @@
                 bind:select="onSelect" 
                 bind:delete="onDeleteFile" 
                 bind:addToMyCollection="onAddToMyCollection"
+                bind:rename="onRename"
+                bind:view="onView"
             />
         </block>
     </scroll-view>
 
-    <c-console type="{{type}}" selectCount="{{selecteList.length}}" editting="{{editting}}" teamInfo="{{teamInfo}}"
+    <c-console type="{{type}}" selectCount="{{selectList.length}}" editting="{{editting}}" teamInfo="{{teamInfo}}"
         bind:inEdit="inEdit"
         bind:uploadLocalImg="onUploadLocalImg" 
         bind:uploadMessageFile="onUploadMessageFile"
         bind:delete="onDeleteFile"
+        bind:addToMyCollection="onAddToMyCollection"
+        bind:addToTeam="onAddToTeam"
+        bind:addToMyCollectionOnce="onAddToMyCollectionOnce"
     />
 </view>

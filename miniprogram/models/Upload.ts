@@ -40,12 +40,9 @@ export default class Upload {
             // 初始化七牛云配置
             initQiniu();
 
-            console.log(imgObject);
-            const userInfo = User.getUserInfoStorage();
+            // console.log(imgObject);
 
             var filePath = imgObject.tempFilePaths[0];
-            const chunks = filePath.split('.');
-            const time = getTime(userInfo.nickName!);
 
             // 向七牛云上传
             qiniuUploader.upload(
@@ -54,12 +51,12 @@ export default class Upload {
                     resolve(res);
                 },
                 (error: any) => {
-                    // console.log('上传本地图片错误', error);
+                    console.log('上传本地图片错误', error);
                     reject(error);
                 },
                 null,
                 (progress: any) => {
-                    // console.log('上传进程', progress);
+                    // console.log('上传进度 ', progress)
                 },
                 // (cancelTask: any) => that.setData({ cancelTask })
                 (cancelTask: any) => {
@@ -94,7 +91,7 @@ export default class Upload {
                 },
                 null,
                 (progress: any) => {
-                    console.log('上传进程为', progress);
+                    // console.log('上传进程为', progress);
 
                     // console.log('上传进度', progress.progress);
                     // console.log('已经上传的数据长度', progress.totalBytesSent);

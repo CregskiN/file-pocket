@@ -1,24 +1,100 @@
 <!-- component/item/item.wxml -->
-<view class="item_container">
 
+<!-- 官方项目组 -->
+<view class="item_container" wx:if="{{type==='official'}}">
     <view class="item_left" bind:tap="toDetail">
-        <image class="item_icon_avatar" src="{{team.avatarUrl}}" mode="aspectFit" />
+        <image class="item_icon_avatar" src="{{team.teamAvatarUrl || team.avatarUrl}}" mode="aspectFit" />
     </view>
+    <view class="item_middle" bind:tap="toDetail">
+        <view class="item_name">{{team.teamName}}</view>
+        <view class="item_counts">
+            <view class="item_count_doc" wx:if="{{team.numberCount}}">
+                <text class="item_icon_doc iconfont icon-geren" /> {{team.numberCount}}
+            </view>
+            <view class="item_count_img">
+                <text class="item_icon_img iconfont icon-wendang" /> {{team.fileCount}}
+            </view>
+        </view>
+    </view>
+    <!-- 这个模块使用了relative+absolute定位 -->
+    <view class="item-right">
+        <text class="item_icon_more iconfont icon-gengduo" bind:tap="onMore"/>
+    </view>
+</view>
 
+
+<!-- 我创建的项目组 -->
+<view class="item_container" wx:if="{{type==='create'}}">
+    <view class="item_left" bind:tap="toDetail">
+        <image class="item_icon_avatar" src="{{team.teamAvatarUrl || team.avatarUrl}}" mode="aspectFit" />
+    </view>
     <view class="item_middle" bind:tap="toDetail">
         <view class="item_name">{{team.teamName}}</view>
         <view class="item_counts">
             <view class="item_count_doc">
-                <text class="item_icon_doc iconfont icon-wendang" /> {{docCount}}
+                <text class="item_icon_doc iconfont icon-geren" /> {{team.numberCount}}
             </view>
             <view class="item_count_img">
-                <text class="item_icon_img iconfont icon-tupian" /> {{imgCount}}
+                <text class="item_icon_img iconfont icon-wendang" /> {{team.fileCount}}
             </view>
         </view>
     </view>
-
     <!-- 这个模块使用了relative+absolute定位 -->
     <view class="item-right">
         <text class="item_icon_more iconfont icon-gengduo" bind:tap="onMore"/>
+    </view>
+</view>
+
+
+
+<!-- 我加入的项目组 -->
+<view class="item_container" wx:if="{{type==='join'}}">
+    <view class="item_left" bind:tap="toDetail">
+        <image class="item_icon_avatar" src="{{team.teamAvatarUrl || team.avatarUrl}}" mode="aspectFit" />
+    </view>
+    <view class="item_middle" bind:tap="toDetail">
+        <view class="item_name">{{team.teamName}}</view>
+        <view class="item_counts">
+            <view class="item_count_doc">
+                <text class="item_icon_doc iconfont icon-geren" /> {{team.numberCount}}
+            </view>
+            <view class="item_count_img">
+                <text class="item_icon_img iconfont icon-wendang" /> {{team.fileCount}}
+            </view>
+        </view>
+    </view>
+    <!-- 这个模块使用了relative+absolute定位 -->
+    <view class="item-right">
+        <text class="item_icon_more iconfont icon-gengduo" bind:tap="onMore"/>
+    </view>
+</view>
+
+
+<!-- 项目组选择器 -->
+<view class="item_container_selector" wx:if="{{type==='selector'}}"  
+    catch:tap="onSelect"
+>
+    <view class="item_left">
+        <image class="item_icon_avatar" src="{{team.teamAvatarUrl || team.avatarUrl}}" mode="aspectFit" />
+    </view>
+
+    <view class="item_middle">
+        <view class="item_name">{{team.teamName}}</view>
+        <view class="item_counts">
+            <view class="item_count_doc">
+                <!-- <text class="item_icon_doc iconfont icon-wendang" /> {{docCount}} -->
+            </view>
+            <view class="item_count_img">
+                <!-- <text class="item_icon_img iconfont icon-tupian" /> {{imgCount}} -->
+            </view>
+        </view>
+    </view>
+    <!-- 这个模块使用了relative+absolute定位 -->
+    <view class="item-right">
+        <checkbox-group>
+            <checkbox class="file-item_right_checkbox" checked="{{team.isChecked}}"
+                bind:change="onSelect"
+            />
+        </checkbox-group>
     </view>
 </view>

@@ -1,13 +1,11 @@
 {
   "usingComponents": {
-    "c-imgUpload":"../../component/found/img-upload/img-upload",
-    "c-fileItem":"../../component/detail/file-item/file-item",
-    "c-console":"../../component/detail/console/console",
-    "c-topBar":"../../component/detail/top-bar/top-bar",
     "c-fileController":"../../component/common/files-controller/index",
     "c-teamHeader":"../../component/detail/team-header/index",
     "c-authorize": "../../component/common/authorize/authorize",
-    "c-loading":"../../component/common/loading/index"
+    "c-loading":"../../component/common/loading/index",
+    "c-modifyFile":"../../component/common/modify-file/index",
+    "c-downloading":"../../component/common/downloading/index"
   },
   "navigationBarTitleText": "口袋详情"
 }

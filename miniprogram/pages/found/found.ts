@@ -28,7 +28,7 @@ Page({
    * 返回
    */
   onBack() {
-    wx.navigateBack()
+    wx.navigateBack();
   },
 
   /**

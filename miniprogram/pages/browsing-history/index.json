@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "c-fileItem":"../../component/detail/file-item/file-item"
+    "c-fileItem": "../../component/detail/file-item/file-item",
+    "c-downloading":"../../component/common/downloading/index"
   },
   "navigationBarTitleText": "浏览历史"
 }
