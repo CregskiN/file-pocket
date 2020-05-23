@@ -1,8 +1,14 @@
 <!-- miniprogram/pages/member/member.wxml -->
 <view class="member_container">
 
-    <scroll-view class="member_body" scroll-y="true">
-        <c-memberItem wx:for="{{members}}" wx:key="uid" member="{{item}}" userInfo="{{userInfo}}"
+    <scroll-view class="member_body" scroll-y="true"
+        enable-back-to-top="true" 
+        lower-threshold="70"
+        bind:scrolltolower="onScrollToBottom"
+    >
+        <c-memberItem wx:for="{{members}}" wx:key="uid" 
+            member="{{item}}" 
+            userInfo="{{userInfo}}"
             bind:delete="onDelete"
         />
     </scroll-view>

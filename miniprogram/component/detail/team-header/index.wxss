@@ -33,6 +33,11 @@
 .team_name {
     font-size: 33rpx;
     font-weight: 400;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    display: -webkit-box;
 }
 
 /*  */

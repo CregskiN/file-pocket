@@ -2,9 +2,10 @@ import Collection from '../../models/Collection';
 import File from '../../models/File';
 
 import Viewer from '../../utils/Viewer';
-import { teamListFormatter, fileListFormatter, collectionFileListFormatter, collectionFileFormatter } from '../../utils/formatters';
+import { teamListFormatter, collectionFileListFormatter } from '../../utils/formatters';
 import Team from '../../models/Team';
-
+import User from '../../models/User';
+import { CustomUserInfo } from '../../utils/typing';
 
 Page({
 
@@ -12,6 +13,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    userInfo: {} as CustomUserInfo,
+
     files: [] as Response.CollectionFileType[],
     pageIndex: 1,
     collectionInfo: {
@@ -94,7 +97,7 @@ Page({
   },
 
   /**
-   * 完成事件
+   * 完成事件 文件： 个人文件 -> 口袋
    * @param e 
    */
   onComplete(e: any) {
@@ -104,10 +107,18 @@ Page({
       promises.push(Team.receiveFilesFromCollection(tid, this.data.uid, this.data.fileIds));
     }
     Promise.all(promises).then(res => {
-      console.log(res);
+      wx.showToast({
+        title: '添加成功',
+        icon: 'success'
+      })
     }).catch(err => {
-      console.log(err);
-
+      wx.showToast({
+        title: '请检查网络'
+      })
+      this.setData({
+        isTeamSelectorVisible: false,
+        selectTeamInfo: {}
+      })
     })
   },
 
@@ -122,6 +133,9 @@ Page({
     })
   },
 
+  /**
+   * 关闭文件重命名窗口
+   */
   onModifyCancel() {
     this.setData({
       isRenaming: false
@@ -129,7 +143,7 @@ Page({
   },
 
   /**
-  * 文件重命名
+  * 选中文件，准备开始重命名
   * @param e 
   */
   onRename(e: any) {
@@ -144,34 +158,12 @@ Page({
    * 重命名成功
    * @param e 
    */
-  onRenameComplete(e: any) {
-    const { uid } = this.data;;
-    const { fileId } = this.data.renameFile;
-    const { newFileName } = e.detail;
-    const files = this.data.files;
-    Collection.renameFile(uid as string, fileId, newFileName).then(newFile => {
-      if (newFile) {
-        newFile = collectionFileFormatter(newFile);
-        for (let i = 0; i < files.length; i++) {
-          if (files[i].fileId === newFile.fileId) {
-            files[i] = newFile;
-          }
-        }
-        this.setData({
-          files,
-          isRenaming: false,
-          renameFile: {} as any,
-        })
-        wx.showToast({
-          title: '操作成功'
-        })
-      }
-    }).catch(err => {
-      wx.showToast({
-        title: '操作失败'
-      })
-      console.log('文件重命名失败', err);
-    })
+  onModifyComplete(e: any) {
+    this.setData({
+      isRenaming: false,
+      renameFile: {} as any,
+    });
+    this._queryMoreFileList(this.data.uid, 1);
   },
 
 
@@ -183,9 +175,11 @@ Page({
     console.log('My_File.onLoad()', options);
 
     const { uid } = options;
+    const userInfo = User.getUserInfoStorage();
     this._queryMoreFileList(uid, 1).then(res => {
       this.setData({
-        uid
+        uid,
+        userInfo,
       })
     })
     this._refreshCreatedTeamList(uid);
@@ -244,7 +238,7 @@ Page({
     for (let i = 1; i < fileIds.length; i++) {
       params += `-${fileIds[i]}`
     }
-    if(fileIds.length!==0){
+    if (fileIds.length !== 0) {
       return {
         title: `这里有${fileIds.length}个文件，请注意查收。`,
         path: `/pages/share/share?fileIds=${params}`,

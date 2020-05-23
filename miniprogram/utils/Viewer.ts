@@ -33,17 +33,18 @@ export default class Viewer {
                     title: '该文件不支持在线浏览',
                     icon: 'none'
                 })
+                resolve({ success: false });
                 return;
-            }
-            if (ImageType[file.mimeType as 'png' | 'jpeg' | 'jpg']) {
+            } else if (ImageType[file.mimeType as 'png' | 'jpeg' | 'jpg']) {
                 wx.previewImage({
                     current: file.fileUrl,
                     urls: [file.fileUrl],
                     success: (res) => {
                         console.log('图片打开成功', res);
+                        Viewer.writeHistoty(file);
                         resolve({
                             success: true
-                        })
+                        });
                     },
                     fail: (err) => {
                         console.log('打开失败', err);

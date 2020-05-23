@@ -6,7 +6,7 @@
     />
 </view>
 
-<c-loading lint="正在获取文件..." isLoading="{{isLoading}}"/>
+<c-downloading isDownloadingOrUploadingVisible="{{isDownloadingOrUploadingVisible}}"/>
 <c-authorize isAuthorized="{{isAuthorized}}" 
     bind:authorize="onAuthorize"
 />

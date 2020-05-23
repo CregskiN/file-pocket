@@ -24,15 +24,11 @@ enum userGrade_teamType {
 /**
  * 格式化项目组信息
  * @param teamInfo 
+ * TODO:逻辑需要修改
  */
-export function teamInfoFormatter(teamInfo: Response.TeamDetailType | Response.OfficialTeam, userGradeInTeam?: number) {
+export function teamInfoFormatter(teamInfo: Response.TeamDetailType | Response.OfficialTeam) {
     if (teamInfo.creationTime) {
         teamInfo.creationTime = moment(teamInfo.creationTime).format('YYYY-MM-DD');
-    }
-    if (userGradeInTeam) {
-        teamInfo.teamType = userGrade_teamType[userGradeInTeam] as string;
-    } else if (teamInfo.grade) {
-        teamInfo.teamType = teamType[teamInfo.grade as number];
     }
     return teamInfo;
 }

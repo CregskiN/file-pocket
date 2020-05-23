@@ -43,7 +43,7 @@ Component({
               switch (res.tapIndex) {
                 case 0: {
                   this.triggerEvent('share', {
-                    tid
+                    selectTeam: this.properties.team
                   });
                   break;
                 }
@@ -68,7 +68,7 @@ Component({
             success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
               switch (res.tapIndex) {
                 case 0: {
-                  this.triggerEvent('invite', {
+                  this.triggerEvent('share', {
                     selectTeam: this.properties.team
                   })
                   break;
@@ -96,19 +96,21 @@ Component({
           break;
         }
         case 'join': {
+          console.log('我加入的项目组')
           wx.showActionSheet({
             itemList: ['邀请加入口袋', '退出口袋'],
             success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
               switch (res.tapIndex) {
                 case 0: {
-                  this.triggerEvent('invite', {
+                  this.triggerEvent('share', {
                     selectTeam: this.properties.team
                   })
                   break;
                 }
-                case 2: {
+                case 1: {
                   this.triggerEvent('dropOut', {
-                    tid
+                    tid,
+                    uid: this.properties.userInfo.uid
                   })
                   break;
                 }
@@ -126,7 +128,7 @@ Component({
 
     toDetail() {
       wx.navigateTo({
-        url: `/pages/detail/detail?tid=${this.data.team.tid}&type=${this.properties.type}`
+        url: `/pages/detail/detail?tid=${this.data.team.tid}`
       })
     },
 

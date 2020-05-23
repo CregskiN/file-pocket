@@ -1,6 +1,8 @@
 <!--miniprogram/pages/my_file/index.wxml-->
 <view class="my_file_container">
-    <c-filesController files="{{files}}" type="my_file"
+    <c-filesController 
+        files="{{files}}" 
+        type="my_file"
         bind:uploadLocalImg="onUploadLocalImg" 
         bind:uploadMessageFile="onUploadMessageFile"
         bind:deleteFile="onDeleteFile"
@@ -12,10 +14,19 @@
     />
 </view>
 
-<c-teamSelector isTeamSelectorVisible="{{isTeamSelectorVisible}}" createdTeamList="{{createdTeamList}}" joinedTeamList="{{joinedTeamList}}"
-    bind:cancel="onCancel" bind:complete="onComplete"
+<c-teamSelector 
+    isTeamSelectorVisible="{{isTeamSelectorVisible}}" 
+    createdTeamList="{{createdTeamList}}" 
+    joinedTeamList="{{joinedTeamList}}"
+    bind:cancel="onCancel" 
+    bind:complete="onComplete"
 />
-<c-modifyFile isModifing="{{isRenaming}}" modifyFile="{{renameFile}}"
-    bind:complete="onRenameComplete"
-    bind:modifyCancel="onModifyCancel"
+<c-modifyWindow 
+    lint="请输入新的文件名称"
+    type="collection"
+    isModifing="{{isRenaming}}" 
+    modifyObj="{{renameFile}}"
+	bind:modifyCancel="onModifyCancel"
+	bind:modifyComplete="onModifyComplete"
+    userInfo="{{userInfo}}"
 />

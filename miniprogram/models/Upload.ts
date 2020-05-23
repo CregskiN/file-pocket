@@ -71,7 +71,7 @@ export default class Upload {
      * 上传聊天文件
      * @param imgObject 
      */
-    static uploadMessageFile(fileObject: WechatMiniprogram.ChooseFile) {
+    static uploadMessageFile(fileObject: WechatMiniprogram.ChooseFile, cb?: Function) {
         return new Promise<QiniuUploaderResData>((resolve, reject) => {
             // 初始化七牛云相关参数
             initQiniu();
@@ -79,10 +79,15 @@ export default class Upload {
             const filePath = fileObject.path;
             const fileName = fileObject.name;
 
+
+            
             qiniuUploader.upload(
                 filePath,
                 (res: QiniuUploaderResData) => {
                     res.fileName = fileName;
+                    if (cb) {
+                        cb();
+                    }
                     resolve(res);
                 },
                 (error: any) => {

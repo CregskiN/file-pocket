@@ -7,12 +7,12 @@
     </view>
 
     <view class="found_buttons">
-        <view class="found_back" bind:tap="onBack">
-            <text class="iconfont icon-fanhui" />
+        <view class="found_btn found_btn_left" bind:tap="onBack">
+            <text class="iconfont icon-fanhui icon" />
             返回
         </view>
-        <view class="found_complete" bind:tap="onComplete">
-            <text class="iconfont icon-wancheng" />
+        <view class="found_btn found_btn_right" bind:tap="onComplete">
+            <text class="iconfont icon-wancheng icon" />
             完成
         </view>
     </view>

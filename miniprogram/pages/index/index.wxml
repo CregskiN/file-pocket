@@ -6,28 +6,43 @@
 	<view class="index_body">
 
 		<scroll-view class="index_scroll_tab" scroll-x="true">
-			<view class="{{current == 0 ? 'tab_item active' : 'tab_item'}}" data-current="0" bind:tap="onSwitchTap">创建</view>
-			<view class="{{current == 1 ? 'tab_item active' : 'tab_item'}}" data-current="1" bind:tap="onSwitchTap">加入</view>
+			<view class="{{current == 0 ? 'tab_item active' : 'tab_item'}}" data-current="0" bind:tap="onSwitchTap">我创建的</view>
+			<view class="{{current == 1 ? 'tab_item active' : 'tab_item'}}" data-current="1" bind:tap="onSwitchTap">我加入的</view>
 		</scroll-view>
 
 		<swiper class="index_swiper" current="{{current}}"
-			bind:change="onSwitchTap"
+			bind:change="onSwitchTap" 
 		>
 			<swiper-item class="index_swiper_item">
-				<scroll-view scroll-y="true" style="width:100vw;height:calc(100%-15rpx);display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
-					<c-item wx:for="{{createdTeamList}}" wx:key="id" 
-						team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" userInfo="{{userInfo}}" type="create"
-						bind:rename="onRename" bind:invite="onInvite" bind:disband="onDisband"
-					/>
+				<scroll-view class="scroll_view" scroll-y="true">
+					<view class="item_wrapper">
+						<c-item wx:for="{{createdTeamList}}" wx:key="id" 
+							team="{{item}}" 
+							docCount="{{item.count.doc}}" 
+							imgCount="{{item.count.img}}" 
+							userInfo="{{userInfo}}" 
+							type="create"
+							bind:share="onShare"
+							bind:rename="onRename"
+							bind:disband="onDisband"
+						/>
+					</view>
 				</scroll-view>
 			</swiper-item>
 
 			<swiper-item class="index_swiper_item">
-				<scroll-view scroll-y="true" style="width:100vw;height:calc(100%-15rpx);display:flex;flex-direction:column;justify-content:flex-start;align-items:center;">
-					<c-item wx:for="{{joinedTeamList}}" wx:key="id" 
-						team="{{item}}" docCount="{{item.count.doc}}" imgCount="{{item.count.img}}" userInfo="{{userInfo}}" type="join" 
-						bind:invite="onInvite"
-					/>
+				<scroll-view class="scroll_view" scroll-y="true">
+					<view class="item_wrapper">
+						<c-item wx:for="{{joinedTeamList}}" wx:key="id" 
+							team="{{item}}" 
+							docCount="{{item.count.doc}}" 
+							imgCount="{{item.count.img}}" 
+							userInfo="{{userInfo}}" 
+							type="join" 
+							bind:share="onShare"
+							bind:dropOut="onDropOut"
+						/>
+					</view>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -50,7 +65,11 @@
 
 <c-loading lint="{{lints.loading}}" isLoading="{{isLoading}}"/>
 <c-authorize isAuthorized="{{isAuthorized}}" bind:authorize="onAuthorize"/>
-<c-modifyTeam isModifing="{{isModifing}}" modifyTeam="{{modifyTeam}}"
+<c-modifyWindow 
+	lint="请输入新的口袋名称"
+	type="team"
+	isModifing="{{isModifing}}" 
+	modifyObj="{{modifyTeam}}"
 	bind:modifyCancel="onModifyCancel"
 	bind:modifyComplete="onModifyComplete"
 />

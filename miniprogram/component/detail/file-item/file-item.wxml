@@ -114,7 +114,7 @@
 
     <view class="file-item_middle" catch:tap="onView">
         <view class="file-item_fileName">{{file.fileName}}</view>
-        <!-- <view class="file-item_submitter">来自口袋 - {{file.teamName}}</view> -->
+        <view class="file-item_submitter">上传者：{{file.username}}</view>
     </view>
 
     <view class="file-item_right">

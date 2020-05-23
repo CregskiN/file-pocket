@@ -2,15 +2,18 @@
 <view class="detail_container">
     
     <view class="team-header_wrapper" bind:tap="onShowData">
-        <c-teamHeader teamInfo="{{teamInfo}}" userGlobalGrade="{{userInfo.globalGrade}}"
+        <c-teamHeader 
+            type="{{showTeamType}}"
+            teamInfo="{{teamInfo}}" 
+            userGlobalGrade="{{userInfo.globalGrade}}"
             bind:toggleManager="onToggleManager"
             bind:toggleUser="onToggleUser"
-            type="{{teamInfo.teamType}}"
+            showTeamType="{{showTeamType}}"
         />
     </view>
 
     <view class="file-controller_wrapper">
-        <c-fileController type="{{'detail_'+teamInfo.teamType}}" files="{{files}}" isLazyLoading="{{isLazyLoading}}" teamInfo="{{teamInfo}}"
+        <c-fileController type="{{'detail_' + showTeamType}}" files="{{files}}" isLazyLoading="{{isLazyLoading}}" teamInfo="{{teamInfo}}"
             bind:uploadLocalImg="onUploadLocalImg"
             bind:uploadMessageFile="onUploadMessageFile" 
             bind:deleteFile="onDeleteFile"
@@ -18,6 +21,8 @@
             bind:loadMore="onLoadMore"
             bind:rename="onRename"
             bind:view="onView"
+            bind:change="onChangeFileIds"
+            bind:outEdit="onOutEdit"
         />
     </view>
 </view>
@@ -26,8 +31,14 @@
 <c-authorize isAuthorized="{{isAuthorized}}" 
     bind:authorize="onAuthorize"
 />
-<c-modifyFile isModifing="{{isRenaming}}" modifyFile="{{renameFile}}"
-    bind:complete="onRenameComplete"
-    bind:modifyCancel="onModifyCancel"
+<c-modifyWindow 
+    lint="请输入新的文件名称"
+    type="file"
+    isModifing="{{isRenaming}}" 
+    modifyObj="{{renameFile}}"
+	bind:modifyCancel="onModifyCancel"
+	bind:modifyComplete="onModifyComplete"
+    userInfo="{{userInfo}}"
 />
+
 <c-downloading isDownloadingOrUploadingVisible="{{isDownloadingOrUploadingVisible}}" lint="{{downloadingOrUploadingLint}}"/>

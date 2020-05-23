@@ -1,11 +1,16 @@
 <!-- component/common/files-controller/index.wxml -->
-<view class="files-controller">
+<view class="files-controller"
+    bind:tap="onShow"
+>
     <c-topBar editting="{{editting}}" selectCount="{{selectList.length}}"
-        bind:outEdit="outEdit" bind:selectAll="onSelecteAll"
+        bind:outEdit="outEdit"
+        bind:selectAll="onSelecteAll"
     />
 
     <scroll-view class="{{editting ? 'scroll_view scroll_view_editting' : 'scroll_view'}}"
-        scroll-y="true" enable-back-to-top="true" lower-threshold="70"
+        scroll-y="true" 
+        enable-back-to-top="true" 
+        lower-threshold="70"
         bind:scrolltolower="onScrollToBottom"
     >
         <block wx:for="{{files}}" wx:key="id">

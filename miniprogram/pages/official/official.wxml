@@ -13,9 +13,8 @@
         <view class="official_wrapper">
             <block wx:for="{{officialTeamList}}" wx:key="id" >
                 <c-item type="official" userInfo="{{userInfo}}" team="{{item}}"
-                    bind:invite="onInvite" 
+                    bind:share="onShare" 
                     bind:dropOut="onDropOut" 
-                    bind:share="onShare"
                 />
             </block>
         </view>
@@ -24,6 +23,10 @@
 </view>
 
 <c-loading lint="正在加载..." isLoading="{{loading}}" />
-<c-shareWindow isShareWindowVisible="{{isShareWindowVisible}}" bind:cancel="onCancel" />
-<c-authorize isAuthorized="{{isAuthorized}}" bind:authorize="onAuthorize"/>
+<c-shareWindow isShareWindowVisible="{{isShareWindowVisible}}" 
+    bind:cancel="onShareCancel" 
+/>
+<c-authorize isAuthorized="{{isAuthorized}}" 
+    bind:authorize="onAuthorize"
+/>
 <c-downloading isDownloadingOrUploadingVisible="{{isSearching}}" lint="{{downloadingOrUploadingLint}}"/>

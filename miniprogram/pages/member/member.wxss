@@ -15,7 +15,7 @@
 }
 
 .member_body {
-    height: calc(100% - 135rpx);
+    height: calc(100% - 120rpx);
     width: 100%;
 }
 
@@ -30,7 +30,7 @@
     left: 0;
     right: 0;
 
-    height: 135rpx;
+    height: 120rpx;
     width: 100%;
 }
 
@@ -41,15 +41,15 @@
     justify-content: center !important;
 
     /* width: 20% !important; */
-    width: 60% !important;
-    height: 70% !important;
+    width: 100% !important;
+    height: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
     box-shadow: #eee 0 0 10rpx;
 
-    font-size: 30rpx !important;
+    font-size: 34rpx !important;
     font-weight: 400 !important;
 
     color: #fff !important;
-    background-color: #469ad0;
+    background-color: #000b82;
 }

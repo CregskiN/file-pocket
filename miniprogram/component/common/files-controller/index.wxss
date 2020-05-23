@@ -8,7 +8,7 @@
 
 .scroll_view {
     width: 100%;
-    height: calc(100%); /* file-controller的css有bug */
+    height: 100%; /* file-controller的css有bug */
     padding-bottom: 135rpx;
     box-sizing: border-box;
 }

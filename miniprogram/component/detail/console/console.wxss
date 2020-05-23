@@ -13,53 +13,34 @@
     background-color: #fff;
 }
 
-.detail_web-view {
-    width: 20% !important;
-    height: 50% !important;
-    position: relative;
-}
-
-.detail_console_webViewBtn {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    /* box-shadow: #eee 0 0 10rpx; */
-    /* font-size: 30rpx !important; */
-    font-weight: 400 !important;
-    color: #000 !important;
+.detail_console_btn {    
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: row !important;
     align-items: center !important;
     justify-content: center !important;
-}
 
-.detail_console_btn {
     width: 20% !important;
     height: 50% !important;
     padding: 0 !important;
     margin: 0 !important;
     /* box-shadow: #eee 0 0 10rpx; */
+    background-color: #000b83;
+    
+
     font-size: 30rpx !important;
+    line-height: 30rpx !important;
     font-weight: 400 !important;
-    color: #000 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
+    color: #fff !important;
 }
 
 .btn_share_active {
-    background-color: #56b7f9 !important;
+    background-color: #000b83 !important;
     color: #fff !important;
 }
 
 .btn_share_normal {
-    /* background-color: #eee; */
-    color: #000;
+    background-color: #f2f2f2 !important;
+    color: #7f7f7f !important;
 }
 
 .btn_complete_active {
@@ -73,5 +54,21 @@
 }
 
 .one {
-    width: 50% !important;
+    width: 100% !important;
+    height: 100% !important;
+    font-size: 38rpx !important;
+
+}
+
+.icon {
+    font-size: 30rpx;
+    /* font-weight: 600; */
+}
+
+.detail_official_choose {
+    margin-left: 30rpx !important;
+}
+
+.detail_official_invite {
+    margin-right: 30rpx !important;
 }

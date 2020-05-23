@@ -1,5 +1,5 @@
-<!--component/member/member-item/member-item.wxml-->
-<view class="member-item_container">
+<!-- 项目组创建者看到的item -->
+<view class="member-item_container" wx:if="{{userInfo.userGradeInTeam === 1}}">
     <view class="left">
         <image class="left_img" src="{{member.userAvatarUrl}}" mode="aspectFit"/>
     </view>
@@ -12,7 +12,30 @@
     </view>
 
     <view class="right">
-        <view class="delete" bind:tap="onDelete" wx:if="{{member.userGrade===3}}">
+    <!-- TODO 这里限制：无论官方组还是个人组，只有创建者删除成员或自己退出 -->
+        <view class="delete" bind:tap="onDelete" wx:if="{{userInfo.uid !== member.uid}}">
+            {{member.uid === userInfo.uid ? '退出' : '踢除'}}
+        </view>
+    </view>
+</view>
+
+
+<!-- 项目组成员看到的item -->
+<view class="member-item_container" wx:if="{{userInfo.userGradeInTeam === 3}}">
+    <view class="left">
+        <image class="left_img" src="{{member.userAvatarUrl}}" mode="aspectFit"/>
+    </view>
+    
+    <view class="middle">
+        <view class="middle_userName">{{member.username}}
+            <text class="middle_userGrade">{{member.userGrade === 1 ? ' (创建者)' : member.userGrade===2 ? ' (管理员)' : ''}}</text>
+        </view>
+        <view class="middle_joinTime">加入时间 {{member.creationTime}}</view>
+    </view>
+
+    <view class="right">
+    <!-- TODO 这里限制：无论官方组还是个人组，只有创建者删除成员或自己退出 -->
+        <view class="delete" bind:tap="onDelete" wx:if="{{member.userGrade !== 1 && member.uid === userInfo.uid}}">
             {{member.uid === userInfo.uid ? '退出' : '踢除'}}
         </view>
     </view>

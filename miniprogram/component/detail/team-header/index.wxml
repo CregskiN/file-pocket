@@ -1,5 +1,28 @@
 <!-- component/detail/team-head/index.wxml -->
-<view class="team-header_container">
+<!-- 官方项目组头部 -->
+<view class="team-header_container" wx:if="{{type === 'official'}}">
+    <image class="team-header_avatar" src="{{teamInfo.avatarUrl}}" mode="aspectFit" />
+    <view class="team-header_content">
+        <!-- <view class="team_name">{{teamInfo.teamName}}</view> -->
+        <view class="team_name">{{teamInfo.teamName}}</view>
+        <view class="team_groupName" hidden>绑定群聊:小程序终结者</view>
+
+        <view class="team-header_statistics">
+            <view class="team-header_fileCount">文件数: {{teamInfo.fileCount}}</view>
+            <view class="team-header_creationTime">创建时间: {{teamInfo.creationTime}}</view>
+        </view>
+
+        <view class="toggleMode"
+            wx:if="{{userGlobalGrade === 1 && teamInfo.grade === 1 && (showTeamType==='official' || showTeamType==='create')}}"
+            catch:tap="onToggleMode"
+        >
+            当前模式：{{isManagerMode ? 'Manager' : 'User'}}
+        </view>
+    </view>
+</view>
+
+<!-- 我创建的项目组头部 -->
+<view class="team-header_container" wx:if="{{type === 'create'}}">
     <image class="team-header_avatar" src="{{teamInfo.avatarUrl}}" mode="aspectFit" />
     <view class="team-header_content">
         <!-- <view class="team_name">{{teamInfo.teamName}}</view> -->
@@ -12,7 +35,34 @@
             <view class="team-header_creationTime">创建时间: {{teamInfo.creationTime}}</view>
         </view>
 
-        <view class="toggleMode" catch:tap="onToggleMode" wx:if="{{userGlobalGrade===1 && (type==='official' || type==='create')}}">
+        <view class="toggleMode"
+            wx:if="{{userGlobalGrade === 1 && teamInfo.grade === 1 && (showTeamType==='official' || showTeamType==='create')}}"
+            catch:tap="onToggleMode"
+        >
+            当前模式：{{isManagerMode ? 'Manager' : 'User'}}
+        </view>
+    </view>
+</view>
+
+
+<!-- 我加入的项目组头部 -->
+<view class="team-header_container" wx:if="{{type === 'join'}}">
+    <image class="team-header_avatar" src="{{teamInfo.avatarUrl}}" mode="aspectFit" />
+    <view class="team-header_content">
+        <!-- <view class="team_name">{{teamInfo.teamName}}</view> -->
+        <view class="team_name">{{teamInfo.teamName}}</view>
+        <view class="team_groupName" hidden>绑定群聊:小程序终结者</view>
+
+        <view class="team-header_statistics">
+            <view class="team-header_members">成员数: {{teamInfo.numberCount}}</view>
+            <view class="team-header_fileCount">文件数: {{teamInfo.fileCount}}</view>
+            <view class="team-header_creationTime">创建时间: {{teamInfo.creationTime}}</view>
+        </view>
+
+        <view class="toggleMode"
+            wx:if="{{userGlobalGrade === 1 && teamInfo.grade === 1 && (showTeamType==='official' || showTeamType==='create')}}"
+            catch:tap="onToggleMode"
+        >
             当前模式：{{isManagerMode ? 'Manager' : 'User'}}
         </view>
     </view>

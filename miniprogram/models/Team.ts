@@ -148,13 +148,15 @@ export default class Team {
      * 使用tid查询项目组成员列表
      * @param tid 
      */
-    static getTeamMemberListByTid(tid: string) {
+    static getTeamMemberListByTid(tid: string, pageIndex: number) {
         return new Promise<FilePocket.MemberType[]>((resolve, reject) => {
             const options = {
                 url: '/team/query_team_user_list_by_tid',
                 method: 'GET' as "GET",
                 data: {
-                    tid
+                    tid,
+                    pageIndex,
+                    pageSize: 10
                 }
             }
             Https.request<Request.GetMemberListReq, Response.GetMemberListRes>(options).then(res => {
@@ -162,6 +164,31 @@ export default class Team {
                 resolve(res.data);
             }).catch(err => {
                 console.log('查询成员列表失败', err);
+                reject(err);
+            })
+        })
+    }
+
+    /**
+     * 查询成员权限等级
+     * @param tid 
+     * @param uid 
+     */
+    static getMemberGradeInTeam(tid: string, uid: string) {
+        return new Promise<Response.GetMemberGradeInTeamRes>((resolve, reject) => {
+            const options = {
+                url: '/team/query_user_grade',
+                method: 'GET' as 'GET',
+                data: {
+                    tid,
+                    uid,
+                }
+            }
+            Https.request<Request.GetMemberGradeInTeamReq, Response.GetMemberGradeInTeamRes>(options).then(res => {
+                console.log(res);
+                resolve(res);
+            }).catch(err => {
+                console.log(err);
                 reject(err);
             })
         })

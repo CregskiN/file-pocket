@@ -49,8 +49,8 @@ Component({
           },
         })
       } else if (this.data.type === 'detail_create') {
-        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
-          itemList: ['重命名', '添加我的', '删除'],
+        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加收藏'
+          itemList: ['重命名', '添加收藏', '删除'],
           success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
             switch (res.tapIndex) {
               case 0: {
@@ -77,8 +77,8 @@ Component({
       } else if (this.data.type === 'detail_join') {
         const uid = User.getUserInfoStorage().uid;
         if (this.properties.file.uid === uid) {
-          wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
-            itemList: ['重命名', '添加我的', '删除'],
+          wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加收藏'
+            itemList: ['重命名', '添加收藏', '删除'],
             success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
               switch (res.tapIndex) {
                 case 0: {
@@ -102,8 +102,8 @@ Component({
             }
           })
         } else {
-          wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
-            itemList: ['添加我的'],
+          wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加收藏'
+            itemList: ['添加收藏'],
             success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
               switch (res.tapIndex) {
                 case 0: {
@@ -117,8 +117,8 @@ Component({
           })
         }
       } else if (this.data.type === 'detail_official') {
-        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
-          itemList: ['添加我的'],
+        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加收藏'
+          itemList: ['添加收藏'],
           success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
             switch (res.tapIndex) {
               case 0: {
@@ -132,8 +132,8 @@ Component({
         })
       }
       else if (this.data.type === 'searcher_official') {
-        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
-          itemList: ['添加我的'],
+        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加收藏'
+          itemList: ['添加收藏'],
           success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
             switch (res.tapIndex) {
               case 0: {
@@ -147,8 +147,8 @@ Component({
           },
         })
       } else if (this.data.type === 'browse_history') {
-        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加我的'
-          itemList: ['添加我的'],
+        wx.showActionSheet({ // @TODO: 修改此处逻辑，使用与三处：项目页编辑，浏览历史操作，我的文件操作 // 分两种模式，有无'添加收藏'
+          itemList: ['添加收藏'],
           success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
             switch (res.tapIndex) {
               case 0: {

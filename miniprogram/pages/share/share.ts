@@ -20,7 +20,8 @@ Page({
     isAuthorized: true,
     isLogin: false,
     userInfo: {} as CustomUserInfo,
-    isLoading: true,
+
+    isDownloadingOrUploadingVisible: false,
   },
 
   /**
@@ -55,12 +56,13 @@ Page({
    * @param e 
    */
   onAuthorize(e: any) {
+
     const userInfo = User.getUserInfoStorage();
     console.log(userInfo);
 
     this.setData({
       userInfo,
-      isAuthorized: false
+      isAuthorized: true
     })
   },
 
@@ -69,7 +71,16 @@ Page({
    * @param e 
    */
   onView(e: any) {
-    Viewer.viewDocument(e.detail.file);
+    this.setData({
+      isDownloadingOrUploadingVisible: true
+    })
+    Viewer.viewDocument(e.detail.file).then(res => {
+      if ((res as any).success) {
+        this.setData({
+          isDownloadingOrUploadingVisible: false
+        })
+      }
+    });
   },
 
 

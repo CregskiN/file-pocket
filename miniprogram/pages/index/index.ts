@@ -16,7 +16,7 @@ Page({
 	data: {
 		officialTeamList: [] as Response.OfficialTeam[],
 		createdTeamList: [] as Response.TeamDetailType[],
-		joinedTeamList: [{},{}] as Response.TeamDetailType[],
+		joinedTeamList: [{}, {}] as Response.TeamDetailType[],
 		isLogin: true,
 		buttonTop: 10000,
 		buttonLeft: 10000,
@@ -96,20 +96,18 @@ Page({
 		const teamInfo = e.detail.teamInfo;
 		const { tid } = teamInfo;
 		const { uid } = this.data.userInfo;
-
-		Team.getTeamMemberListByTid(tid).then(memberList => {
-			for (const member of memberList) {
-				if (member.uid === uid && member.userGrade < 3) {
-					this.setData({
-						modifyTeam: teamInfo,
-						isModifing: true,
-					})
-				} else {
-					wx.showToast({
-						title: '权限不足',
-						icon: 'none'
-					})
-				}
+		Team.getMemberGradeInTeam(tid, uid as string).then(res => {
+			const userGrade = res.data.userGrade;
+			if (userGrade < 3) {
+				this.setData({
+					modifyTeam: teamInfo,
+					isModifing: true,
+				})
+			} else {
+				wx.showToast({
+					title: '权限不足',
+					icon: 'none'
+				})
 			}
 		})
 	},
@@ -142,7 +140,7 @@ Page({
 	 * 邀请加入项目组 -> 设置selectTeam + 显示弹窗
 	 * @param e 
 	 */
-	onInvite(e: any) {
+	onShare(e: any) {
 		this.setData({
 			selectTeam: e.detail.selectTeam,
 			isShareWindowVisible: true,
@@ -150,12 +148,13 @@ Page({
 	},
 
 	/**
-	 * 邀请
+	 * 取消邀请
 	 * @param e 
 	 */
 	onShareCancel(e: any) {
 		this.setData({
 			isShareWindowVisible: false,
+			selectTeam: {} as any,
 		})
 	},
 
@@ -184,6 +183,30 @@ Page({
 		})
 	},
 
+	/**
+	 * 退出我加入的项目组
+	 * @param e 
+	 */
+	onDropOut(e: any) {
+		const { uid, tid } = e.detail;
+		Team.deleteMember(uid, tid).then(res => {
+			if (res.success) {
+				wx.showToast({
+					title: '退出成功'
+				})
+			} else {
+				wx.showToast({
+					title: '操作失败'
+				})
+			}
+			this._refreshJoinedTeamList(uid);
+		}).catch(err => {
+			wx.showToast({
+				title: '请检查网络',
+				icon: 'none'
+			})
+		})
+	},
 
 	/**
 	 * 生命周期函数--监听页面加载
@@ -287,6 +310,7 @@ Page({
 	 */
 	onShareAppMessage(opts): WechatMiniprogram.Page.ICustomShareContent {
 		console.log(opts.target)
+		console.log(this.data.selectTeam.tid)
 		return {
 			title: `快来加入${this.data.selectTeam.teamName}吧！`,
 			path: `/pages/detail/detail?tid=${this.data.selectTeam.tid}&action=join`

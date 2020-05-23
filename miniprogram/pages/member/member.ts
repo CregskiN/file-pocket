@@ -12,6 +12,10 @@ Page({
     members: [] as FilePocket.MemberType[],
     teamInfo: {} as Response.TeamDetailType,
     userInfo: {} as CustomUserInfo,
+
+    pageIndex: 1, // 成员页页码
+    isBottom: false,
+    // isloadMoreLock: false, // 是否锁定加载更多
   },
 
   /**
@@ -38,17 +42,28 @@ Page({
   },
 
   /**
+   * 加载更多
+   */
+  onScrollToBottom() {
+    this._loadMoreMembers(this.data.teamInfo.tid);
+  },
+
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options: any) {
     const tid = options.tid;
-    this._refreshMemberList(tid).then(no => {
+    this._loadMoreMembers(tid, 1).then(no => {
       const userInfo = User.getUserInfoStorage();
       Team.queryTeamInfoByTid(tid).then(teamInfo => {
-        this.setData({
-          userInfo,
-          teamInfo
+        this._getUserGradeInTeam(tid, userInfo.uid as string).then(userGradeInTeam => {
+          const newUserInfo = { ...userInfo, userGradeInTeam }
+          this.setData({
+            userInfo: newUserInfo,
+            teamInfo
+          })
         })
+
       })
     })
 
@@ -122,17 +137,61 @@ Page({
    * 刷新成员列表
    * @param tid 
    */
-  _refreshMemberList(tid: string) {
+  _loadMoreMembers(tid: string, currentPageIndex?: number) {
     return new Promise((resolve, reject) => {
-      Team.getTeamMemberListByTid(tid).then(memberList => {
-        this.setData({
-          members: memberListFormatter(memberList)
-        })
-        resolve();
-      }).catch(err => {
-        console.log(err);
-      });
+      const { isBottom } = this.data;
+      if (!isBottom) {
+        console.log('获取成员列表发出了')
+        const pageIndex = currentPageIndex ? currentPageIndex : this.data.pageIndex;
+        Team.getTeamMemberListByTid(tid, pageIndex).then(memberList => {
+          if (memberList.length < 10) {
+            this.setData({
+              members: memberListFormatter(memberList),
+              pageIndex: pageIndex + 1,
+              isBottom: true,
+            });
+            resolve();
+          } else {
+            if (pageIndex === 1) {
+              this.setData({
+                members: memberListFormatter(memberList),
+                pageIndex: pageIndex + 1,
+              });
+              resolve();
+            } else {
+              this.setData({
+                members: [
+                  ...this.data.members,
+                  ...memberListFormatter(memberList),
+                ],
+                pageIndex: pageIndex + 1,
+              })
+              resolve();
+            }
+          }
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+
     })
   },
+
+  /**
+   * 获取uid在该项目组的权限
+   * @param tid 
+   */
+  _getUserGradeInTeam(tid: string, uid: string) {
+    return new Promise<number>((resolve, reject) => {
+      Team.getMemberGradeInTeam(tid, uid).then(res => {
+        if (res.success) {
+          resolve(res.data.userGrade);
+        }
+      }).catch(err => {
+        console.log('获取权限等级失败', err);
+        // 反馈
+      })
+    })
+  }
 
 })

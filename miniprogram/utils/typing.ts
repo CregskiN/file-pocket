@@ -17,6 +17,7 @@ export interface CustomUserInfo {
     createdTeamCount?: number;
     managedTeamCount?: number;
     joinedTeamCount?: number;
+    userGradeInTeam?: number;
 }
 
 /**

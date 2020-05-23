@@ -2,7 +2,7 @@
   "usingComponents": {
     "c-filesController":"../../component/common/files-controller/index",
     "c-teamSelector":"../../component/common/team-selector/index",
-    "c-modifyFile":"../../component/common/modify-file/index"
+    "c-modifyWindow":"../../component/common/modify-window/index"
   },
   "navigationBarTitleText": "个人文件"
 }

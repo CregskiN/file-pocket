@@ -4,7 +4,7 @@
     height: 150rpx;
     margin: 15rpx auto;
     padding: 0 3%;
-    border-radius: 15rpx;
+    border-radius: 10rpx;
     background-color: #fff;
     /* box-shadow: #eee 0 0 10rpx; */
 
@@ -45,7 +45,7 @@
 
 .file-item_fileName {
     width: 90%;
-    padding: 0 0 30rpx 0;
+    margin: 0 0 30rpx 0;
     font-size: 30rpx;
     overflow: hidden;
     -webkit-line-clamp: 1;

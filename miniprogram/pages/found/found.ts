@@ -42,7 +42,7 @@ Page({
         uid: this.data.userInfo.uid as string,
         teamName: this.data.inputValue ? this.data.inputValue : `${this.data.userInfo.nickName}的口袋` as string,
         teamAvatarUrl: this.data.userInfo.avatarUrl as string,
-        teamGrade: 1 as number,
+        teamGrade: 2 as number,
       }
     }
     Https.request<Request.CreateTeamReq, Response.CreateTeamRes>(options).then(res => {

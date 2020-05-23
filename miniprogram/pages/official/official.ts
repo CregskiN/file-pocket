@@ -16,6 +16,8 @@ Page({
     userInfo: {} as CustomUserInfo,
     isAuthorized: true,
     isLogin: false,
+
+    selectTeam: {} as Response.TeamDetailType,
     isShareWindowVisible: false,
 
     searchResultFiles: [] as Response.FileType[], // 搜索结果
@@ -23,16 +25,16 @@ Page({
     searchPageId: 1,
     isSearchAll: false,
   },
-
-  /**
-   * 关闭分享框
-   * @param e 
-   */
-  onCancel(e: any) {
-    this.setData({
-      isShareWindowVisible: false,
-    })
-  },
+	/**
+	 * 取消邀请
+	 * @param e 
+	 */
+	onShareCancel(e: any) {
+		this.setData({
+			isShareWindowVisible: false,
+			selectTeam: {} as any,
+		})
+	},
 
   /**
    * 关闭搜索框
@@ -73,18 +75,21 @@ Page({
     })
   },
 
-  /**
-   * 分享项目组
-   */
-  onShare() {
-    this.setData({
-      isShareWindowVisible: true
-    })
-  },
+	/**
+	 * 邀请加入项目组 -> 设置selectTeam + 显示弹窗
+	 * @param e 
+	 */
+	onShare(e: any) {
+    console.log(e)
+		this.setData({
+			selectTeam: e.detail.selectTeam,
+			isShareWindowVisible: true,
+		})
+	},
 
   /**
-* 完成授权逻辑，撤除授权窗口
-*/
+  * 完成授权逻辑，撤除授权窗口
+  */
   onAuthorize() {
     const userInfo = User.getUserInfoStorage();
     this.setData({
@@ -233,7 +238,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    this._refreshOfficialTeamList();
   },
 
   /**
@@ -268,9 +273,12 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage(opts): WechatMiniprogram.Page.ICustomShareContent {
-    return {
-
-    }
+		console.log(opts.target)
+		console.log(this.data.selectTeam.tid)
+		return {
+			title: `快来加入${this.data.selectTeam.teamName}吧！`,
+			path: `/pages/detail/detail?tid=${this.data.selectTeam.tid}&action=join`
+		}
   },
 
   /**

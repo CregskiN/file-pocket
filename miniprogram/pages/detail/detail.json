@@ -4,7 +4,7 @@
     "c-teamHeader":"../../component/detail/team-header/index",
     "c-authorize": "../../component/common/authorize/authorize",
     "c-loading":"../../component/common/loading/index",
-    "c-modifyFile":"../../component/common/modify-file/index",
+    "c-modifyWindow":"../../component/common/modify-window/index",
     "c-downloading":"../../component/common/downloading/index"
   },
   "navigationBarTitleText": "口袋详情"

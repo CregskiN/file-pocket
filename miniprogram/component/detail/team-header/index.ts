@@ -6,7 +6,8 @@ Component({
   properties: {
     teamInfo: Object,
     userGlobalGrade: Number,
-    type:String
+    showTeamType:String,
+    type: String,
   },
   options: {
     addGlobalClass: true

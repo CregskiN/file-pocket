@@ -1,0 +1,61 @@
+<!--component/common/modify-team/index.wxml-->
+<!-- 项目组重命名 -->
+<view class="modify-team_container" wx:if="{{(type==='team') && isModifing}}"  catch:tap="onCancel">
+    <view class="float-window_container" >
+        <view class="float-window_title" catch:tap="onCatch">{{title}}</view>
+        <view class="float-window_body" catch:tap="onCatch">
+            <input class="float-window_inputter" value="{{modifyObj.teamName }}" placeholder="{{lint}}"
+                bind:input="onInput" catch:tap="onFocus"
+            />
+        </view>
+        <view class="float-window_choices" catch:tap="onCatch">
+            <button class="float-window_btn_cancel left" catch:tap="onCancel">
+                取消
+            </button>
+            <button class="float-window_btn_cancel" catch:tap="onComplete">
+                完成
+            </button>
+        </view>
+    </view>
+</view>
+
+<!-- 项目组详情文件重命名 -->
+<view class="modify-team_container" wx:if="{{(type==='file') && isModifing}}" catch:tap="onCancel">
+    <view class="float-window_container" >
+        <view class="float-window_title" catch:tap="onCatch">{{title}}</view>
+        <view class="float-window_body" catch:tap="onCatch">
+            <input class="float-window_inputter" value="{{modifyObj.fileName }}" placeholder="{{lint}}"
+                bind:input="onInput" catch:tap="onFocus"
+            />
+        </view>
+        <view class="float-window_choices" catch:tap="onCatch">
+            <button class="float-window_btn_cancel left" catch:tap="onCancel">
+                取消
+            </button>
+            <button class="float-window_btn_cancel" catch:tap="onComplete">
+                完成
+            </button>
+        </view>
+    </view>
+</view>
+
+<!-- 个人文件重命名 -->
+<view class="modify-team_container" wx:if="{{(type==='collection') && isModifing}}" catch:tap="onCancel">
+    <view class="float-window_container" >
+        <view class="float-window_title" catch:tap="onCatch">{{title}}</view>
+        <view class="float-window_body" catch:tap="onCatch">
+            <input class="float-window_inputter" value="{{modifyObj.fileName }}" placeholder="{{lint}}"
+                bind:input="onInput" catch:tap="onFocus"
+            />
+        </view>
+        <view class="float-window_choices" catch:tap="onCatch">
+            <button class="float-window_btn_cancel left" catch:tap="onCancel">
+                取消
+            </button>
+            <button class="float-window_btn_cancel" catch:tap="onComplete">
+                完成
+            </button>
+        </view>
+    </view>
+</view>
+

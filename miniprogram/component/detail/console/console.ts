@@ -59,7 +59,7 @@ Component({
             }
             case 1: {
               wx.chooseImage({
-                count: 5,
+                count: 10,
                 sourceType: ['album'],
                 success: (res) => {
                   this.triggerEvent('uploadLocalImg', {
@@ -90,34 +90,23 @@ Component({
       this.triggerEvent('inEdit');
     },
 
-    /**
-     * 邀请
-     */
-    onInvite() {
-      this.triggerEvent('invite', {
-        tid: this.data.tid
-      })
-    },
-
-    /**
-     * 分享已选文件
-     */
-    onShare() {
-      this.triggerEvent('share');
-    },
 
     /**
      * 删除已选
      */
     onDelete() {
-      this.triggerEvent('delete');
+      if(this.properties.selectCount){
+        this.triggerEvent('delete');
+      }
     },
 
     /**
      * 添加至个人收藏集
      */
     onAddToMyCollection() {
-      this.triggerEvent('addToMyCollection');
+      if (this.properties.selectCount) {
+        this.triggerEvent('addToMyCollection');
+      }
     },
 
     /**
@@ -132,7 +121,9 @@ Component({
      * 添加至项目组
      */
     onAddToTeam() {
-      this.triggerEvent('addToTeam')
+      if (this.properties.selectCount) {
+        this.triggerEvent('addToTeam')
+      }
     },
   }
 })

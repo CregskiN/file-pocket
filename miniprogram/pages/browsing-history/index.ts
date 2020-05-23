@@ -64,7 +64,6 @@ Page({
 
 
     Viewer.getHistory().then(res => {
-      res.push({} as any, {} as any, {} as any, {} as any, {} as any, {} as any, {} as any, {} as any, {} as any, {} as any)
       this.setData({
         files: (res),
         userInfo

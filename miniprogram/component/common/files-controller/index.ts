@@ -50,8 +50,9 @@ Component({
       this.setData({
         editting: false,
         selectList: [],
-        files
-      })
+        files,
+      });
+      this.triggerEvent('outEdit')
     },
 
     /**
@@ -81,8 +82,6 @@ Component({
           break;
         }
       }
-
-
     },
 
     /**
@@ -180,10 +179,18 @@ Component({
           this.triggerEvent('addToMyCollection', {
             fileIds: new Array(e.detail.fileId),
           })
+          this.setData({
+            editting: false,
+            selectList: []
+          })
         }
       } else {
         this.triggerEvent('addToMyCollection', {
           fileIds: this.data.selectList
+        })
+        this.setData({
+          editting: false,
+          selectList: []
         })
       }
     },
@@ -197,6 +204,7 @@ Component({
       files.forEach(file => {
         fileIds.push(file.fileId);
       });
+
       this.triggerEvent('addToMyCollectionOnce', {
         fileIds
       })
@@ -240,6 +248,10 @@ Component({
       this.triggerEvent('change', {
         fileIds
       })
+    },
+
+    onShow() {
+      console.log(this.data)
     }
 
 

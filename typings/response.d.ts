@@ -80,7 +80,7 @@ declare namespace Response {
         id: number | undefined;
         teamName: string;
         avatarUrl: string;
-        grade: number | string;
+        grade: number;
         fileCount: number;
         creationTime: number | string;
         numberCount: number;
@@ -152,6 +152,15 @@ declare namespace Response {
         username: string;
     }
 
+    /**
+     * 获取uid在tid中对应的权限等级
+     */
+    interface GetMemberGradeInTeamData {
+        tid:string;
+        uid:string;
+        userGrade: number;
+    }
+
 
     type CodeToSessionRes = BaseResponse<LoginData>;
     type AuthorizeRes = BaseResponse<AuthorizeData>;
@@ -192,4 +201,6 @@ declare namespace Response {
     type GetShareFileListRes = BaseResponse<FileType[]>;
 
     type QueryTeamFilesByKeywordsRes = BaseResponse<FileType[]>;
+
+    type GetMemberGradeInTeamRes = BaseResponse<GetMemberGradeInTeamData>;
 }

@@ -224,6 +224,14 @@ declare namespace Request {
         pageSize: number;
     }
 
+    /**
+     * 获取uid在tid中权限
+     */
+    interface GetMemberGradeInTeamReq {
+        tid: string;
+        uid: string;
+    }
+
     type Method = 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
     type MIME = 'image/jpeg' | string;
 }

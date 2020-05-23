@@ -1,6 +1,9 @@
 {
   "usingComponents": {
     "c-fileController":"../../component/common/files-controller/index",
-    "c-authorize":"../../component/common/authorize/authorize"
-  }
+    "c-authorize":"../../component/common/authorize/authorize",
+    "c-downloading":"../../component/common/downloading/index"
+  },
+  "navigationBarTitleText": "文件分享",
+  "backgroundTextStyle": "dark"
 }

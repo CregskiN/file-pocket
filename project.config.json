@@ -13,7 +13,7 @@
 		"beforeUpload": "npm run tsc"
 	},
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"enhance": false,
 		"postcss": true,
@@ -77,14 +77,14 @@
 					"id": 2,
 					"name": "受邀加入项目组",
 					"pathName": "pages/detail/detail",
-					"query": "tid=1720ce2f77b&action=join&type=join",
+					"query": "tid=172320cbdc1&action=join",
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 3,
 					"name": "项目成员页",
 					"pathName": "pages/member/member",
-					"query": "",
+					"query": "tid=171e80398a3",
 					"scene": null
 				},
 				{
@@ -113,6 +113,13 @@
 					"name": "浏览历史",
 					"pathName": "pages/browsing-history/index",
 					"query": "uid=1717835b7de",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "创建口袋",
+					"pathName": "pages/found/found",
+					"query": "tid=1720ce2f77b&action=join&type=join",
 					"scene": null
 				}
 			]
