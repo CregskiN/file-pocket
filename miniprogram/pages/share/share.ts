@@ -74,7 +74,7 @@ Page({
     this.setData({
       isDownloadingOrUploadingVisible: true
     })
-    Viewer.viewDocument(e.detail.file).then(res => {
+    Viewer.viewDocument(e.detail.file,this.data.userInfo.uid as string).then(res => {
       if ((res as any).success) {
         this.setData({
           isDownloadingOrUploadingVisible: false

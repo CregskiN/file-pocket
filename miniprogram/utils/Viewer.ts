@@ -1,3 +1,5 @@
+import EventTracking from '../models/EventTracking';
+
 enum FileType {
     'doc' = 'msword',
     'docx' = 'vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -25,7 +27,7 @@ export default class Viewer {
      * @param file 
      * @param filePath 
      */
-    static viewDocument(file: Response.FileType, filePath?: string) {
+    static viewDocument(file: Response.FileType, uid: string, filePath?: string) {
         return new Promise((resolve, reject) => {
             if (!(FileType as any)[file.mimeType]) {
                 console.log(file, (FileType as any)[file.mimeType as any]);
@@ -41,7 +43,11 @@ export default class Viewer {
                     urls: [file.fileUrl],
                     success: (res) => {
                         console.log('图片打开成功', res);
+
                         Viewer.writeHistoty(file);
+
+                        EventTracking.viewTrigger(file.fileId, uid);
+
                         resolve({
                             success: true
                         });
@@ -65,7 +71,10 @@ export default class Viewer {
                                 resolve({
                                     success: true
                                 });
+                                
                                 Viewer.writeHistoty(file);
+
+                                EventTracking.viewTrigger(file.fileId, uid);
                             },
                             fail: (err) => {
                                 console.log(err);

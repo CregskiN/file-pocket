@@ -1,7 +1,9 @@
 <!--miniprogram/pages/official/official.wxml-->
 <view class="official_container">
     <view class="official-searcher_wrapper">
-        <c-searcher searchResultFiles="{{searchResultFiles}}"
+        <c-searcher 
+            searchResultFiles="{{searchResultFiles}}"
+            userInfo="{{userInfo}}"
             bind:search="onSearch"
             bind:addToMyCollection="onAddToMyCollection"
             bind:cancel="onShutUpSearcher"

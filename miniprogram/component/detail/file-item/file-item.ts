@@ -10,6 +10,7 @@ Component({
     editting: Boolean,
     type: String,
     isChecked: Boolean,
+    userInfo: Object,
   },
   options: {
     addGlobalClass: true
@@ -26,7 +27,9 @@ Component({
    */
   methods: {
 
-    onMore() {
+    onMore(e:any) {
+      console.log(e);
+      console.log(this.data);
       if (this.data.type === 'my_file') {
         // 我的文件操作
         wx.showActionSheet({

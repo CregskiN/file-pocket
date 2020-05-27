@@ -6,7 +6,7 @@
         <view class="float-window_title">{{title}}</view>
         <view class="float-window_body">{{content}}</view>
         <view class="float-window_choices">
-            <button class="float-window_btn_cancel left" open-type="share">
+            <button class="float-window_btn_cancel left">
                 取消
             </button>
             <button class="float-window_btn_cancel" open-type="share">

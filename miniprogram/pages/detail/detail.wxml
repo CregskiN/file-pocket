@@ -13,7 +13,12 @@
     </view>
 
     <view class="file-controller_wrapper">
-        <c-fileController type="{{'detail_' + showTeamType}}" files="{{files}}" isLazyLoading="{{isLazyLoading}}" teamInfo="{{teamInfo}}"
+        <c-fileController 
+            type="{{'detail_' + showTeamType}}" 
+            files="{{files}}" 
+            isLazyLoading="{{isLazyLoading}}" 
+            teamInfo="{{teamInfo}}"
+            userInfo="{{userInfo}}"
             bind:uploadLocalImg="onUploadLocalImg"
             bind:uploadMessageFile="onUploadMessageFile" 
             bind:deleteFile="onDeleteFile"

@@ -14,11 +14,19 @@
     margin: 0 !important;
     border-radius: 50% !important;
 
-    color: #fff !important;
-    background-color: #13227a !important;
+    overflow: hidden;
+    color: #77abe2 !important;
+    background-color: #fff !important;
 }
 
 .iconfont {
-    font-size: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: 50px;
+    height: 50px;
+    font-size: 57px;
     font-weight: 500 !important;
 }

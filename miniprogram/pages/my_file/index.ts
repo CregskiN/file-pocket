@@ -63,7 +63,7 @@ Page({
    * @param e 
    */
   onView(e: any) {
-    Viewer.viewDocument(e.detail.file);
+    Viewer.viewDocument(e.detail.file, this.data.userInfo.uid as string);
   },
 
   /**

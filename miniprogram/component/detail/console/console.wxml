@@ -120,9 +120,21 @@
 	</view>
 
 	<view class="detail_console" hidden="{{!editting}}">
-		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" open-type="{{selectCount ? 'share' : ''}}">分享</button>
-		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onAddToTeam">添加</button>
-		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onDelete">删除{{selectCount === 0 ? '' : '(' + selectCount+')'}}</button>
+		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" open-type="{{selectCount ? 'share' : ''}}">
+			<text class="iconfont icon-fenxiang icon"></text>
+			<text decode="{{true}}">&nbsp;</text>
+			分享
+		</button>
+		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onAddToTeam">
+			<text class="iconfont icon-add-sy icon"></text>
+			<text decode="{{true}}">&nbsp;</text>
+			添加
+		</button>
+		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onDelete">
+			<text class="iconfont icon-shanchu icon"></text>
+			<text decode="{{true}}">&nbsp;</text>
+			删除{{selectCount === 0 ? '' : '(' + selectCount+')'}}
+		</button>
 	</view>
 </block>
 

@@ -6,7 +6,7 @@ import { teamListFormatter } from '../../utils/formatters';
 
 const app = getApp();
 
-const floatBtnIconClass = 'iconfont icon-bingtu';
+const floatBtnIconClass = 'iconfont icon-add-fill';
 
 Page({
 

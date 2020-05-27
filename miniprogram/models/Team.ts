@@ -20,6 +20,29 @@ export default class Team {
             })
         })
     }
+    
+
+    /**
+     * 获取与我相关的官方项目组列表
+     */
+    static getOfficialTeamListAboutMe(uid:string) {
+        return new Promise<Response.OfficialTeam[]>((resolve, reject) => {
+            const options = {
+                url: '/user/query_official_team_list_by_uid',
+                method: 'GET' as 'GET',
+                data: {
+                    uid
+                }
+            };
+            Https.request<Request.GetOfficialTeamListReq, Response.GetOfficialTeamListRes>(options).then(res => {
+                console.log('获取与我相关的官方项目组列表成功', res);
+                resolve(res.data);
+            }).catch(err => {
+                console.log('获取与我相关的官方项目组列表失败', err);
+                reject(err);
+            })
+        })
+    }
 
     /**
      * 获取我加入的项目组列表（不包括已管理项目组列表）

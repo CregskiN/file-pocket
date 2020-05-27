@@ -10,6 +10,7 @@ Component({
     type: String,
     isLazyLoading: Boolean,
     teamInfo: Object,
+    userInfo: Object,
   },
 
   /**

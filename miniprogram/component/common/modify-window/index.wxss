@@ -70,7 +70,7 @@
     height: 55rpx;
     padding: 10rpx 10rpx;
     /* box-sizing: border-box; */
-    background-color: #f2f2f2;
+    background-color: #f5f6f7;
 
     text-align: center;
     color: #000;
@@ -84,12 +84,12 @@
 
     width: 100%;
     height: 80rpx;
-    border-top: 1px solid #f2f2f2;
+    border-top: 1px solid #f5f6f7;
 }
 
 .left {
     color: #d62f2f;
-    border-right: 1px solid #f2f2f2;
+    border-right: 1px solid #f5f6f7;
 }
 
 .float-window_btn_cancel {

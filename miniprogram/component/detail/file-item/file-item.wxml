@@ -15,7 +15,12 @@
     </view>
 
     <view class="file-item_right" hidden="{{editting}}">
-        <icon class="file-item_more iconfont icon-gengduo" bind:tap="onMore" />
+        <icon class="file-item_more iconfont icon-gengduo" bind:tap="onMore"  
+            data-fileId="{{file.fileId}}" 
+            data-fileName="{{file.fileName}}"
+            data-nickName="{{userInfo.nickName}}"
+            data-uid="{{userInfo.uid}}"
+        />
     </view>
     
     <view class="file-item_right_editting" hidden="{{!editting}}">

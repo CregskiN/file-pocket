@@ -5,7 +5,7 @@
 
 	<view class="index_body">
 
-		<scroll-view class="index_scroll_tab" scroll-x="true">
+		<scroll-view class="index_scroll_tab" scroll-x="true" enable-flex>
 			<view class="{{current == 0 ? 'tab_item active' : 'tab_item'}}" data-current="0" bind:tap="onSwitchTap">我创建的</view>
 			<view class="{{current == 1 ? 'tab_item active' : 'tab_item'}}" data-current="1" bind:tap="onSwitchTap">我加入的</view>
 		</scroll-view>

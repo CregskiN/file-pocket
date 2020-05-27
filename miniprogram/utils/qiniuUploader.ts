@@ -24,7 +24,8 @@ export interface QiniuUploaderResData {
     // 由其他程序生成七牛 uptoken
     qiniuUploadToken: '',
     // 从指定 url 通过 HTTP GET 获取 uptoken，返回的格式必须是 json 且包含 uptoken 字段，例如： {"uptoken": "0MLvWPnyy..."}
-    qiniuUploadTokenURL: 'https://jellyfishmix.com/wx-interchange/file/get_upload_token',
+    // qiniuUploadTokenURL: 'https://jellyfishmix.com/wx-interchange/file/get_upload_token', // 开发环境
+    qiniuUploadTokenURL: 'https://oss.wx-interchange.jellyfishmix.com/wx-interchange/file/get_upload_token',
     // uptokenFunc 这个属性的值可以是一个用来生成uptoken的函数，详情请见 README.md
     qiniuUploadTokenFunction: function () { },
 

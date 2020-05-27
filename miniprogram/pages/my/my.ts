@@ -2,16 +2,16 @@ import User from '../../models/User';
 
 function getBgUrl() {
 	enum bgUrls {
-		'../../../static/my/bg1.jpg', // 0
-		'../../../static/my/bg2.jpg',
-		'../../../static/my/bg3.jpg',
-		'../../../static/my/bg4.jpg',
-		'../../../static/my/bg5.jpg',
-		'../../../static/my/bg6.jpg',
-		'../../../static/my/bg7.jpg',
-		'../../../static/my/bg8.jpg',
-		'../../../static/my/bg9.jpg',
-		'../../../static/my/bg10.jpg',
+		'https://wx-interchange.oss.jellyfishmix.com/Fp94m5HstOyWGmwvtrtjCE-XbxYA', // 0
+		'https://wx-interchange.oss.jellyfishmix.com/FgjrQaU05qnR5Es6O9r4Cs1Xsq-F',
+		'https://wx-interchange.oss.jellyfishmix.com/FjCrA3HuMT4YGq3RdT3kL95wtDb2',
+		'https://wx-interchange.oss.jellyfishmix.com/FsIWyS1mJZAyrt46YCGJQcGSQ95_',
+		'https://wx-interchange.oss.jellyfishmix.com/FrtMhxjV-WYz29raur4Q3zwMbtN-',
+		'https://wx-interchange.oss.jellyfishmix.com/FkvbLIpX1dXE14fVzt3hfKzQqJEx',
+		'https://wx-interchange.oss.jellyfishmix.com/FpeOvTyvj8mCBYBLshJ-nHcXrKBq',
+		'https://wx-interchange.oss.jellyfishmix.com/FhXnSLT6V-EmNdAy7LIXv5WSg85e',
+		'https://wx-interchange.oss.jellyfishmix.com/Fgulm6n7R010n0UpFXghVScZ988u',
+		'https://wx-interchange.oss.jellyfishmix.com/FtxYR6qDRAIlr8tUu_qh_sz-Ft5A',
 	}
 	const n = Math.floor(Math.random() * 10)
 	// console.log('本次bgUrl的下标为', n);

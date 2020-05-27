@@ -77,14 +77,14 @@
 					"id": 2,
 					"name": "受邀加入项目组",
 					"pathName": "pages/detail/detail",
-					"query": "tid=172320cbdc1&action=join",
+					"query": "tid=1724c79d708&action=join",
 					"scene": null
 				},
 				{
 					"id": 3,
 					"name": "项目成员页",
 					"pathName": "pages/member/member",
-					"query": "tid=171e80398a3",
+					"query": "tid=17253e48177",
 					"scene": null
 				},
 				{

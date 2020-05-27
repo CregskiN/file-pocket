@@ -29,12 +29,12 @@ Page({
 	 * 取消邀请
 	 * @param e 
 	 */
-	onShareCancel(e: any) {
-		this.setData({
-			isShareWindowVisible: false,
-			selectTeam: {} as any,
-		})
-	},
+  onShareCancel(e: any) {
+    this.setData({
+      isShareWindowVisible: false,
+      selectTeam: {} as any,
+    })
+  },
 
   /**
    * 关闭搜索框
@@ -56,11 +56,11 @@ Page({
     const { uid } = this.data.userInfo;
     Team.deleteMember(uid as string, tid).then(res => {
       if (res.success) {
+        this._refreshOfficialTeamList(uid as string);
         wx.showToast({
           title: '退出成功',
           icon: 'none'
         });
-        this._refreshOfficialTeamList();
       } else {
         wx.showToast({
           title: res.stateMsg.split('，')[1],
@@ -79,23 +79,26 @@ Page({
 	 * 邀请加入项目组 -> 设置selectTeam + 显示弹窗
 	 * @param e 
 	 */
-	onShare(e: any) {
+  onShare(e: any) {
     console.log(e)
-		this.setData({
-			selectTeam: e.detail.selectTeam,
-			isShareWindowVisible: true,
-		})
-	},
+    this.setData({
+      selectTeam: e.detail.selectTeam,
+      isShareWindowVisible: true,
+    })
+  },
 
   /**
   * 完成授权逻辑，撤除授权窗口
   */
   onAuthorize() {
     const userInfo = User.getUserInfoStorage();
-    this.setData({
-      userInfo,
-      isAuthorized: true,
+    this._refreshOfficialTeamList(userInfo.uid as string).then(no => {
+      this.setData({
+        userInfo,
+        isAuthorized: true,
+      })
     })
+
 
   },
 
@@ -217,13 +220,15 @@ Page({
     init.then(globalData => {
       const { isAuthorized, isLogin } = globalData;
       const userInfo = User.getUserInfoStorage();
-      this._refreshOfficialTeamList().then(res => {
-        this.setData({
-          userInfo,
-          isAuthorized,
-          isLogin,
-        })
+      if (userInfo.uid) {
+        this._refreshOfficialTeamList(userInfo.uid as string);
+      }
+      this.setData({
+        userInfo,
+        isAuthorized,
+        isLogin,
       })
+
 
     })
   },
@@ -238,7 +243,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    this._refreshOfficialTeamList();
+    if (this.data.userInfo.uid) {
+      this._refreshOfficialTeamList(this.data.userInfo.uid);
+    }
   },
 
   /**
@@ -273,27 +280,30 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage(opts): WechatMiniprogram.Page.ICustomShareContent {
-		console.log(opts.target)
-		console.log(this.data.selectTeam.tid)
-		return {
-			title: `快来加入${this.data.selectTeam.teamName}吧！`,
-			path: `/pages/detail/detail?tid=${this.data.selectTeam.tid}&action=join`
-		}
+    console.log(opts.target)
+    console.log(this.data.selectTeam.tid)
+    return {
+      title: `快来加入${this.data.selectTeam.teamName}吧！`,
+      path: `/pages/detail/detail?tid=${this.data.selectTeam.tid}&action=join`
+    }
   },
 
   /**
  * 刷新官方项目组列表
  */
-  _refreshOfficialTeamList() {
+  _refreshOfficialTeamList(uid: string) {
     return new Promise<Response.OfficialTeam[]>((resolve, reject) => {
-      Team.getOfficialTeamList().then(officialTeamList => {
+      Team.getOfficialTeamListAboutMe(uid).then(officialTeamList => {
         const newOfficialTeamList = teamListFormatter(officialTeamList);
         this.setData({
           officialTeamList: newOfficialTeamList as Response.OfficialTeam[],
         })
         resolve(newOfficialTeamList as Response.OfficialTeam[]);
       });
-    }).catch(err => { // 报错逻辑的最后一道防线
+    }).catch(err => {
+      wx.showToast({
+        title: '尚未授权'
+      })
       console.log('页面初始化错误', err);
     });
   },

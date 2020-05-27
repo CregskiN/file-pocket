@@ -6,6 +6,7 @@ Component({
    */
   properties: {
     searchResultFiles: Array,
+    userInfo: Object,
   },
   options: {
     addGlobalClass: true,
@@ -92,7 +93,7 @@ Component({
    * @param e 
    */
     onView(e: any) {
-      Viewer.viewDocument(e.detail.file);
+      Viewer.viewDocument(e.detail.file, this.properties.userInfo.uid);
     },
 
     /**

@@ -8,7 +8,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f5f6f7;
 }
 
 .team-header_avatar {
@@ -16,8 +16,8 @@
     width: 150rpx;
     height: 150rpx;
     border-radius: 50%;
-    background-color: #f2f2f2;
-    box-shadow: #f2f2f2 0 0 15rpx;
+    background-color: #f5f6f7;
+    box-shadow: #f5f6f7 0 0 15rpx;
 }
 
 .team-header_content {
@@ -74,5 +74,5 @@
 
 .toggleMode {
     display: inline-block;
-    background-color: #f2f2f2;
+    background-color: #f5f6f7;
 }

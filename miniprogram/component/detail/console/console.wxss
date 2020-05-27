@@ -24,7 +24,7 @@
     padding: 0 !important;
     margin: 0 !important;
     /* box-shadow: #eee 0 0 10rpx; */
-    background-color: #000b83;
+    background-color: #69ace7;
     
 
     font-size: 30rpx !important;
@@ -34,12 +34,12 @@
 }
 
 .btn_share_active {
-    background-color: #000b83 !important;
+    background-color: #69ace7 !important;
     color: #fff !important;
 }
 
 .btn_share_normal {
-    background-color: #f2f2f2 !important;
+    background-color: #f5f6f7 !important;
     color: #7f7f7f !important;
 }
 
@@ -54,10 +54,8 @@
 }
 
 .one {
-    width: 100% !important;
-    height: 100% !important;
+    width: 50% !important;
     font-size: 38rpx !important;
-
 }
 
 .icon {
