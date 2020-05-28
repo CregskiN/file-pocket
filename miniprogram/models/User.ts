@@ -17,52 +17,77 @@ class User {
 
     /**
      * 登陆： wx.checkSession检查是否过期 ？ wx.login + 加入缓存 : 从缓存提取openid + session_key
+     * 返回openid_sessionKey
      */
     static login() {
         return new Promise<Openid_SessionKeyType>((resolve, reject) => {
             wx.checkSession({
                 success: (res) => {
-                    // console.log('wx.checkSession成功',res);
-
-                    // if (res.errMsg === 'checkSession:ok') {
-                    //     resolve(User.getOpenidSessionKeyStorage());
-                    // }
+                    // 多次打开小程序
+                    console.log('wx.checkSession成功', res);
+                    if (res.errMsg === 'checkSession:ok') {
+                        // 已登陆过
+                        const OPENID_SESSIONKEY = User.getOpenidSessionKeyStorage();
+                        if (OPENID_SESSIONKEY.openid && OPENID_SESSIONKEY.session_key) {
+                            // 有缓存直接返回
+                            resolve(OPENID_SESSIONKEY);
+                        } else {
+                            // 无缓存，重新login再返回
+                            User.codeToSession().then(OPENID_SESSIONKEY => {
+                                resolve(OPENID_SESSIONKEY);
+                            })
+                        }
+                    }
                 },
                 fail: (err) => {
-
-                },
-                complete: () => {
-                    wx.login({
-                        success: (res) => {
-                            const data = { code: res.code };
-                            const options = {
-                                url: '/wxma_auth/code_to_session',
-                                method: 'GET' as "GET", // ts类型推断不出来
-                                data: data
-                            }
-                            const loginRes = Https.request<Request.CodeToSessionReq, Response.CodeToSessionRes>(options);
-                            loginRes.then((res: any) => {
-                                // @TODO:此处应该校验res是否合法
-
-                                const openid_sessionKey = res.data;
-                                console.log('login接口获取的openid_sessionKey', openid_sessionKey);
-                                User.setOpenidSessionKeyStorage(openid_sessionKey);
-                                resolve(openid_sessionKey);
-                            }).catch((err: any) => {
-                                console.log('login逻辑有误 - ', err);
-                                reject(err)
-                            })
-                        },
-                        fail: (err) => {
-                            console.log('wx.login接口调用失败', err);
-
-                            reject(err)
-                        }
+                    // 第一次打开小程序
+                    console.log('wx.checkSession() fail，有可能是第一次进入小程序，即将发起登陆逻辑', err);
+                    User.codeToSession().then(OPENID_SESSIONKEY => {
+                        resolve(OPENID_SESSIONKEY);
                     })
                 }
             })
         })
     }
+
+    /**
+     * 获取openid sessionkey
+     */
+    static codeToSession() {
+        return new Promise<Response.LoginData>((resolve, reject) => {
+            wx.login({
+                success: (res) => {
+                    const options = {
+                        url: '/wxma_auth/code_to_session',
+                        method: 'GET' as "GET", // ts类型推断不出来
+                        data: {
+                            code: res.code
+                        }
+                    };
+                    Https.request<Request.CodeToSessionReq, Response.CodeToSessionRes>(options).then(res => {
+                        const openid_sessionKey = res.data;
+                        console.log('login接口获取的openid_sessionKey', openid_sessionKey);
+                        User.setOpenidSessionKeyStorage(openid_sessionKey);
+                        resolve(openid_sessionKey);
+                    }).catch(err => {
+                        console.log('code_to_session_key fail', err);
+                        wx.showToast({
+                            title: '请检查网络情况',
+                            icon: 'none'
+                        });
+                    })
+                },
+                fail: (err) => {
+                    console.error('wx.login() fail', err);
+                    wx.showToast({
+                        title: '请检查网络情况',
+                        icon: 'none'
+                    });
+                }
+            })
+        })
+    }
+
 
     /**
      * 获取授权信息
@@ -71,40 +96,44 @@ class User {
         return new Promise<CustomUserInfo>((resolve, reject) => {
             wx.getSetting({
                 success: (res) => {
-                    // console.log(res);
-                    // console.log(res);
                     if (res.authSetting['scope.userInfo']) {
                         // 已授权处理如下
-                        let userInfo = null;
                         const userInfoStorage = User.getUserInfoStorage();
-                        if (userInfoStorage) {
+                        if (userInfoStorage.nickName) {
                             // 已授权，且有缓存
-                            userInfo = userInfoStorage;
+                            const userInfo = userInfoStorage;
+                            console.log('已授权 + 有userInfo缓存', userInfo);
                             resolve(userInfo);
-                            return;
                         } else {
-                            // 已经授权，但无缓存
+                            // 已经授权，但无缓存 // 对应微信缓存情况
                             wx.getUserInfo({
-                                success: res => {
+                                success: (res) => {
                                     User.setUserInfoStorage(res.userInfo);
                                     resolve(res.userInfo);
-                                    return;
                                 },
-                                fail: err => {
-                                    reject(err);
-                                    return;
+                                fail: (err) => {
+                                    // 已授权 + 无userInfo缓存，获取userInfo失败
+                                    console.error('wx.getUserInfo() fail', err);
+                                    wx.showToast({
+                                        title: '请检查网络情况',
+                                        icon: 'none'
+                                    });
                                 }
                             })
                         }
                     } else if (!res.authSetting['scope.userInfo']) {
+                        // 未授权
+                        console.log('未授权，不判断是否有userInfo缓存')
                         resolve({});
-                        return;
                     }
                 },
                 fail: (err) => {
                     // 因网络问题
-                    reject(err);
-                    return;
+                    wx.showToast({
+                        title: '请检查网络情况',
+                        icon: 'none'
+                    });
+                    console.error('wx.getSetting() fail', err);
                 }
             })
         })
@@ -184,39 +213,47 @@ class User {
     }
 
     /**
-     * 提取缓存中的userInfo(不包括open_id)
+     * 授权 + 注册
+     * @param userInfo 
+     * @param openid_sessionKey 
      */
-    static getUserInfo(): GetUserInfoResult {
-        try {
-            let userInfo = wx.getStorageSync('userInfo');
-            if (userInfo !== '') {
-                userInfo = JSON.parse(userInfo);
-            } else {
-                userInfo = {};
+    static registeAccountAndGetUid(userInfo: CustomUserInfo, openid_sessionKey: Response.LoginData, app: any) {
+        return new Promise<boolean>((resolve, reject) => {
+            User.setUserInfoStorage(userInfo);
+            // console.log(globalData)
+            // const { nickName, avatarUrl } = User.getUserInfoStorage();
+            const { nickName, avatarUrl } = userInfo;
+            const { openid } = openid_sessionKey;
+
+            const options = {
+                url: '/wxma_auth/login',
+                method: 'POST' as "POST",
+                data: {
+                    openid,
+                    username: nickName as string,
+                    avatarUrl: avatarUrl as string
+                }
             }
-            return userInfo.userInfo;
-        } catch (err) {
-            console.log(err);
-            return {};
-        }
+            Https.request<Request.AuthorizeReq, Response.AuthorizeRes>(options).then(res => {
+                if (res.data.uid) {
+                    console.log('用户授权 + 注册成功', res);
+                    // 设置缓存
+                    User.setUserInfoStorage(res.data);
+                    // 获取缓存
+                    const userInfo = User.getUserInfoStorage();
+                    app.setGlobalData({ userInfo, isAuthorized: true });
+                    resolve(true);
+                } else {
+                    console.log('授权接口出错', res);
+                }
+
+            }).catch(err => {
+                console.log('授权接口出错', err);
+            })
+        })
+
     }
 
-    /**
-     * 存储userInfo(不包括open_id)，增量存储。类似于this.serData
-     * @param userInfo 
-     */
-    static setUserInfo(userInfo: WechatMiniprogram.UserInfo) {
-        try {
-            const oldInfo = this.getUserInfo() || {};
-            const newUserInfo = {
-                ...oldInfo,
-                userInfo
-            }
-            wx.setStorageSync('userInfo', JSON.stringify(newUserInfo));
-        } catch (err) {
-            console.log(err);
-        }
-    }
 }
 
 

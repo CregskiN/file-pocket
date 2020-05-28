@@ -16,7 +16,9 @@
 			<swiper-item class="index_swiper_item">
 				<scroll-view class="scroll_view" scroll-y="true">
 					<view class="item_wrapper">
-						<c-item wx:for="{{createdTeamList}}" wx:key="id" 
+						<c-item 
+							wx:for="{{createdTeamList}}" 
+							wx:key="id" 
 							team="{{item}}" 
 							docCount="{{item.count.doc}}" 
 							imgCount="{{item.count.img}}" 

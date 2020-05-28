@@ -57,12 +57,14 @@ Page({
 	 * 完成授权逻辑，撤除授权窗口
 	 */
 	onAuthorize() {
-		const { uid } = User.getUserInfoStorage();
+		const userInfo = User.getUserInfoStorage();
+		const { uid } = userInfo;
 
 		this._refreshCreatedTeamList(uid as string).then(no => {
 			this._refreshJoinedTeamList(uid as string).then(no => {
 				this.setData({
-					isAuthorized: true
+					isAuthorized: true,
+					userInfo
 				})
 			});
 		});
@@ -268,13 +270,26 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-		const isAuthorized = app.getGlobalData();
-		this.setData({
-			isAuthorized
-		});
-		this._refreshCreatedTeamList(this.data.userInfo.uid as string);
-		this._refreshJoinedTeamList;
-
+		if (!this.data.isAuthorized) {
+			const init: Promise<GlobalDataType> = app.init();
+			init.then(globalData => {
+				const { isAuthorized, isLogin } = globalData;
+				const userInfo = User.getUserInfoStorage();
+				if (userInfo.uid) {
+					this._refreshCreatedTeamList(userInfo.uid);
+					this._refreshJoinedTeamList(userInfo.uid);
+				}
+				this.setData({
+					userInfo,
+					isAuthorized,
+					isLogin,
+				})
+			})
+		} else {
+			const { uid } = this.data.userInfo;
+			this._refreshCreatedTeamList(uid as string);
+			this._refreshJoinedTeamList(uid as string);
+		}
 	},
 
 	/**

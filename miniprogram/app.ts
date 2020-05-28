@@ -18,7 +18,7 @@ App<AppOptionCustom>({
 		openGid: '',
 		shareTicket: '',
 		userInfo: {},
-		openid_sessionKey: {},
+		openid_sessionKey: {} as Response.LoginData,
 		isLogin: false,
 		isAuthorized: false,
 	},
@@ -70,10 +70,10 @@ App<AppOptionCustom>({
 				this.setGlobalData({
 					openid_sessionKey: OPENID_SESSIONKEY,
 					isLogin: true
-				})
+				});
 
 				User.getAuthorize().then(userInfo => {
-					if (userInfo.nickName) {
+					if (userInfo.nickName){
 						console.log('App.onLaunch 初始化完成');
 						this.setGlobalData({
 							userInfo,
@@ -87,25 +87,10 @@ App<AppOptionCustom>({
 						})
 					}
 					resolve(this.globalData); // 最终出口！
-				}).catch(err => {
-					console.log('授权调用失败', err);
-					this.setGlobalData({
-						isAuthorized: false,
-					})
-					reject(err);
 				})
-			}).catch(err => {
-				console.log('login失败', err);
-				this.setGlobalData({
-					userInfo: {},
-					isLogin: false,
-				})
-				reject(err);
 			})
 		})
 	},
-
-
 
 
 	getShareTicket(cb) {
@@ -146,7 +131,5 @@ App<AppOptionCustom>({
 		})
 		return this.globalData.shareTicket;
 	},
-	/**
-	 * 此处写授权跳转功能
-	 *  */
+
 })

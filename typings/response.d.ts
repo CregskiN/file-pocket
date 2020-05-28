@@ -18,8 +18,8 @@ declare namespace Response {
      * 登陆接口返回结果
      */
     interface LoginData {
-        openid?: string;
-        session_key?: string;
+        openid: string;
+        session_key: string;
     }
 
     /**

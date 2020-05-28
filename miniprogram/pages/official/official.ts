@@ -246,6 +246,22 @@ Page({
     if (this.data.userInfo.uid) {
       this._refreshOfficialTeamList(this.data.userInfo.uid);
     }
+    if (!this.data.isAuthorized) {
+      const init: Promise<GlobalDataType> = app.init();
+      init.then(globalData => {
+        const { isAuthorized, isLogin } = globalData;
+        const userInfo = User.getUserInfoStorage();
+        if (userInfo.uid) {
+          this._refreshOfficialTeamList(userInfo.uid as string);
+        }
+        this.setData({
+          userInfo,
+          isAuthorized,
+          isLogin,
+        })
+      })
+    }
+
   },
 
   /**
