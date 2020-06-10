@@ -3,6 +3,7 @@
     <c-filesController 
         files="{{files}}" 
         type="my_file"
+        isAuthorized="{{true}}"
         bind:uploadLocalImg="onUploadLocalImg" 
         bind:uploadMessageFile="onUploadMessageFile"
         bind:deleteFile="onDeleteFile"
@@ -11,12 +12,13 @@
         bind:change="onChangeFileIds"
         bind:share="onShare"
         bind:rename="onRename"
+        bind:loadMore="onLoadMore"
     />
 </view>
 
 <c-teamSelector 
     isTeamSelectorVisible="{{isTeamSelectorVisible}}" 
-    createdTeamList="{{createdTeamList}}" 
+    createdTeamList="{{createdTeamList}}"
     joinedTeamList="{{joinedTeamList}}"
     bind:cancel="onCancel" 
     bind:complete="onComplete"

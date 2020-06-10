@@ -1,6 +1,9 @@
 <!--miniprogram/pages/share/share.wxml-->
 <view class="share_container">
-    <c-fileController files="{{fileList}}" type="share"
+    <c-fileController 
+        files="{{fileList}}" 
+        type="share"
+        isAuthorized="{{isAuthorized}}"
         bind:addToMyCollectionOnce="onAddToMyCollectionOnce"
         bind:view="onView"
     />

@@ -27,25 +27,18 @@ Component({
    */
   methods: {
 
-    onMore(e:any) {
+    onMore(e: any) {
       console.log(e);
       console.log(this.data);
       if (this.data.type === 'my_file') {
         // 我的文件操作
         wx.showActionSheet({
-          itemList: ['重命名', '删除'],
+          itemList: ['删除'],
           success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
             switch (res.tapIndex) {
               case 0: {
-                console.log(this.data);
-                this.triggerEvent('rename', {
-                  file: this.properties.file
-                })
-                break;
-              }
-              case 1: {
                 this.triggerEvent('delete', {
-                  fileId: this.data.file.fileId
+                  id: this.data.file.id
                 })
               }
             }
@@ -174,9 +167,20 @@ Component({
      * @param e 
      */
     onSelect() {
-      this.triggerEvent('select', {
-        fid: this.properties.file.fid || this.properties.file.fileId
-      })
+      const { type } = this.properties;
+      const { fileId } = this.properties.file;
+      if (type !== 'my_file') {
+        this.triggerEvent('select', {
+          fid: fileId,
+        })
+      } else if (type === 'my_file') {
+        const { id } = this.properties.file;
+        this.triggerEvent('select', {
+          id,
+          fid: fileId
+        })
+      }
+
     },
 
     /**

@@ -20,12 +20,12 @@ export default class Team {
             })
         })
     }
-    
+
 
     /**
      * 获取与我相关的官方项目组列表
      */
-    static getOfficialTeamListAboutMe(uid:string) {
+    static getOfficialTeamListAboutMe(uid: string) {
         return new Promise<Response.OfficialTeam[]>((resolve, reject) => {
             const options = {
                 url: '/user/query_official_team_list_by_uid',
@@ -208,7 +208,6 @@ export default class Team {
                 }
             }
             Https.request<Request.GetMemberGradeInTeamReq, Response.GetMemberGradeInTeamRes>(options).then(res => {
-                console.log(res);
                 resolve(res);
             }).catch(err => {
                 console.log(err);
@@ -364,24 +363,23 @@ export default class Team {
      * @param keyword 
      * @param pageIndex 
      */
-    static queryTeamFilesByKeywords(tid: string, keyword: string, pageIndex: number, teamName: string) {
+    static queryTeamFilesByKeywords(tidList: string[], keyword: string, pageIndex: number) {
         return new Promise<Response.FileType[]>((resolve, reject) => {
             const options = {
                 url: '/team/search_team_file_list_by_keyword',
-                method: 'GET' as "GET",
+                method: 'POST' as "POST",
                 data: {
-                    tid,
                     keyword,
                     pageIndex,
-                    pageSize: 10
+                    pageSize: 10,
+                    tidList
+                },
+                header: {
+                    'Content-Type': 'application/json'
                 }
             };
             Https.request<Request.QueryTeamFilesByKeywordsReq, Response.QueryTeamFilesByKeywordsRes>(options).then(res => {
-                const files = res.data;
-                for (let i = 0; i < res.data.length; i++) {
-                    files[i].teamName = teamName;
-                }
-                resolve(files);
+                resolve(res.data);
             }).catch(err => {
                 reject(err);
             })

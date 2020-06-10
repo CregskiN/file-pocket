@@ -14,6 +14,9 @@
     </scroll-view>
 
     <view class="member_invitation">
-        <button class="member_invitation_btn" open-type="share">一键邀请更多好友</button>
+        <button class="member_invitation_btn" open-type="share">
+            <text class="iconfont icon-tianjiachengyuan icon" />
+            邀请更多好友
+            </button>
     </view>
 </view>

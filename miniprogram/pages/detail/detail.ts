@@ -22,18 +22,18 @@ Page({
     files: [] as Response.FileType[],
     selectCount: 0,
     selectList: [] as string[],
-    tid: '',
     teamInfo: {} as Response.TeamDetailType,
     userInfo: {} as CustomUserInfo,
     action: '', // 用户行为： join 则加入项目组，无则正常访问
 
-    pageId: 1,
+    currentPageIndex: 1,
     isLazyLoading: false,
 
     uploadCount: -1,
     isUploading: false,
 
     isAuthorized: true,
+    canShowAuthorizeWindow: true, // 是否可以展示授权框
     isLoading: true,
 
     isDeleting: false, // 保留变量，执行删除操作过渡动画
@@ -97,7 +97,7 @@ Page({
               wx.showToast({
                 title: '上传成功'
               })
-              this._getMoreFileList(this.data.teamInfo.tid, 1);
+              this._queryTeamFileList(this.data.teamInfo.tid, 1);
               this._refreshTeamInfo(this.data.teamInfo.tid);
             }
           })
@@ -121,8 +121,7 @@ Page({
     console.log('上传群聊文件事件触发', fileObjects);
     const QiniuReses: QiniuUploaderResData[] = [];
 
-    const that = this;
-    that.setData({
+    this.setData({
       downloadingOrUploadingLint: `正在上传 - ${this.data.hasDownloadingOrUploadingCount} / ${uploadCount}`,
       isDownloadingOrUploadingVisible: true,
       hasDownloadingOrUploadingCount: this.data.hasDownloadingOrUploadingCount + 1
@@ -131,15 +130,12 @@ Page({
     for (let i = 0; i < uploadCount; i++) {
 
       Upload.uploadMessageFile(fileObjects.tempFiles[i]).then(res => {
-        that.setData({
+        this.setData({
           downloadingOrUploadingLint: `正在上传 - ${this.data.hasDownloadingOrUploadingCount} / ${uploadCount}`,
           isDownloadingOrUploadingVisible: true,
           hasDownloadingOrUploadingCount: this.data.hasDownloadingOrUploadingCount + 1
         })
         QiniuReses.push(res as any);
-        // console.log('QiniuReses', QiniuReses);
-        // console.log('QiniuReses.length', QiniuReses.length);
-        // console.log('uploadCount', uploadCount);
         if (QiniuReses.length === uploadCount) {
           this.setData({
             downloadingOrUploadingLint: `正在同步文件至云端...`
@@ -150,11 +146,12 @@ Page({
               this.setData({
                 downloadingOrUploadingLint: '',
                 isDownloadingOrUploadingVisible: false,
+                hasDownloadingOrUploadingCount: 1,
               })
               wx.showToast({
                 title: '上传成功'
               })
-              this._getMoreFileList(this.data.teamInfo.tid, 1);
+              this._queryTeamFileList(this.data.teamInfo.tid, 1);
               this._refreshTeamInfo(this.data.teamInfo.tid);
             }
           })
@@ -181,7 +178,7 @@ Page({
         wx.showToast({
           title: '删除成功'
         });
-        this._getMoreFileList(tid, 1);
+        this._queryTeamFileList(tid, 1);
         this._refreshTeamInfo(tid);
       }
     }).catch(err => {
@@ -195,11 +192,14 @@ Page({
    * 懒加载获取更多
    */
   onLoadMore() {
-    this._getMoreFileList(this.data.teamInfo.tid).then(res => {
-      this.setData({
-        isLazyLoading: false,
-      })
-    });
+    if (!this.data.isLazyLoading) {
+      this._queryTeamFileList(this.data.teamInfo.tid);
+    } else if (!this.data.isBottom && this.data.isLazyLoading) {
+      wx.showToast({
+        title: '正在加载',
+        icon: 'none',
+      });
+    }
   },
 
   /**
@@ -208,9 +208,13 @@ Page({
   onAuthorize() {
     const { tid } = this.data.teamInfo;
     const userInfo = User.getUserInfoStorage();
+    this.onCloseAuthorizeWindow();
     this._enterTeam(tid, userInfo).then(tid => {
       if (tid) {
         // 加入成功
+        wx.showToast({
+          title: '加入成功',
+        })
         this._userHasInTeam(tid, userInfo, true);
       } else {
         wx.showToast({
@@ -223,7 +227,7 @@ Page({
         title: '请检查您的网络',
         icon: 'none'
       });
-      console.log('加入口袋失败', err);
+      console.error('加入口袋失败', err);
     })
 
   },
@@ -233,22 +237,24 @@ Page({
    * @param e 
    */
   onAddToMyCollection(e: any) {
-    const { fileIds } = e.detail;
-    Collection.addToMyCollectionFromTeam(this.data.userInfo.uid as string, fileIds as string[]).then(res => {
-      if (res.success) {
-        wx.showToast({
-          title: '添加成功'
-        });
-        this.setData({
+    if (!this.data.isAuthorized) {
+      this.onShowAuthorizeWindow();
+    } else {
+      const { fileIds } = e.detail;
+      Collection.addToMyCollectionFromTeam(this.data.userInfo.uid as string, fileIds as string[]).then(res => {
+        if (res.success) {
+          wx.showToast({
+            title: '添加成功'
 
-        })
-
-      } else {
-        wx.showToast({
-          title: '添加失败'
-        })
-      }
-    })
+          });
+        } else {
+          wx.showToast({
+            title: '添加失败',
+            icon: 'none'
+          })
+        }
+      })
+    }
   },
 
   /**
@@ -270,9 +276,9 @@ Page({
   onModifyComplete(e: any) {
     this.setData({
       isRenaming: false,
-      pageId: 1
+      currentPageIndex: 1
     });
-    this._getMoreFileList(this.data.teamInfo.tid, 1);
+    this._queryTeamFileList(this.data.teamInfo.tid, 1);
   },
 
   /**
@@ -280,14 +286,37 @@ Page({
    * @param e 
    */
   onView(e: any) {
-    this.setData({
-      isDownloadingOrUploadingVisible: true
-    })
-    Viewer.viewDocument(e.detail.file,this.data.userInfo.uid as string).then(res => {
+    if (!this.data.isAuthorized) {
+      this.onShowAuthorizeWindow();
+    } else {
       this.setData({
-        isDownloadingOrUploadingVisible: false
+        isDownloadingOrUploadingVisible: true
       })
-    });
+      Viewer.viewDocument(e.detail.file, this.data.userInfo.uid as string).then(res => {
+        this.setData({
+          isDownloadingOrUploadingVisible: false
+        })
+      });
+    }
+
+  },
+
+  /**
+ * 关闭授权窗口
+ */
+  onCloseAuthorizeWindow() {
+    this.setData({
+      canShowAuthorizeWindow: false,
+    })
+  },
+
+  /**
+   * 展示授权窗口
+   */
+  onShowAuthorizeWindow() {
+    this.setData({
+      canShowAuthorizeWindow: true,
+    })
   },
 
   /**
@@ -373,7 +402,10 @@ Page({
               // 逻辑三：进入未加入的项目组
               this._enterTeam(tid, userInfo).then(tid => {
                 if (tid) {
-                  console.log('aa')
+                  wx.showToast({
+                    title: '加入成功',
+                    icon: 'none'
+                  })
                   this._userHasInTeam(tid, userInfo, isAuthorized);
                 }
               })
@@ -383,16 +415,33 @@ Page({
           this._userHasInTeam(tid, userInfo, isAuthorized);
         }
       } else {
-        Team.queryTeamInfoByTid(tid).then(teamInfo => {
-          this.setData({
-            isAuthorized,
-            userInfo,
-            isLoading: false,
-            showTeamType: '', // 对于未授权用户，不与展示
-            teamInfo,
-          });
+        this._getTeamGrade(tid).then(teamGrade => {
+          if (teamGrade === 1) {
+            // 未授权进入官方口袋
+            Team.queryTeamInfoByTid(tid).then(teamInfo => {
+              this._queryTeamFileList(tid, 1);
+              this.setData({
+                isAuthorized,
+                canShowAuthorizeWindow: false,
+                userInfo,
+                isLoading: false,
+                showTeamType: 'official', // 对于未授权用户，不与展示
+                teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
+              });
+            })
+          } else {
+            // 未授权进入其他口袋
+            Team.queryTeamInfoByTid(tid).then(teamInfo => {
+              this.setData({
+                isAuthorized,
+                userInfo,
+                isLoading: false,
+                showTeamType: '', // 对于未授权用户，不与展示
+                teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
+              });
+            })
+          }
         })
-
       }
 
     }).catch(err => {
@@ -413,48 +462,41 @@ Page({
    */
   _userHasInTeam(tid: string, userInfo: CustomUserInfo, isAuthorized: boolean) {
     Team.queryTeamInfoByTid(tid).then(teamInfo => {
-      Team.queryTeamFileList(tid, 1).then(files => {
-        this._getTeamGrade(tid).then(teamGrade => {
-          if (teamGrade === 1) {
-            // 为官方项目组
-            this.setData({
-              showTeamType: 'official',
-              isAuthorized,
-              userInfo,
-              isLoading: false,
-              teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
-              files: fileListFormatter(files),
-              pageId: this.data.pageId + 1
-            })
-          } else {
-            // 非官方项目组
-            this._getUserGradeInTeam(tid, userInfo.uid as string).then(userGradeInTeam => {
-              if (userGradeInTeam === 1) {
-                // 为我创建的项目组
-                this.setData({
-                  showTeamType: 'create',
-                  isAuthorized,
-                  userInfo,
-                  isLoading: false,
-                  teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
-                  files: fileListFormatter(files),
-                  pageId: this.data.pageId + 1
-                })
-              } else if (userGradeInTeam === 3) {
-                // 为我加入的项目组
-                this.setData({
-                  showTeamType: 'join',
-                  isAuthorized,
-                  userInfo,
-                  isLoading: false,
-                  teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
-                  files: fileListFormatter(files),
-                  pageId: this.data.pageId + 1
-                })
-              }
-            })
-          }
-        })
+      this._queryTeamFileList(teamInfo.tid, 1);
+      this._getTeamGrade(tid).then(teamGrade => {
+        if (teamGrade === 1) {
+          // 为官方项目组
+          this.setData({
+            showTeamType: 'official',
+            isAuthorized,
+            userInfo,
+            isLoading: false,
+            teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
+          })
+        } else {
+          // 非官方项目组
+          this._getUserGradeInTeam(tid, userInfo.uid as string).then(userGradeInTeam => {
+            if (userGradeInTeam === 1) {
+              // 为我创建的项目组
+              this.setData({
+                showTeamType: 'create',
+                isAuthorized,
+                userInfo,
+                isLoading: false,
+                teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
+              })
+            } else if (userGradeInTeam === 3) {
+              // 为我加入的项目组
+              this.setData({
+                showTeamType: 'join',
+                isAuthorized,
+                userInfo,
+                isLoading: false,
+                teamInfo: teamInfoFormatter(teamInfo) as Response.TeamDetailType,
+              })
+            }
+          })
+        }
       })
 
     })
@@ -534,7 +576,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    if (this.data.teamInfo.tid) {
+      this._queryTeamFileList(this.data.teamInfo.tid, 1);
+      this._refreshTeamInfo(this.data.teamInfo.tid);
+    };
   },
 
   /**
@@ -595,6 +640,7 @@ Page({
         path: `/pages/detail/detail?tid=${this.data.teamInfo.tid}&action=join`,
         // imageUrl: 'https://s1.ax1x.com/2020/04/02/GYkFpR.jpg'
       }
+
     }
   },
 
@@ -617,8 +663,6 @@ Page({
           fileKey: uploaderResData.key,
           fileHash: uploaderResData.hash,
           mimeType: uploaderResData.mimeType,
-          tid: this.data.teamInfo.tid,
-          uid: uid as string,
           fileName: uploaderResData.fileName ? uploaderResData.fileName : generateFileNameAuto(uploaderResData.mimeType, nickName as string)
         });
         if (uploadToTeamFiles.length === QiniuReses.length) {
@@ -636,43 +680,83 @@ Page({
    * 获取最新页的文件列表
    * @param tid 
    */
-  _getMoreFileList(tid: string, pageId?: number) {
-    return new Promise((resolve, reject) => {
-      const pId = pageId ? pageId : this.data.pageId;
-      const isBottom = this.data.isBottom;
+  _queryTeamFileList(tId: string, aimPIndex?: number) {
+    this.setData({
+      isLazyLoading: true
+    })
 
-      if (!isBottom || pageId === 1) {
-        Team.queryTeamFileList(tid, pId).then(newFiles => {
-          newFiles = fileListFormatter(newFiles);
-          if (pageId === 1) {
+    const aimPageIndex = aimPIndex ? aimPIndex : this.data.currentPageIndex + 1;
+    const tid = tId;
+
+    if (!this.data.isBottom || aimPageIndex === 1) {
+      Team.queryTeamFileList(tid, aimPageIndex).then(res => {
+        if (res.length) {
+          console.log(res);
+          // 有文件返回
+          res = fileListFormatter(res);
+          if (aimPageIndex === 1) {
+            // 对刷新页面
             this.setData({
-              files: newFiles,
-              pageId: pId + 1,
+              files: res,
+              currentPageIndex: aimPageIndex,
+              isLazyLoading: false,
+              isBottom: false,
             })
-            resolve(newFiles);
           } else {
             this.setData({
               files: [
                 ...this.data.files,
-                ...newFiles
+                ...res
               ],
-              pageId: pId + 1,
-            });
-            resolve(newFiles);
-          }
-          if (newFiles.length < 10) {
-            this.setData({
-              isBottom: true
+              isBottom: res.length === 10 ? false : true,
+              currentPageIndex: aimPageIndex,
+              isLazyLoading: false,
             })
           }
-        }).catch(err => {
-          console.log('获取文件列表失败', err);
-          reject(err);
+        } else {
+          // 无文件返回
+          if (aimPageIndex === 1) {
+            // 搜索第一页 + 无文件 => 空
+            wx.showToast({
+              title: '该口袋还没有上传文件',
+              icon: 'none'
+            });
+            this.setData({
+              files: [],
+              isBottom: true,
+              isLazyLoading: false,
+              currentPageIndex: aimPageIndex - 1,
+            })
+          } else {
+            // 搜索不是第一页 + 无文件 => 到底了
+            wx.showToast({
+              title: '已显示所有文件',
+              icon: 'none'
+            })
+            this.setData({
+              currentPageIndex: aimPageIndex - 1,
+              isBottom: true,
+              isLazyLoading: false,
+            })
+          }
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    } else {
+      wx.showToast({
+        title: '已显示所有文件',
+        icon: 'none'
+      });
+      /* this.setData({
+        isLazyLoading: false,
+      })
+      setTimeout(() => {
+        this.setData({
+          isBottom: false,
         })
-      }
-
-
-    })
+      }, 2000) */
+    }
   },
 
   /**

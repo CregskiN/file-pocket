@@ -19,7 +19,7 @@ Component({
 	 */
 	data: {
 		title: '提示',
-		content: '请授权我们使用您的昵称、头像'
+		content: '请授权我们使用您的昵称、头像用于展示'
 	},
 
 	/**
@@ -47,6 +47,14 @@ Component({
 					title: '授权失败'
 				})
 			}
+		},
+
+		/**
+		 * 关闭授权窗口 
+		 */
+		onCloseAuthorizeWindow() {
+			this.triggerEvent('closeAuthorizeWindow')
 		}
+
 	}
 })

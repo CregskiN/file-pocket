@@ -3,11 +3,11 @@
 .item_container {
     width: 94%;
     height: 150rpx;
-    padding: 0 3%;
-    margin: 15rpx auto 0 auto;
+    /* padding: 0 3%; */
+    margin: 0 auto 15rpx auto;
     border-radius: 10rpx;
-    /* box-shadow: #fff 0 0 10rpx; */
-    background-color: #fff;
+    box-shadow: #f2f2f2 0 0 10rpx;
+    background-color: #fffcf5;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -20,7 +20,7 @@
     margin: 0 auto;
     border-radius: 10rpx;
     border-bottom: 1rpx solid #f5f6f7;
-    background-color: #fff;
+    background-color: #FFF9ED;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -33,8 +33,8 @@
 
 .item_icon_avatar {
     display: block;
-    width: 100rpx;
-    height: 100rpx;
+    width: 120rpx;
+    height: 120rpx;
     margin: 0 auto;
     border-radius: 10rpx;
     background-color: #f5f6f7;
@@ -68,6 +68,8 @@
     color: #47484c;
 
     opacity: 0.8;
+
+    margin-bottom: 5rpx;
 
     display: flex;
     flex-direction: row;

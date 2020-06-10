@@ -95,8 +95,6 @@ declare namespace Request {
      * 同步文件至项目组类型
      */
     interface SyncFileWithBackendFileType {
-        tid: string;
-        uid: string;
         fileKey: string;
         fileHash: string;
         fileName: string;
@@ -172,9 +170,7 @@ declare namespace Request {
      */
     interface DeleteMyCollectionFilesReq {
         collectionId: string;
-        collectionFileList: {
-            fileId: string;
-        }[];
+        idList: number[];
     }
 
     /**
@@ -218,7 +214,7 @@ declare namespace Request {
      * 以关键字搜索项目组内文件
      */
     interface QueryTeamFilesByKeywordsReq {
-        tid: string;
+        tidList: string[];
         keyword: string;
         pageIndex: number;
         pageSize: number;

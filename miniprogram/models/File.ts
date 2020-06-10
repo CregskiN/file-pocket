@@ -64,18 +64,14 @@ export default class File {
      * @param collection 
      * @param fileIds 
      */
-    static deleteMyCollectionFiles(collectionId: string, fileIds: string[]) {
+    static deleteMyCollectionFiles(collectionId: string, ids: number[]) {
         return new Promise<Response.DeleteMyCollectionFilesRes>((resove, reject) => {
-            const collectionFileList = [];
-            for (const fileId of fileIds) {
-                collectionFileList.push({ fileId });
-            }
             const options = {
                 url: '/collection/delete_file_list',
                 method: 'POST' as "POST",
                 data: {
                     collectionId,
-                    collectionFileList
+                    idList: ids
                 },
                 header: {
                     'Content-Type': 'application/json'

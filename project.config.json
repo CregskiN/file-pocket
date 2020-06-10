@@ -70,35 +70,35 @@
 					"id": 1,
 					"name": "个人文件",
 					"pathName": "pages/my_file/index",
-					"query": "uid=1717835b7de",
+					"query": "uid=1724c666759",
 					"scene": null
 				},
 				{
 					"id": 2,
 					"name": "受邀加入项目组",
 					"pathName": "pages/detail/detail",
-					"query": "tid=1724c79d708&action=join",
+					"query": "tid=17253f8d924&action=join",
 					"scene": null
 				},
 				{
 					"id": 3,
 					"name": "项目成员页",
 					"pathName": "pages/member/member",
-					"query": "tid=17253e48177",
+					"query": "tid=1724c79d708",
 					"scene": null
 				},
 				{
 					"id": 4,
 					"name": "分享页面",
 					"pathName": "pages/share/share",
-					"query": "fileIds=171e9002266-171e9002267-171e8ff127b-171e8ff127c-171e9002266-171e9002267-171e8ff127b-171e8ff127c-171e9002266-171e9002267-171e8ff127b-171e8ff127c-171e9002266-171e9002267-171e8ff127b-171e8ff127c",
+					"query": "fileIds=17268f55474-17268f55473-17268f55472-17268f55471-17268f5546f-17268f5546e",
 					"scene": 1008
 				},
 				{
 					"id": 5,
 					"name": "官方项目组详情",
 					"pathName": "pages/detail/detail",
-					"query": "tid=171edf2f13c&type=official",
+					"query": "tid=17268f47ef7&type=official",
 					"scene": null
 				},
 				{
@@ -120,6 +120,13 @@
 					"name": "创建口袋",
 					"pathName": "pages/found/found",
 					"query": "tid=1720ce2f77b&action=join&type=join",
+					"scene": null
+				},
+				{
+					"id": 9,
+					"name": "我创建的口袋详情",
+					"pathName": "pages/detail/detail",
+					"query": "tid=17254f86a40",
 					"scene": null
 				}
 			]

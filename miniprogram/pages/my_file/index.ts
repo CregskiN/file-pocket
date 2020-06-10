@@ -16,7 +16,11 @@ Page({
     userInfo: {} as CustomUserInfo,
 
     files: [] as Response.CollectionFileType[],
-    pageIndex: 1,
+
+    currentPageIndex: 1,
+    isBottom: false,
+    isLazyLoading: false,
+
     collectionInfo: {
       collectionId: ''
     },
@@ -25,10 +29,10 @@ Page({
     isTeamSelectorVisible: false,
     selectTeamInfo: {},
     fileIds: [] as string[],
+    ids: [] as number[],
 
     isRenaming: false,
     renameFile: {} as Response.FileType,
-
 
     createdTeamList: [] as Response.TeamDetailType[],
     joinedTeamList: [] as Response.TeamDetailType[],
@@ -39,15 +43,17 @@ Page({
    * @param e 
    */
   onDeleteFile(e: any) {
-    const { fileIds } = e.detail;
+    // console.log('删除个人文件', e);
+    // console.log('collectionInfo', this.data.collectionInfo)
+    const { ids } = e.detail;
     const { collectionId } = this.data.collectionInfo;
-    File.deleteMyCollectionFiles(collectionId, fileIds).then(res => {
+    File.deleteMyCollectionFiles(collectionId, ids).then(res => {
       if (res.success) {
-        this._queryMoreFileList(this.data.uid, 1).then(res => {
-          wx.showToast({
-            title: '删除成功'
-          });
+        this._queryFileList(this.data.uid, 1);
+        wx.showToast({
+          title: '删除成功'
         });
+        this._queryFileList(this.data.userInfo.uid as string, 1);
       } else {
         wx.showToast({
           title: '删除失败'
@@ -63,6 +69,7 @@ Page({
    * @param e 
    */
   onView(e: any) {
+    console.log('my_file页view事件触发了')
     Viewer.viewDocument(e.detail.file, this.data.userInfo.uid as string);
   },
 
@@ -71,19 +78,11 @@ Page({
    * @param e
    */
   onAddToTeam(e: any) {
-    console.log(e)
-    if (e.detail.fileId && e.detail.fileId.length !== 0) {
-      this.setData({
-        fileIds: new Array(e.detail.fileId),
-        isTeamSelectorVisible: true,
-      })
-    } else if (e.detail.fileIds && e.detail.fileIds.length !== 0) {
-      this.setData({
-        fileIds: e.detail.fileIds,
-        isTeamSelectorVisible: true,
-      })
-    }
-
+    // console.log(this.data.ids);
+    // console.log(this.data.fileIds);
+    this.setData({
+      isTeamSelectorVisible: true
+    })
   },
 
   /**
@@ -110,6 +109,11 @@ Page({
       wx.showToast({
         title: '添加成功',
         icon: 'success'
+      });
+      this.setData({
+        isTeamSelectorVisible: false,
+        selectTeamInfo: [],
+        fileIds: [],
       })
     }).catch(err => {
       wx.showToast({
@@ -127,9 +131,10 @@ Page({
    * @param e 
    */
   onChangeFileIds(e: any) {
-    const { fileIds } = e.detail;
+    const { fileIds, ids } = e.detail;
     this.setData({
-      fileIds
+      fileIds,
+      ids
     })
   },
 
@@ -163,10 +168,23 @@ Page({
       isRenaming: false,
       renameFile: {} as any,
     });
-    this._queryMoreFileList(this.data.uid, 1);
+    this._queryFileList(this.data.uid, 1);
   },
 
 
+  /**
+   * 懒加载
+   */
+  onLoadMore() {
+    if (!this.data.isLazyLoading) {
+      this._queryFileList(this.data.uid);
+    } else if (!this.data.isBottom && this.data.isLazyLoading) {
+      wx.showToast({
+        title: '正在加载',
+        icon: 'none',
+      });
+    }
+  },
 
   /**
    * 生命周期函数--监听页面加载
@@ -176,11 +194,10 @@ Page({
 
     const { uid } = options;
     const userInfo = User.getUserInfoStorage();
-    this._queryMoreFileList(uid, 1).then(res => {
-      this.setData({
-        uid,
-        userInfo,
-      })
+    this._queryFileList(uid, 1);
+    this.setData({
+      uid,
+      userInfo,
     })
     this._refreshCreatedTeamList(uid);
     this._refreshJoinedTeamList(uid);
@@ -249,36 +266,78 @@ Page({
   /**
    * 辅助函数 - 分页查询文件列表
    * @param uid 
-   * @param pageIndex 
+   * @param currentPageIndex 
    */
-  _queryMoreFileList(uid: string, pageIndex: number) {
-    return new Promise((resolve, reject) => {
-      Collection.queryMyCollectionFileList(uid, pageIndex).then(files => {
-        if (pageIndex === 1) {
-          this.setData({
-            files: collectionFileListFormatter(files),
-            pageIndex: pageIndex + 1
-          })
-        } else if (pageIndex !== 1) {
-          this.setData({
-            files: [
-              ...(this.data.files),
-              ...collectionFileListFormatter(files)
-            ],
-            pageIndex: this.data.pageIndex + 1
-          })
+  _queryFileList(uid: string, aimPIndex?: number) {
+    this.setData({
+      isLazyLoading: true
+    });
+    const aimPageIndex = aimPIndex ? aimPIndex : this.data.currentPageIndex + 1;
+
+    if (!this.data.isBottom || aimPageIndex === 1) {
+      Collection.queryMyCollectionFileList(uid, aimPageIndex).then(res => {
+        if (res.length) {
+          res = collectionFileListFormatter(res);
+          if (aimPageIndex === 1) {
+            this.setData({
+              files: res,
+              isLazyLoading: false,
+              currentPageIndex: aimPageIndex,
+              isBottom: false,
+            })
+          } else {
+            this.setData({
+              files: [
+                ...this.data.files,
+                ...res,
+              ],
+              isLazyLoading: false,
+              isBottom: res.length === 10 ? false : true,
+              currentPageIndex: aimPageIndex
+            })
+          }
+
+        } else {
+          if (aimPageIndex === 1) {
+            wx.showToast({
+              title: '您还未收藏任何文件',
+              icon: 'none'
+            });
+            this.setData({
+              isLazyLoading: false,
+              isBottom: true,
+              currentPageIndex: aimPageIndex - 1,
+            })
+          } else {
+            wx.showToast({
+              title: '已展示全部收藏',
+              icon: 'none'
+            });
+            this.setData({
+              isBottom: true,
+              isLazyLoading: false,
+              currentPageIndex: aimPageIndex - 1,
+            })
+          }
         }
-        if (this.data.collectionInfo.collectionId === '') {
+
+        if (this.data.files.length && !this.data.collectionInfo.collectionId) {
           this.setData({
             collectionInfo: {
-              collectionId: files[0].collectionId,
+              collectionId: res[0].collectionId
             }
           })
         }
 
-        resolve();
+      }).catch(err => {
+        console.error(err);
       })
-    })
+    } else {
+      wx.showToast({
+        title: '已展示全部收藏',
+        icon: 'none'
+      });
+    }
   },
 
   /**

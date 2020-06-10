@@ -14,9 +14,9 @@
 
     <view class="file-controller_wrapper">
         <c-fileController 
+            isAuthorized="{{isAuthorized}}"
             type="{{'detail_' + showTeamType}}" 
             files="{{files}}" 
-            isLazyLoading="{{isLazyLoading}}" 
             teamInfo="{{teamInfo}}"
             userInfo="{{userInfo}}"
             bind:uploadLocalImg="onUploadLocalImg"
@@ -28,13 +28,18 @@
             bind:view="onView"
             bind:change="onChangeFileIds"
             bind:outEdit="onOutEdit"
+            bind:showAuthorizeWindow="onShowAuthorizeWindow"
+            bind:closeAuthorizeWindow="closeAuthorizeWindow"
         />
     </view>
 </view>
 
 <c-loading lint="正在进入口袋..." isLoading="{{isLoading}}"/>
-<c-authorize isAuthorized="{{isAuthorized}}" 
+
+<c-authorize 
+    isAuthorized="{{isAuthorized || !canShowAuthorizeWindow}}" 
     bind:authorize="onAuthorize"
+    bind:closeAuthorizeWindow="onCloseAuthorizeWindow"
 />
 <c-modifyWindow 
     lint="请输入新的文件名称"
@@ -46,4 +51,7 @@
     userInfo="{{userInfo}}"
 />
 
-<c-downloading isDownloadingOrUploadingVisible="{{isDownloadingOrUploadingVisible}}" lint="{{downloadingOrUploadingLint}}"/>
+<c-downloading 
+    isDownloadingOrUploadingVisible="{{isDownloadingOrUploadingVisible}}" 
+    lint="{{downloadingOrUploadingLint}}"
+/>

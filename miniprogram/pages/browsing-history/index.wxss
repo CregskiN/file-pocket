@@ -4,7 +4,7 @@
     width: 100vw;
     height: 100vh;
     overflow-y: scroll;
-    background-color: #f5f6f7;
+    background-color: #fff9ed;
     box-sizing: border-box;
     padding-top: 10rpx;
 }

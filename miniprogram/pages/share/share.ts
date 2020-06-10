@@ -71,6 +71,7 @@ Page({
    * @param e 
    */
   onView(e: any) {
+    console.log('asd')
     this.setData({
       isDownloadingOrUploadingVisible: true
     })

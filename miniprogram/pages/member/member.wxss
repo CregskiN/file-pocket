@@ -11,7 +11,7 @@
     width: 100vw;
     height: 100vh;
 
-    background-color: #f5f6f7;
+    background-color: #fff9ed;
 }
 
 .member_body {
@@ -30,28 +30,36 @@
     left: 0;
     right: 0;
 
-    height: 120rpx;
+    height: 115rpx;
     width: 100%;
 
-    background-color: #fff;
+    background: url("https://wx-interchange.oss.jellyfishmix.com/FntihySmyFQOmBMT9ChtHjOMYOTw") no-repeat;
+    background-size: 100% 100%;
 }
 
 .member_invitation_btn {
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: row !important;
     align-items: center !important;
     justify-content: center !important;
 
-    /* width: 20% !important; */
-    width: 50% !important;
+    width: 400rpx !important;
+    height: 70rpx !important;
+    min-height: 70rpx !important;
     padding: 0 !important;
     margin: 0 !important;
-    box-shadow: #eee 0 0 10rpx;
+    /* box-shadow: #eee 0 0 10rpx; */
+    background-color: transparent;
 
     font-size: 38rpx !important;
+    line-height: 38rpx !important;
     font-weight: 400 !important;
-
     color: #fff !important;
-    background-color: #69ace7;
+}
 
+.icon {
+    margin-right: 5rpx;
+    font-size: 40rpx;
+    line-height: 40rpx;
+    font-weight: 600;
 }

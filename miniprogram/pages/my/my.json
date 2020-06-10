@@ -1,7 +1,7 @@
 {
   "usingComponents": {
-    "c-header": "../../component/my/header/header",
-    "c-myItem":"../../component/my/my-item/my-item"
+    "c-myItem":"../../component/my/my-item/my-item",
+    "c-authorize":"../../component/common/authorize/authorize"
   },
   "navigationBarTitleText": "个人页面"
 }

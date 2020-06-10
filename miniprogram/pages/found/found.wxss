@@ -7,16 +7,9 @@
     position: relative;
 }
 
-.found_bindGroupChat {
-    
-}
-
-.bind_lint {
-
-}
-
-.bind_sliper {
-
+.found_body {
+    background-color: #fff9ed;
+    height: calc(100% - 365rpx);
 }
 
 
@@ -29,7 +22,10 @@
     bottom: 0;
 
     width: 100%;
-    height: 90rpx;
+    height: 115rpx;
+
+    background: url("https://wx-interchange.oss.jellyfishmix.com/FnSaQEeZ-BvnSuRyfLmasl_970My") no-repeat;
+    background-size: 100% 100%;
 }
 
 .found_btn {
@@ -51,14 +47,20 @@
 .icon {
     font-size: 35rpx;
     font-weight: 500;
+
+    margin: 0 5rpx;
 }
 
 .found_btn_left {
-    background-color: #fff;
-    color: #d62f2f;
+    background-color: transparent;
+    color: #000;
+
+    margin-left: 50rpx;
 }
 
 .found_btn_right {
-    background-color: #69ace7;
+    background-color: transparent;
     color: #fff;
+    
+    margin-right: 50rpx;
 }

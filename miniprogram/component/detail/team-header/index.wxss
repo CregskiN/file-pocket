@@ -9,18 +9,23 @@
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid #f5f6f7;
+    background:url("https://wx-interchange.oss.jellyfishmix.com/FnIYOm2RFBolLdfP6nurIWupwa7V") no-repeat;
+    background-size: 100%;
+    background-position: 0 -10rpx;
 }
 
 .team-header_avatar {
     display: block;
-    width: 150rpx;
-    height: 150rpx;
+    width: 140rpx;
+    height: 140rpx;
     border-radius: 50%;
     background-color: #f5f6f7;
-    box-shadow: #f5f6f7 0 0 15rpx;
 }
 
 .team-header_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 0 0 0 20rpx;
     width: 350rpx;
     overflow: hidden;
@@ -38,14 +43,10 @@
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
     display: -webkit-box;
+
+    color: #fffcf5;
 }
 
-/*  */
-.team_groupName {
-    font-size: 25rpx;
-    color: #47484c;
-    opacity: 0.8;
-}
 
 .team-header_statistics {
     display: flex;
@@ -53,23 +54,21 @@
     justify-content: flex-start;
     align-items: flex-start;
 
-    margin-top: 15rpx;
+    color: #fffcf5;
 }
 
 .team-header_members {
     font-size: 25rpx;
-
-    color: #757575;
+    color: #fffcf5;
 }
 
 .team-header_fileCount {
     font-size: 25rpx;
-
-    color: #757575;
+    color: #fffcf5;
 }
 .team-header_creationTime {
     font-size: 25rpx;
-    color: #757575;
+    color: #fffcf5;
 }
 
 .toggleMode {

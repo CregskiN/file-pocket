@@ -15,7 +15,7 @@
     border-radius: 50% !important;
 
     overflow: hidden;
-    color: #77abe2 !important;
+    color: #ffc044 !important;
     background-color: #fff !important;
 }
 

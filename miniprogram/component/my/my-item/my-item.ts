@@ -6,6 +6,7 @@ Component({
   properties: {
     item: Object,
     userInfo: Object,
+    isAuthorized: Boolean,
   },
   options: {
     addGlobalClass: true
@@ -22,9 +23,17 @@ Component({
    */
   methods: {
     toPage() {
-      wx.navigateTo({
-        url: this.data.item.baseUrl + '?uid=' + this.data.userInfo.uid
-      })
+      if (!this.properties.isAuthorized) {
+        wx.showToast({
+          title: '请先授权',
+          icon: 'none'
+        })
+      } else {
+        wx.navigateTo({
+          url: this.data.item.baseUrl + '?uid=' + this.data.userInfo.uid
+        })
+      }
+
     }
   }
 })

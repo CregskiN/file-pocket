@@ -13,9 +13,10 @@ Page({
     teamInfo: {} as Response.TeamDetailType,
     userInfo: {} as CustomUserInfo,
 
-    pageIndex: 1, // 成员页页码
+
+    currentPageIndex: 1, // 成员页页码
     isBottom: false,
-    // isloadMoreLock: false, // 是否锁定加载更多
+    isLazyLoading: false, // 是否锁定加载更多
   },
 
   /**
@@ -26,13 +27,25 @@ Page({
     const { tid } = this.data.teamInfo;
     Team.deleteMember(uid, tid).then(res => {
       if (res.success) {
-        wx.showToast({
-          title: '删除成功'
-        })
+        if (uid as string === this.data.userInfo.uid) {
+          wx.showToast({
+            title: '退出成功'
+          });
+          wx.switchTab({
+            url: '/pages/index/index'
+          })
+        } else {
+          wx.showToast({
+            title: '删除成功',
+          });
+          this._loadMoreMembers(tid, 1);
+        }
+
       } else {
         wx.showToast({
           title: '删除失败'
-        })
+        });
+        this._loadMoreMembers(tid, 1);
       }
 
     }).catch(err => {
@@ -45,7 +58,14 @@ Page({
    * 加载更多
    */
   onScrollToBottom() {
-    this._loadMoreMembers(this.data.teamInfo.tid);
+    if (!this.data.isLazyLoading) {
+      this._loadMoreMembers(this.data.teamInfo.tid);
+    } else if (!this.data.isBottom && this.data.isLazyLoading) {
+      wx.showToast({
+        title: '正在加载',
+        icon: 'none',
+      });
+    }
   },
 
   /**
@@ -53,19 +73,18 @@ Page({
    */
   onLoad(options: any) {
     const tid = options.tid;
-    this._loadMoreMembers(tid, 1).then(no => {
-      const userInfo = User.getUserInfoStorage();
-      Team.queryTeamInfoByTid(tid).then(teamInfo => {
-        this._getUserGradeInTeam(tid, userInfo.uid as string).then(userGradeInTeam => {
-          const newUserInfo = { ...userInfo, userGradeInTeam }
-          this.setData({
-            userInfo: newUserInfo,
-            teamInfo
-          })
+    this._loadMoreMembers(tid, 1);
+    const userInfo = User.getUserInfoStorage();
+    Team.queryTeamInfoByTid(tid).then(teamInfo => {
+      this._getUserGradeInTeam(tid, userInfo.uid as string).then(userGradeInTeam => {
+        const newUserInfo = { ...userInfo, userGradeInTeam }
+        this.setData({
+          userInfo: newUserInfo,
+          teamInfo
         })
-
       })
     })
+
 
     wx.showShareMenu({
       withShareTicket: true
@@ -134,47 +153,69 @@ Page({
   },
 
   /**
-   * 刷新成员列表
-   * @param tid 
+   * 刷新成员列表.若需要获取第一页，需要显式地指定aimPIndex
+   * @param tId 
+   * @param aimPIndex 
    */
-  _loadMoreMembers(tid: string, currentPageIndex?: number) {
-    return new Promise((resolve, reject) => {
-      const { isBottom } = this.data;
-      if (!isBottom) {
-        console.log('获取成员列表发出了')
-        const pageIndex = currentPageIndex ? currentPageIndex : this.data.pageIndex;
-        Team.getTeamMemberListByTid(tid, pageIndex).then(memberList => {
-          if (memberList.length < 10) {
-            this.setData({
-              members: memberListFormatter(memberList),
-              pageIndex: pageIndex + 1,
-              isBottom: true,
-            });
-            resolve();
-          } else {
-            if (pageIndex === 1) {
-              this.setData({
-                members: memberListFormatter(memberList),
-                pageIndex: pageIndex + 1,
-              });
-              resolve();
-            } else {
-              this.setData({
-                members: [
-                  ...this.data.members,
-                  ...memberListFormatter(memberList),
-                ],
-                pageIndex: pageIndex + 1,
-              })
-              resolve();
-            }
-          }
-        }).catch(err => {
-          console.log(err);
-        });
-      }
+  _loadMoreMembers(tId: string, aimPIndex?: number) {
+    const aimPageIndex = aimPIndex ? aimPIndex : this.data.currentPageIndex + 1;
+    const tid = tId;
 
-    })
+    if (!this.data.isBottom || aimPageIndex === 1) {
+      Team.getTeamMemberListByTid(tid, aimPageIndex).then(res => {
+        console.log(res);
+        if (res.length) {
+          res = memberListFormatter(res);
+          if (aimPageIndex === 1) {
+            // 刷新首页
+            this.setData({
+              members: res,
+              isLazyLoading: false,
+              currentPageIndex: aimPageIndex,
+              isBottom: false,
+            })
+          } else {
+            // 获取 >= 2页
+            this.setData({
+              members: [
+                ...this.data.members,
+                ...res
+              ],
+              isBottom: res.length === 10 ? false : true,
+              isLazyLoading: false,
+              currentPageIndex: aimPageIndex
+            })
+          }
+        } else {
+          if (aimPageIndex === 1) {
+            wx.showToast({
+              title: '出错，请联系管理员',
+              icon: 'none'
+            });
+            this.setData({
+              isBottom: true,
+              isLazyLoading: false,
+              members: [],
+              currentPageIndex: aimPageIndex - 1,
+            })
+          } else {
+            wx.showToast({
+              title: '已显示全部成员',
+              icon: 'none',
+            });
+            this.setData({
+              isLazyLoading: false,
+              isBottom: true,
+              currentPageIndex: aimPageIndex - 1,
+            })
+          }
+        }
+
+      }).catch(err => {
+        console.error(err);
+
+      })
+    }
   },
 
   /**

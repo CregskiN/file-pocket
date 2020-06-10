@@ -8,9 +8,9 @@ Component({
   properties: {
     files: Array,
     type: String,
-    isLazyLoading: Boolean,
     teamInfo: Object,
     userInfo: Object,
+    isAuthorized: Boolean,
   },
 
   /**
@@ -18,7 +18,8 @@ Component({
    */
   data: {
     editting: false,
-    selectList: [] as string[],
+    selectList: [] as string[], // 用于收藏集之外的场景选中
+    selectIds: [] as number[], // 用于收藏集删除
   },
 
   /**
@@ -36,6 +37,7 @@ Component({
       this.setData({
         editting: true,
         selectList: [],
+        selectIds: [],
         files,
       })
     },
@@ -51,6 +53,7 @@ Component({
       this.setData({
         editting: false,
         selectList: [],
+        selectIds: [],
         files,
       });
       this.triggerEvent('outEdit')
@@ -62,55 +65,119 @@ Component({
      */
     onSelect(e) {
       const hitFileId = e.detail.fid;
-      const files = this.properties.files;
-      const selectList = this.data.selectList;
-      for (const file of files as Response.FileType[]) {
-        if (file.fileId === hitFileId) {
-          if (file.isChecked) {
-            // 若已选
-            file.isChecked = false;
-            selectList.splice(selectList.indexOf(hitFileId), 1);
-          } else {
-            // 若未选
-            file.isChecked = true;
-            selectList.push(hitFileId);
+      const hitId = e.detail.id;
+      const { selectIds, selectList, files } = this.data;
+
+      if (this.properties.type !== 'my_file') {
+        for (const file of files as Response.FileType[]) {
+          if (file.fileId === hitFileId) {
+            if (file.isChecked) {
+              // 若已选
+              file.isChecked = false;
+              selectList.splice(selectList.indexOf(hitFileId), 1);
+            } else {
+              // 若未选
+              file.isChecked = true;
+              selectList.push(hitFileId);
+            }
+            this.setData({
+              files,
+              selectList,
+            });
+            this._withChange(selectList, selectIds);
+            break;
           }
-          this.setData({
-            files,
-            selectList
-          });
-          this._withChange(selectList);
-          break;
+        }
+      } else if (this.properties.type === 'my_file') {
+        console.log(e)
+        for (const file of files as Response.FileType[]) {
+          if (file.id === hitId) {
+            if (file.isChecked) {
+              // 若已选
+              file.isChecked = false;
+              selectIds.splice(selectIds.indexOf(hitId), 1);
+              selectList.splice(selectList.indexOf(hitFileId), 1);
+            } else {
+              // 若未选
+              file.isChecked = true;
+              selectIds.push(hitId);
+              selectList.push(hitFileId);
+            }
+            this.setData({
+              files,
+              selectIds,
+              selectList
+            });
+            this._withChange(selectList, selectIds);
+            break;
+          }
         }
       }
+
     },
 
     /**
      * 全选事件
      */
     onSelecteAll() {
-      if (this.data.selectList.length === this.properties.files.length) {
-        const files: Response.FileType[] = this.data.files;
-        files.forEach(file => {
-          file.isChecked = false;
-        });
-        this.setData({
-          files,
-          selectList: []
-        })
-      } else {
-        const files = this.data.files;
-        const selectList: string[] = [];
-        files.forEach(file => {
-          file.isChecked = true;
-          selectList.push(file.fileId);
-        });
-        this.setData({
-          files,
-          selectList
-        });
-        this._withChange(selectList);
+      const { type, selectIds, selectList, files } = this.data;
+
+      if (type !== 'my_file') {
+        if (selectList.length === files.length) {
+          // 已选，且选满
+          files.forEach(file => {
+            file.isChecked = false;
+          });
+          this.setData({
+            files,
+            selectList: []
+          })
+          this._withChange([], []);
+        } else {
+          // 已选，但未选满 || 完全未选
+          const newSelectList: string[] = [];
+          files.forEach(file => {
+            file.isChecked = true;
+            newSelectList.push(file.fileId);
+          });
+
+          this.setData({
+            files,
+            selectList: newSelectList
+          });
+          this._withChange(newSelectList, selectIds);
+        }
+      } else if (type === 'my_file') {
+        if (selectIds.length === files.length) {
+          // 已选，且选满
+          files.forEach(file => {
+            file.isChecked = false;
+          });
+          this.setData({
+            files,
+            selectIds: [],
+            selectList: [],
+          });
+          this._withChange([], []);
+        } else {
+          // 已选，但未选满 || 完全未选
+          const files = this.data.files;
+          const newSelectList: string[] = [];
+          const newSelectIds: number[] = [];
+          files.forEach(file => {
+            file.isChecked = true;
+            newSelectIds.push(file.id);
+            newSelectList.push(file.fileId);
+          });
+          this.setData({
+            files,
+            selectIds: newSelectIds,
+            selectList: newSelectList,
+          });
+          this._withChange(newSelectList, newSelectIds);
+        }
       }
+
 
     },
 
@@ -120,7 +187,6 @@ Component({
      */
     onUploadLocalImg(e: any) {
       console.log('file-controller出发上传本地图片事件', e);
-
       this.triggerEvent('uploadLocalImg', {
         chooseLocalImgs: e.detail.chooseLocalImgs
       })
@@ -140,19 +206,33 @@ Component({
      * 批量删除文件（统一封装为批量删除）
      */
     onDeleteFile(e: any) {
-      console.log('file-controller删除事件', e);
-      console.log('selectList', this.data.selectList);
-
-      if (e.detail && e.detail.fileId) {
-        this.triggerEvent('deleteFile', {
-          fileIds: new Array(e.detail.fileId),
-        });
-      } else {
-        this.triggerEvent('deleteFile', {
-          fileIds: this.data.selectList,
-        });
-        this.outEdit();
+      const { type, selectIds, selectList } = this.properties
+      if (type !== 'my_file') {
+        // console.log('file-controller删除事件', selectList);
+        if (e.detail && e.detail.fileId) {
+          this.triggerEvent('deleteFile', {
+            fileIds: new Array(e.detail.fileId),
+          });
+        } else {
+          this.triggerEvent('deleteFile', {
+            fileIds: selectList,
+          });
+          this.outEdit();
+        }
+      } else if (type === 'my_file') {
+        console.log('file-controller删除事件', selectIds);
+        if (e.detail && e.detail.id) {
+          this.triggerEvent('deleteFile', {
+            ids: [e.detail.id],
+          });
+        } else {
+          this.triggerEvent('deleteFile', {
+            ids: selectIds,
+          });
+          this.outEdit();
+        }
       }
+
 
 
     },
@@ -162,12 +242,7 @@ Component({
      * @param e 滚动事件
      */
     onScrollToBottom(e: any) {
-      if (!this.properties.isLazyLoading) {
-        this.setData({
-          isLazyLoading: true
-        });
-        this.triggerEvent('loadMore');
-      }
+      this.triggerEvent('loadMore');
     },
 
     /**
@@ -175,24 +250,28 @@ Component({
      * @param e 滚动事件
      */
     onAddToMyCollection(e: any) {
-      if (e.detail) {
-        if (e.detail.fileId) {
+      if (!this.properties.isAuthorized) {
+        this.triggerEvent('showAuthorizeWindow');
+      } else {
+        if (e.detail) {
+          if (e.detail.fileId) {
+            this.triggerEvent('addToMyCollection', {
+              fileIds: new Array(e.detail.fileId),
+            })
+            this.setData({
+              editting: false,
+              selectList: []
+            })
+          }
+        } else {
           this.triggerEvent('addToMyCollection', {
-            fileIds: new Array(e.detail.fileId),
+            fileIds: this.data.selectList
           })
           this.setData({
             editting: false,
             selectList: []
           })
         }
-      } else {
-        this.triggerEvent('addToMyCollection', {
-          fileIds: this.data.selectList
-        })
-        this.setData({
-          editting: false,
-          selectList: []
-        })
       }
     },
 
@@ -200,15 +279,20 @@ Component({
      * 一键添加至个人收藏
      */
     onAddToMyCollectionOnce() {
-      const fileIds: string[] = [];
-      const files = this.data.files;
-      files.forEach(file => {
-        fileIds.push(file.fileId);
-      });
+      if (!this.properties.isAuthorized) {
+        this.triggerEvent('showAuthorizeWindow');
+      } else {
+        const fileIds: string[] = [];
+        const files = this.data.files;
+        files.forEach(file => {
+          fileIds.push(file.fileId);
+        });
 
-      this.triggerEvent('addToMyCollectionOnce', {
-        fileIds
-      })
+        this.triggerEvent('addToMyCollectionOnce', {
+          fileIds
+        })
+      }
+
     },
 
 
@@ -227,9 +311,15 @@ Component({
      * @param e 
      */
     onView(e: any) {
-      this.triggerEvent('view', {
-        file: e.detail.file
-      })
+      console.log('file-controller view事件触发了')
+
+      if (!this.properties.isAuthorized) {
+        this.triggerEvent('showAuthorizeWindow')
+      } else {
+        this.triggerEvent('view', {
+          file: e.detail.file
+        })
+      }
     },
 
     /**
@@ -245,14 +335,24 @@ Component({
      * 伴随触发改变事件
      * @param fileIds 
      */
-    _withChange(fileIds: string[]) {
-      this.triggerEvent('change', {
-        fileIds
-      })
+    _withChange(fileIds: string[], ids?: number[]) {
+      const { type } = this.properties;
+      if (type !== 'my_file') {
+        this.triggerEvent('change', {
+          fileIds,
+        })
+      } else if (type === 'my_file') {
+        console.log(fileIds, ids)
+        this.triggerEvent('change', {
+          ids,
+          fileIds
+        })
+      }
+
     },
 
     onShow() {
-      console.log(this.data)
+      // console.log(this.data)
     }
 
 

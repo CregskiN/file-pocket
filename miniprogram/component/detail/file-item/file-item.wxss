@@ -3,10 +3,9 @@
     width: 94%;
     height: 150rpx;
     margin: 15rpx auto;
-    padding: 0 3%;
     border-radius: 10rpx;
-    background-color: #fff;
-    /* box-shadow: #eee 0 0 10rpx; */
+    background-color: #fffcf5;
+    box-shadow: #f2f2f2 0 0 10rpx;
 
     display: flex;
     flex-direction: row;
@@ -15,7 +14,7 @@
 }
 
 .file-item_left {
-    width: 22%;
+    width: 120rpx;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -33,14 +32,14 @@
 }
 
 .file-item_middle {
-    width: 73%;
+    width: calc(90% - 120rpx);
     height: 100%;
     padding: 10rpx;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: space-around;
 }
 
 .file-item_fileName {

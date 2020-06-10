@@ -6,8 +6,8 @@
 	<view class="index_body">
 
 		<scroll-view class="index_scroll_tab" scroll-x="true" enable-flex>
-			<view class="{{current == 0 ? 'tab_item active' : 'tab_item'}}" data-current="0" bind:tap="onSwitchTap">我创建的</view>
-			<view class="{{current == 1 ? 'tab_item active' : 'tab_item'}}" data-current="1" bind:tap="onSwitchTap">我加入的</view>
+			<view class="{{current == 0 ? 'tab_item tab_item_left tab_item_left_active' : 'tab_item tab_item_left'}}" data-current="0" bind:tap="onSwitchTap">我创建的</view>
+			<view class="{{current == 1 ? 'tab_item tab_item_right tab_item_right_active' : 'tab_item tab_item_right'}}" data-current="1" bind:tap="onSwitchTap">我加入的</view>
 		</scroll-view>
 
 		<swiper class="index_swiper" current="{{current}}"

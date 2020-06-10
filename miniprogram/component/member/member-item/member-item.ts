@@ -21,16 +21,19 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    onDelete(){
+    onDelete() {
       wx.showModal({
         title: '注意',
         content: `此次操作将踢除 - ${this.data.member.username}`,
-        success: () => {
-          console.log(this.data);
-          
-          this.triggerEvent('delete', {
-            uid: this.data.member.uid,
-          })
+        success: (res) => {
+          if (res.confirm) {
+            // 用户选择确定
+            console.log(this.data);
+            this.triggerEvent('delete', {
+              uid: this.data.member.uid,
+            })
+          }
+
         }
       })
     }

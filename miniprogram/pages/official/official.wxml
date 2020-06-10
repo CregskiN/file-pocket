@@ -3,20 +3,29 @@
     <view class="official-searcher_wrapper">
         <c-searcher 
             searchResultFiles="{{searchResultFiles}}"
+            isAuthorized="{{isAuthorized}}"
             userInfo="{{userInfo}}"
             bind:search="onSearch"
             bind:addToMyCollection="onAddToMyCollection"
             bind:cancel="onShutUpSearcher"
             bind:searchMore="onSearchMore"
+            bind:showAuthorizeWindow="onShowAuthorizeWindow"
+            bind:showDownloading="onShowDownloading"
+            bind:hideDownloading="hideDownloading"
         />
     </view>
 
     <view class="official_body">
         <view class="official_wrapper">
             <block wx:for="{{officialTeamList}}" wx:key="id" >
-                <c-item type="official" userInfo="{{userInfo}}" team="{{item}}"
+                <c-item 
+                    type="official"
+                    isAuthorized="{{isAuthorized}}"
+                    userInfo="{{userInfo}}" 
+                    team="{{item}}"
                     bind:share="onShare" 
                     bind:dropOut="onDropOut" 
+                    bind:showAuthorizeWindow="onShowAuthorizeWindow"
                 />
             </block>
         </view>
@@ -25,10 +34,18 @@
 </view>
 
 <c-loading lint="正在加载..." isLoading="{{loading}}" />
-<c-shareWindow isShareWindowVisible="{{isShareWindowVisible}}" 
+
+<c-shareWindow 
+    isShareWindowVisible="{{isShareWindowVisible}}" 
     bind:cancel="onShareCancel" 
 />
-<c-authorize isAuthorized="{{isAuthorized}}" 
+
+<c-authorize 
+    isAuthorized="{{isAuthorized || !canShowAuthorizeWindow}}" 
     bind:authorize="onAuthorize"
+    bind:closeAuthorizeWindow="onCloseAuthorizeWindow"
 />
-<c-downloading isDownloadingOrUploadingVisible="{{isSearching}}" lint="{{downloadingOrUploadingLint}}"/>
+
+<c-downloading 
+    isDownloadingOrUploadingVisible="{{isDownloadingOrUploadingVisible}}" 
+/>

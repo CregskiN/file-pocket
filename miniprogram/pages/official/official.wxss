@@ -14,12 +14,12 @@
     width: 100%;
     height: calc(100vh - 85rpx);
     overflow-y: scroll;
-    
+    background-color: #fef9ee;
 }
 
 .official_wrapper {
     width: 100%;
-    padding-bottom: 15rpx;
+    padding-top: 15rpx;
 }
 
 

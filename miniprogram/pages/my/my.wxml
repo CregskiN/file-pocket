@@ -1,10 +1,40 @@
 <!-- miniprogram/pages/my/my.wxml -->
 <view class="my_container">
+    <view class="my-header">
+        <image 
+            class="header_avatar" 
+            wx:if="{{userInfo.uid}}"
+            src="{{userInfo.avatarUrl}}" 
+            mode="aspectFit" 
+        />
+        <button 
+            class="header_avatar" 
+            wx:if="{{!userInfo.uid}}"
+            bind:tap="onShowAuthorizeWindow"
+        >
+        授权
+        </button>
+        <view class="header_nickName">{{userInfo.nickName}}</view>
+    </view>
 
-    <c-header bgUrl="{{bgUrl}}" userInfo="{{userInfo}}" bind:changeBg="onChangeBg"/>
 
     <view class="my_body">
-        <c-myItem wx:for="{{items}}" wx:key="id" item="{{item}}" userInfo="{{userInfo}}"/>
+        <view class="my-item_wrapper">
+            <block wx:for="{{items}}" wx:key="id">
+                <c-myItem 
+                    isAuthorized="{{isAuthorized}}"
+                    item="{{item}}" 
+                    isAuthorized="{{isAuthorized}}"
+                    userInfo="{{userInfo}}"
+                />
+            </block>
+        </view>
     </view>
 
 </view>
+
+<c-authorize 
+    isAuthorized="{{isAuthorized || !canShowAuthorizeWindow}}" 
+    bind:authorize="onAuthorize"
+    bind:closeAuthorizeWindow="onCloseAuthorizeWindow"
+/>

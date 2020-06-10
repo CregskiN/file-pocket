@@ -14,16 +14,19 @@ Page({
     officialTeamList: [] as Response.OfficialTeam[],
     isLoading: true,
     userInfo: {} as CustomUserInfo,
+
     isAuthorized: true,
+    canShowAuthorizeWindow: false, // 是否可以展示授权框
     isLogin: false,
 
     selectTeam: {} as Response.TeamDetailType,
     isShareWindowVisible: false,
 
     searchResultFiles: [] as Response.FileType[], // 搜索结果
-    isSearching: false,
-    searchPageId: 1,
-    isSearchAll: false,
+    isDownloadingOrUploadingVisible: false,
+    currentPageIndex: 1,
+    isBottom: false,
+
   },
 	/**
 	 * 取消邀请
@@ -42,9 +45,8 @@ Page({
   onShutUpSearcher() {
     this.setData({
       searchResultFiles: [],
-      isSearchAll: false,
-      searchPageId: 1,
-      isSearching: false
+      currentPageIndex: 1,
+      isBottom: false
     })
   },
 
@@ -52,27 +54,34 @@ Page({
    * 退出项目组
    */
   onDropOut(e: any) {
-    const { tid } = e.detail;
-    const { uid } = this.data.userInfo;
-    Team.deleteMember(uid as string, tid).then(res => {
-      if (res.success) {
-        this._refreshOfficialTeamList(uid as string);
+    if (!this.data.isAuthorized) {
+      this.setData({
+        canShowAuthorizeWindow: true,
+      });
+    } else {
+      const { tid } = e.detail;
+      const { uid } = this.data.userInfo;
+      Team.deleteMember(uid as string, tid).then(res => {
+        if (res.success) {
+          this._refreshOfficialTeamList(uid as string);
+          wx.showToast({
+            title: '退出成功',
+            icon: 'none'
+          });
+        } else {
+          wx.showToast({
+            title: res.stateMsg.split('，')[1],
+            icon: 'none'
+          })
+        }
+      }).catch(err => {
         wx.showToast({
-          title: '退出成功',
-          icon: 'none'
-        });
-      } else {
-        wx.showToast({
-          title: res.stateMsg.split('，')[1],
+          title: '请检查您的网络',
           icon: 'none'
         })
-      }
-    }).catch(err => {
-      wx.showToast({
-        title: '请检查您的网络',
-        icon: 'none'
       })
-    })
+    }
+
   },
 
 	/**
@@ -88,6 +97,24 @@ Page({
   },
 
   /**
+   * 关闭授权窗口
+   */
+  onCloseAuthorizeWindow() {
+    this.setData({
+      canShowAuthorizeWindow: false,
+    })
+  },
+
+  /**
+   * 展示授权窗口
+   */
+  onShowAuthorizeWindow() {
+    this.setData({
+      canShowAuthorizeWindow: true,
+    })
+  },
+
+  /**
   * 完成授权逻辑，撤除授权窗口
   */
   onAuthorize() {
@@ -96,10 +123,9 @@ Page({
       this.setData({
         userInfo,
         isAuthorized: true,
-      })
+      });
+      this.onCloseAuthorizeWindow();
     })
-
-
   },
 
   /**
@@ -108,30 +134,17 @@ Page({
    */
   onSearch(e: any) {
     const { keywords } = e.detail;
+    this.onShowDownloading();
+    this.setData({
+      currentPageIndex: 1,
+      searchResultFiles: [],
+      isBottom: false,
+    });
     if (keywords) {
-      const promises = [];
-      for (const team of this.data.officialTeamList) {
-        promises.push(Team.queryTeamFilesByKeywords(team.tid, keywords, this.data.searchPageId, team.teamName))
-      }
-      Promise.all(promises).then(res => {
-        const searchResultFiles = [];
-        for (const fileList of res) {
-          for (const file of fileList) {
-            searchResultFiles.push(fileFormatter(file));
-          }
-        }
-        console.log(searchResultFiles);
-
-        this.setData({
-          searchResultFiles,
-          searchPageId: this.data.searchPageId + 1
-        })
-      }).catch(err => {
-        console.log(err);
-
-      })
+      this._queryTeamFile(keywords, 1).then(no => {
+        this.hideDownloading();
+      });
     }
-
   },
 
 
@@ -142,51 +155,26 @@ Page({
   onSearchMore(e: any) {
     const { keywords } = e.detail;
     if (keywords) {
-      if (!this.data.isSearchAll) {
-        const promises = [];
-        for (const team of this.data.officialTeamList) {
-          promises.push(Team.queryTeamFilesByKeywords(team.tid, keywords, this.data.searchPageId, team.teamName))
-        }
-        Promise.all(promises).then(res => {
-          const searchResultFiles = this.data.searchResultFiles;
-          const moreSearchResultFiles: Response.FileType[] = [];
-
-          for (const fileList of res) {
-            if (fileList.length) {
-              for (const file of fileList) {
-                moreSearchResultFiles.push(fileFormatter(file));
-              }
-            }
-
-          }
-          console.log(searchResultFiles);
-          if (!moreSearchResultFiles.length) {
-            this.setData({
-              isSearchAll: true
-            })
-          }
-          searchResultFiles.push(...moreSearchResultFiles);
-          this.setData({
-            searchResultFiles: searchResultFiles,
-            searchPageId: this.data.searchPageId + 1
-          })
-        }).catch(err => {
-          console.log(err);
-
-        })
-      }
-
+      this._queryTeamFile(keywords);
     }
   },
 
+  /**
+   * 展示正在下载窗口
+   */
+  onShowDownloading() {
+    this.setData({
+      isDownloadingOrUploadingVisible: true
+    })
+  },
 
   /**
-   * 清空搜索结果
+   * 隐藏正在下载
    */
-  onCleanResult() {
-    // this.setData({
-    //   searchResultFiles: []
-    // })
+  hideDownloading() {
+    this.setData({
+      isDownloadingOrUploadingVisible: false
+    })
   },
 
   /**
@@ -194,8 +182,6 @@ Page({
  * @param e 
  */
   onAddToMyCollection(e: any) {
-    console.log(e);
-
     const { fileIds } = e.detail;
     Collection.addToMyCollectionFromTeam(this.data.userInfo.uid as string, fileIds as string[]).then(res => {
       if (res.success) {
@@ -220,13 +206,24 @@ Page({
     init.then(globalData => {
       const { isAuthorized, isLogin } = globalData;
       const userInfo = User.getUserInfoStorage();
-      if (userInfo.uid) {
-        this._refreshOfficialTeamList(userInfo.uid as string);
+
+      if (isAuthorized) {
+        // 已授权用户
+        if (userInfo.uid) {
+          // 展示与我相关的官方口袋
+          this._refreshOfficialTeamList(userInfo.uid as string);
+        }
+      } else {
+        // 未授权用户
+        // 展示所有官方口袋
+        this._getAllOfficialTeamList();
       }
+
       this.setData({
         userInfo,
         isAuthorized,
         isLogin,
+        canShowAuthorizeWindow: false,
       })
 
 
@@ -244,9 +241,11 @@ Page({
    */
   onShow() {
     if (this.data.userInfo.uid) {
+      // 有uid就刷新
       this._refreshOfficialTeamList(this.data.userInfo.uid);
     }
     if (!this.data.isAuthorized) {
+      // 如果用户onload加载时未授权
       const init: Promise<GlobalDataType> = app.init();
       init.then(globalData => {
         const { isAuthorized, isLogin } = globalData;
@@ -305,6 +304,31 @@ Page({
   },
 
   /**
+   * 查询所有的官方项目组
+   */
+  _getAllOfficialTeamList() {
+    Team.getOfficialTeamList().then(res => {
+      if (res.length) {
+        this.setData({
+          officialTeamList: res
+        })
+      } else {
+        wx.showToast({
+          title: '官方口袋列表为空',
+          icon: 'none'
+        });
+      }
+    }).catch(err => {
+      wx.showToast({
+        title: '请检查网络',
+        icon: 'none'
+      });
+      console.error('获取官方项目组失败', err);
+    })
+
+  },
+
+  /**
  * 刷新官方项目组列表
  */
   _refreshOfficialTeamList(uid: string) {
@@ -323,6 +347,94 @@ Page({
       console.log('页面初始化错误', err);
     });
   },
+
+  /**
+   * 搜索，不传pageIndex则按page.data的currentPageIndex搜索
+   * @param keyword 
+   * @param tidList 
+   * @param aimPageIndex 
+   */
+  _queryTeamFile(keyword: string, aimPIndex?: number) {
+    return new Promise((resolve, reject) => {
+      if (!this.data.isBottom) {
+        const aimPageIndex = aimPIndex ? aimPIndex : this.data.currentPageIndex + 1;
+
+        const tidList: string[] = [];
+        this.data.officialTeamList.forEach(officialTeam => {
+          // 检索的是现有的官方口袋
+          tidList.push(officialTeam.tid);
+        });
+
+        Team.queryTeamFilesByKeywords(tidList, keyword, aimPageIndex).then(res => {
+          if (res.length !== 0) {
+            // 搜索结果不为空
+            res = fileListFormatter(res);
+            if (aimPageIndex === 1) {
+              // 刷新首页
+              this.setData({
+                searchResultFiles: res,
+                isLazyLoading: false,
+                currentPageIndex: aimPageIndex,
+                isBottom: false,
+              })
+            } else {
+              this.setData({
+                searchResultFiles: [
+                  ...this.data.searchResultFiles,
+                  ...res
+                ],
+                currentPageIndex: aimPageIndex,
+                isBottom: res.length === 10 ? false : true,
+              });
+            }
+            resolve();
+          } else {
+            if (aimPageIndex === 1) {
+              // 搜索第一页 && 搜索结果为空 => 没有搜索结果
+              wx.showToast({
+                title: '未找到您搜索的文件',
+                icon: 'none'
+              });
+              this.setData({
+                searchResultFiles: [],
+                currentPageIndex: aimPageIndex - 1,
+                isBottom: true,
+              });
+              resolve();
+            } else {
+              // 搜索非第一页 && 搜索为空 => 到底了
+              wx.showToast({
+                title: '已显示所有文件',
+                icon: 'none'
+              });
+              this.setData({
+                currentPageIndex: aimPageIndex,
+                isBottom: true,
+              });
+              resolve();
+            }
+          }
+        }).catch(err => {
+          wx.showToast({
+            title: '请检查网络',
+            icon: 'none'
+          })
+        })
+      } else {
+        wx.showToast({
+          title: '已显示所有文件',
+          icon: 'none'
+        });
+        /* setTimeout(() => {
+          this.setData({
+            isBottom: false,
+          })
+        }, 2000) */
+      }
+
+
+    })
+  }
 
 
 })

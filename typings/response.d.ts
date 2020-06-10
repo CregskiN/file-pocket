@@ -2,7 +2,7 @@ declare namespace Response {
 
 
     // type MimeType = "doc" | "docx" | "xls" | "xlsx" | "ppt" | "pptx" | "pdf";
-    type MimeType = string;
+    type MimeType = 'doc' | 'docx' | 'xls' | 'xlsx' | 'ppt' | 'pptx' | 'pdf' | 'png' | 'jpeg' | 'jpg' | string;
 
     /**
      * 基类
@@ -120,6 +120,7 @@ declare namespace Response {
         creationTime: number | string;
         viewTime?: number;
         teamName?: string;
+        id?: number;
     }
 
     /**
@@ -156,8 +157,8 @@ declare namespace Response {
      * 获取uid在tid中对应的权限等级
      */
     interface GetMemberGradeInTeamData {
-        tid:string;
-        uid:string;
+        tid: string;
+        uid: string;
         userGrade: number;
     }
 

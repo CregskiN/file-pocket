@@ -1,5 +1,9 @@
 <!-- component/common/authorize/authorize.wxml -->
-<view class="authorize_container" hidden="{{isAuthorized}}">
+<view 
+    class="authorize_container" 
+    hidden="{{isAuthorized}}" 
+    bind:tap="onCloseAuthorizeWindow"
+>
     <view class="float-window_container">
         <view class="float-window_title">{{title}}</view>
         <view class="float-window_body">{{content}}</view>

@@ -1,15 +1,14 @@
 import EventTracking from '../models/EventTracking';
 
 enum FileType {
-    'doc' = 'msword',
-    'docx' = 'vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'xls' = 'vnd.ms-excel',
-    'xlsx' = 'vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'pptx' = 'vnd.openxmlformats-officedocument.presentationml.presentation',
-    'ppt' = 'vnd.ms-powerpoint',
-    'pdf' = 'pdf',
-    'jpeg' = 'jpeg',
-    'png' = 'png'
+    doc = 'doc',
+    docx = 'docx',
+    xls = 'xls',
+    xlsx = 'xlsx',
+    pptx = 'pptx',
+    ppt = 'ppt',
+    pdf = 'pdf',
+    png = 'png'
 }
 
 type ftype = 'doc' | 'docx' | 'xls' | 'xlsx' | 'ppt' | 'pptx' | 'pdf';
@@ -29,15 +28,8 @@ export default class Viewer {
      */
     static viewDocument(file: Response.FileType, uid: string, filePath?: string) {
         return new Promise((resolve, reject) => {
-            if (!(FileType as any)[file.mimeType]) {
-                console.log(file, (FileType as any)[file.mimeType as any]);
-                wx.showToast({
-                    title: '该文件不支持在线浏览',
-                    icon: 'none'
-                })
-                resolve({ success: false });
-                return;
-            } else if (ImageType[file.mimeType as 'png' | 'jpeg' | 'jpg']) {
+            if (file.mimeType in ImageType) {
+                // 为可浏览图片
                 wx.previewImage({
                     current: file.fileUrl,
                     urls: [file.fileUrl],
@@ -60,7 +52,8 @@ export default class Viewer {
                         })
                     }
                 })
-            } else {
+            } else if (file.mimeType in FileType) {
+                // 为可在线浏览文档
                 const downloadTask = wx.downloadFile({
                     url: file.fileUrl,
                     success: (res) => {
@@ -71,9 +64,7 @@ export default class Viewer {
                                 resolve({
                                     success: true
                                 });
-                                
                                 Viewer.writeHistoty(file);
-
                                 EventTracking.viewTrigger(file.fileId, uid);
                             },
                             fail: (err) => {
@@ -89,6 +80,13 @@ export default class Viewer {
                         console.log(err);
                     }
                 });
+            } else {
+                wx.showToast({
+                    title: '该文件不支持在线浏览',
+                    icon: 'none'
+                })
+                resolve({ success: false });
+                return;
             }
         })
 
@@ -139,7 +137,7 @@ export default class Viewer {
             wx.getStorage({
                 key: 'VIEWHISTORY',
                 success: (res) => {
-                    console.log(res);
+                    // console.log(res);
                     resolve(res.data);
                 },
                 fail: (err) => {

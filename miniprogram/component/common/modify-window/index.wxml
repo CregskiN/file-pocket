@@ -12,7 +12,7 @@
             <button class="float-window_btn_cancel left" catch:tap="onCancel">
                 取消
             </button>
-            <button class="float-window_btn_cancel" catch:tap="onComplete">
+            <button class="float-window_btn_complete" catch:tap="onComplete">
                 完成
             </button>
         </view>
@@ -29,10 +29,10 @@
             />
         </view>
         <view class="float-window_choices" catch:tap="onCatch">
-            <button class="float-window_btn_cancel left" catch:tap="onCancel">
+            <button class="float-window_btn_cancel" catch:tap="onCancel">
                 取消
             </button>
-            <button class="float-window_btn_cancel" catch:tap="onComplete">
+            <button class="float-window_btn_complete" catch:tap="onComplete">
                 完成
             </button>
         </view>
@@ -52,7 +52,7 @@
             <button class="float-window_btn_cancel left" catch:tap="onCancel">
                 取消
             </button>
-            <button class="float-window_btn_cancel" catch:tap="onComplete">
+            <button class="float-window_btn_complete" catch:tap="onComplete">
                 完成
             </button>
         </view>

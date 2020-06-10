@@ -3,28 +3,38 @@
     <view class="searcher_top" catch:tap="onFocus">
         <view class="{{isFocus ? 'searcher_left searcher_left_active' : 'searcher_left'}}">
             <view class="iconfont icon-iconfont_fangdajing" />
-            <input class="searcher_input" placeholder="搜索官方口袋文件..." value="{{inputValue}}" focus="{{isFocus}}"
+            <input 
+                class="searcher_input" 
+                placeholder="搜索官方口袋文件..." 
+                value="{{inputValue}}" 
+                focus="{{isFocus}}"
                 bind:input="onInput"
                 bind:confirm="onComplete"
             />
-            <view class="{{inputValue ? 'icon_wrap iconfont icon-cuowu' : 'icon_wrap'}}"
+            <view 
+                class="{{inputValue ? 'icon_wrap iconfont icon-cuowu' : 'icon_wrap'}}"
                 bind:tap="onClean"
             />
         </view>
         <view class="searcher_right" hidden="{{!isFocus}}">
             <!-- <view class="btn searcher_complete">搜索</view> -->
             <view class="btn searcher_cancel" bind:tap="onCancel" hidden="{{!searchResultFiles.length || !inputValue.length}}">取消</view>
-            <view class="btn searcher_cancel" bind:tap="onComplete" hidden="{{searchResultFiles.length}}">完成</view>
+            <view class="btn searcher_cancel" bind:tap="onComplete" hidden="{{searchResultFiles.length}}">搜索</view>
         </view>
     </view>
 
-    <scroll-view class="searcher_body" hidden="{{!isResultBoardVisible}}"  scroll-y="true"
+    <scroll-view 
+        class="searcher_body" 
+        hidden="{{!isResultBoardVisible}}"  
+        scroll-y="true"
         bind:tap="onCancel"
         enable-back-to-top="true" lower-threshold="70"
         bind:scrolltolower="onScrollToBottom"
     >
         <block wx:for="{{searchResultFiles}}"  wx:key="id">
-            <c-fileItem file="{{item}}" type="searcher_official"
+            <c-fileItem 
+                file="{{item}}" 
+                type="searcher_official"
                 bind:view="onView"
                 bind:addToMyCollection="onAddToMyCollection"
             />

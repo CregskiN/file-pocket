@@ -95,7 +95,7 @@ Component({
      * 删除已选
      */
     onDelete() {
-      if(this.properties.selectCount){
+      if (this.properties.selectCount) {
         this.triggerEvent('delete');
       }
     },
@@ -124,6 +124,14 @@ Component({
       if (this.properties.selectCount) {
         this.triggerEvent('addToTeam')
       }
+    },
+
+    /**
+     * 分享按钮点击
+     */
+    onShare() {
+      console.log('分享按钮点击了');
+      this.triggerEvent('share')
     },
   }
 })

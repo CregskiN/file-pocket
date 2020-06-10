@@ -2,26 +2,22 @@
 <block wx:if="{{type==='detail_official'}}">
 	<view class="detail_console" hidden="{{editting}}">
 		<button class="detail_console_btn detail_official_choose" bind:tap="inEdit">
-			<text class="iconfont icon-xuanze icon" />
-			<text decode="{{true}}">&nbsp;</text>
+			<text class="iconfont icon-xuanze btn-choose icon" />
 			选择
 		</button>
 		<button class="detail_console_btn detail_official_invite" open-type="share">
-			<text class="iconfont icon-tianjiachengyuan icon" />
-			<text decode="{{true}}">&nbsp;</text>
+			<text class="iconfont icon-tianjiachengyuan icon btn-invite" />
 			邀请
 		</button>
 	</view>
 
 	<view class="detail_console" hidden="{{!editting}}">
-		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" open-type="{{selectCount ? 'share' : ''}}">
+		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" open-type="{{selectCount ? 'share' : ''}}" bind:tap="onShare">
 			<text class="iconfont icon-fenxiang icon" />
-			<text decode="{{true}}">&nbsp;</text>
 			分享
 		</button>
 		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onAddToMyCollection">
 			<text class="iconfont icon-star icon"></text>
-			<text decode="{{true}}">&nbsp;</text>
 			收藏
 		</button>
 	</view>
@@ -33,41 +29,34 @@
 	<view class="detail_console" hidden="{{editting}}">
 		<button class="detail_console_btn" bind:tap="onUpload">
 			<text class="iconfont icon-shangchuan icon" />
-			<text decode="{{true}}">&nbsp;</text>
 			上传
 		</button>
 		<button class="detail_console_btn" bind:tap="toMember">
-			<text class="iconfont icon-chengyuan icon" />
-			<text decode="{{true}}">&nbsp;</text>
+			<text class="iconfont icon-chengyuan icon btn-member" />
 			成员
 		</button>
 		<button class="detail_console_btn " bind:tap="inEdit">
-			<text class="iconfont icon-xuanze icon" />
-			<text decode="{{true}}">&nbsp;</text>
+			<text class="iconfont icon-xuanze icon btn-choose" />
 			选择
 		</button>
 		<button class="detail_console_btn " open-type="share">
-			<text class="iconfont icon-tianjiachengyuan icon" />
-			<text decode="{{true}}">&nbsp;</text>
+			<text class="iconfont icon-tianjiachengyuan icon btn-invite" />
 			邀请
 		</button>
 	</view>
 
 	<view class="detail_console" hidden="{{!editting}}">
-		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" open-type="{{selectCount ? 'share' : ''}}">
+		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" open-type="{{selectCount ? 'share' : ''}}" bind:tap="onShare">
 			<text class="iconfont icon-fenxiang icon" />
-			<text decode="{{true}}">&nbsp;</text>
 			分享
 		</button>
 		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onAddToMyCollection">
 			<text class="iconfont icon-star icon"></text>
-			<text decode="{{true}}">&nbsp;</text>
 			收藏
 		</button>
 		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onDelete">
 			<text class="iconfont icon-shanchu icon"></text>
-			<text decode="{{true}}">&nbsp;</text>
-			删除{{selectCount === 0 ? '' : '(' + selectCount+')'}}
+			删除
 		</button>
 	</view>
 </block>
@@ -78,35 +67,29 @@
 	<view class="detail_console" hidden="{{editting}}">
 		<button class="detail_console_btn" bind:tap="onUpload">
 			<text class="iconfont icon-shangchuan icon" />
-			<text decode="{{true}}">&nbsp;</text>
 			上传
 		</button>
 		<button class="detail_console_btn" bind:tap="toMember">
-			<text class="iconfont icon-chengyuan icon" />
-			<text decode="{{true}}">&nbsp;</text>
+			<text class="iconfont icon-chengyuan icon btn-member" />
 			成员
 		</button>
 		<button class="detail_console_btn " bind:tap="inEdit">
-			<text class="iconfont icon-xuanze icon" />
-			<text decode="{{true}}">&nbsp;</text>
+			<text class="iconfont icon-xuanze icon btn-choose" />
 			选择
 		</button>
 		<button class="detail_console_btn " open-type="share">
-			<text class="iconfont icon-tianjiachengyuan icon" />
-			<text decode="{{true}}">&nbsp;</text>
+			<text class="iconfont icon-tianjiachengyuan icon btn-invite" />
 			邀请
 		</button>
 	</view>
 
 	<view class="detail_console" hidden="{{!editting}}">
-		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" open-type="{{selectCount ? 'share' : ''}}">
+		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" open-type="{{selectCount ? 'share' : ''}}" bind:tap="onShare">
 			<text class="iconfont icon-fenxiang icon"></text>
-			<text decode="{{true}}">&nbsp;</text>
 			分享
 		</button>
 		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onAddToMyCollection">
 			<text class="iconfont icon-star icon"></text>
-			<text decode="{{true}}">&nbsp;</text>
 			收藏
 		</button>
 	</view>
@@ -115,32 +98,31 @@
 
 <!-- my-file个人文件页面 -->
 <block wx:if="{{type==='my_file'}}">
-	<view class="detail_console" hidden="{{editting}}">
-		<button class="detail_console_btn one" bind:tap="inEdit">批量管理</button>
+	<view class="detail_console console_my_file" hidden="{{editting}}" bind:tap="inEdit">
+		<text class="iconfont icon-piliangguanli icon-edit_all" />
+		<button class="detail_console_btn edit_all">批量管理</button>
 	</view>
 
 	<view class="detail_console" hidden="{{!editting}}">
-		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" open-type="{{selectCount ? 'share' : ''}}">
+		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" open-type="{{selectCount ? 'share' : ''}}" bind:tap="onShare">
 			<text class="iconfont icon-fenxiang icon"></text>
-			<text decode="{{true}}">&nbsp;</text>
 			分享
 		</button>
 		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onAddToTeam">
 			<text class="iconfont icon-add-sy icon"></text>
-			<text decode="{{true}}">&nbsp;</text>
 			添加
 		</button>
 		<button class="{{selectCount ? classes.btns.share.active: classes.btns.share.normal}}" bind:tap="onDelete">
 			<text class="iconfont icon-shanchu icon"></text>
-			<text decode="{{true}}">&nbsp;</text>
-			删除{{selectCount === 0 ? '' : '(' + selectCount+')'}}
+			删除
 		</button>
 	</view>
 </block>
 
 <!-- share分享页面的 -->
 <block wx:if="{{type==='share'}}">
-	<view class="detail_console" hidden="{{editting}}">
-		<button class="detail_console_btn one" bind:tap="onAddToMyCollectionOnce">一键收藏</button>
+	<view class="detail_console console_my_file" hidden="{{editting}}">
+		<text class="iconfont icon-star icon"></text>
+		<button class="detail_console_btn edit_all" bind:tap="onAddToMyCollectionOnce">一键收藏</button>
 	</view>
 </block>

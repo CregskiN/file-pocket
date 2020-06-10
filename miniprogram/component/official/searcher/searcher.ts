@@ -7,6 +7,7 @@ Component({
   properties: {
     searchResultFiles: Array,
     userInfo: Object,
+    isAuthorized: Boolean,
   },
   options: {
     addGlobalClass: true,
@@ -77,7 +78,6 @@ Component({
           keywords: this.data.inputValue
         })
       }
-
     },
 
     /**
@@ -85,7 +85,6 @@ Component({
      */
     onUnusefull() {
       console.log('拦截');
-
     },
 
     /**
@@ -93,7 +92,18 @@ Component({
    * @param e 
    */
     onView(e: any) {
-      Viewer.viewDocument(e.detail.file, this.properties.userInfo.uid);
+      console.log('触发查看事件')
+      if (!this.properties.isAuthorized) {
+        // 没有uid表明尚未授权
+        this.triggerEvent('showAuthorizeWindow');
+      } else {
+        // 表明已经授权
+        this.triggerEvent('showDownloading');
+        console.log('经判断，已经授权');
+        Viewer.viewDocument(e.detail.file, this.properties.userInfo.uid).then(no => {
+          this.triggerEvent('hideDownloading');
+        });
+      }
     },
 
     /**
@@ -101,13 +111,20 @@ Component({
      * @param e 滚动事件
      */
     onAddToMyCollection(e: any) {
-      if (e.detail) {
-        if (e.detail.fileId) {
-          this.triggerEvent('addToMyCollection', {
-            fileIds: new Array(e.detail.fileId),
-          })
+      if (!this.properties.isAuthorized) {
+        // 没有uid表明尚未授权
+        this.triggerEvent('showAuthorizeWindow');
+      } else {
+        // 表明已经授权
+        if (e.detail) {
+          if (e.detail.fileId) {
+            this.triggerEvent('addToMyCollection', {
+              fileIds: new Array(e.detail.fileId),
+            })
+          }
         }
       }
+
     },
 
     /**

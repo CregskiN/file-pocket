@@ -6,10 +6,11 @@
             <view class="header_title" catch:tap="onShow">已选{{selectList.length}}个口袋</view>
             <view class="header_complete" catch:tap="onComplete">完成</view>
         </view>
+
         <view class="window_body">
-            <scroll-view class="index_scroll_tab" scroll-x="true">
-                <view class="{{current == 0 ? 'tab_item active' : 'tab_item'}}" data-current="0" catch:tap="onSwitchTap">创建</view>
-                <view class="{{current == 1 ? 'tab_item active' : 'tab_item'}}" data-current="1" catch:tap="onSwitchTap">加入</view>
+            <scroll-view class="index_scroll_tab" scroll-x="true" enable-flex="true">
+                <view class="{{current === 0 ? 'tab_item active' : 'tab_item'}}" data-current="0" catch:tap="onSwitchTap">我创建的</view>
+                <view class="{{current === 1 ? 'tab_item active' : 'tab_item'}}" data-current="1" catch:tap="onSwitchTap">我加入的</view>
             </scroll-view>
             
             <swiper class="index_swiper" current="{{current}}"

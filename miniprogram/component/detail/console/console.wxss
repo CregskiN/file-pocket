@@ -2,64 +2,65 @@
 
 .detail_console {
     width: 100%;
-    height: 135rpx;
+    height: 115rpx;
     border-top: 1rpx solid #eee;
     position: fixed;
     bottom: 0;
+
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-around;
+    
     background-color: #fff;
+    border-top: 1rpx solid #f2f2f2;
 }
 
-.detail_console_btn {    
+.detail_console_btn {
     display: flex !important;
-    flex-direction: row !important;
+    flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
 
-    width: 20% !important;
-    height: 50% !important;
+    width: 25% !important;
+    height: 90% !important;
+    min-height: 70rpx !important;
     padding: 0 !important;
     margin: 0 !important;
     /* box-shadow: #eee 0 0 10rpx; */
-    background-color: #69ace7;
-    
+    background-color: transparent !important;
 
-    font-size: 30rpx !important;
+    font-size: 27rpx !important;
     line-height: 30rpx !important;
     font-weight: 400 !important;
-    color: #fff !important;
+    color: #000 !important;
 }
 
 .btn_share_active {
-    background-color: #69ace7 !important;
-    color: #fff !important;
+    color: #818181 !important;
 }
 
 .btn_share_normal {
-    background-color: #f5f6f7 !important;
-    color: #7f7f7f !important;
+    color: #a6a39b !important;
 }
 
-.btn_complete_active {
-    background-color: #f1441d;
-    color: #fff;
+.btn-member {
+    font-size: 50rpx !important;
 }
 
-.btn_complete_normal {
-    /* background-color: #eee; */
-    color: #000;
+.btn-invite {
+    font-size: 50rpx !important;
 }
 
-.one {
-    width: 50% !important;
-    font-size: 38rpx !important;
+.btn-choose {
+    font-size: 43rpx !important;
 }
+
 
 .icon {
-    font-size: 30rpx;
+    font-size: 40rpx !important; 
+    line-height: 55rpx !important;
+    color: #818181 ;
     /* font-weight: 600; */
 }
 
@@ -69,4 +70,24 @@
 
 .detail_official_invite {
     margin-right: 30rpx !important;
+}
+
+.console_my_file {
+    background:url("https://wx-interchange.oss.jellyfishmix.com/FntihySmyFQOmBMT9ChtHjOMYOTw") no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-edit_all {
+    color: #fff;
+    font-size: 38rpx;
+    font-weight: 600;
+}
+
+.edit_all {
+    font-size: 38rpx !important;
+    line-height: 38rpx !important;
+    color: #fff !important;
 }

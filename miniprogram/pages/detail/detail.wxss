@@ -3,16 +3,17 @@
 .detail_container {
     width: 100vw;
     height: 100vh;
+
+    background-color: #fff9ed;
 }
 
 .team-header_wrapper {
     width: 100%;
-    height: 15%;
+    height: 220rpx;
 }
 
 .file-controller_wrapper {
-    height: 85%;
+    height: calc(100% - 220rpx);
     width: 100%;
 
-    background-color: #f5f6f7;
 }

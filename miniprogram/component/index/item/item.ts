@@ -12,6 +12,7 @@ Component({
     imgCount: Number,
     type: String,
     userInfo: Object,
+    isAuthorized: Boolean,
   },
   options: {
     addGlobalClass: true
@@ -32,11 +33,11 @@ Component({
 	 * @param e 点击事件
 	 */
     onMore(e: any) {
-      const { tid } = this.properties.team;
-      const { uid } = this.properties.userInfo;
-
       switch (this.properties.type) {
+
         case 'official': {
+          const { tid } = this.properties.team;
+          const isAuthorized = this.properties.isAuthorized;
           wx.showActionSheet({
             itemList: ['分享', '退出'],
             success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
@@ -48,13 +49,18 @@ Component({
                   break;
                 }
                 case 1: {
-                  this.triggerEvent('dropOut', {
-                    tid
-                  })
+                  if (!isAuthorized) {
+                    // 如果没有授权，弹出授权窗口
+                    this.triggerEvent('showAuthorizeWindow');
+                  } else {
+                    // 如果已经授权，正常退出
+                    this.triggerEvent('dropOut', {
+                      tid
+                    })
+                  }
                   break;
                 }
               }
-
             },
             fail: (res) => {
               console.log('fail');
@@ -63,6 +69,8 @@ Component({
           break;
         }
         case 'create': {
+          const { tid } = this.properties.team;
+          const { uid } = this.properties.userInfo;
           wx.showActionSheet({
             itemList: ['邀请加入口袋', '重命名', '解散口袋'],
             success: (res: WechatMiniprogram.ShowActionSheetSuccessCallbackResult) => {
@@ -96,6 +104,8 @@ Component({
           break;
         }
         case 'join': {
+          const { tid } = this.properties.team;
+          const { uid } = this.properties.userInfo;
           console.log('我加入的项目组')
           wx.showActionSheet({
             itemList: ['邀请加入口袋', '退出口袋'],
